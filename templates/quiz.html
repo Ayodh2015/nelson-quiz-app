@@ -1,0 +1,289 @@
+{% extends "base.html" %}
+{% block title %}Question {{ current }} — Nelson Peds Quiz{% endblock %}
+
+{% block extra_css %}
+<style>
+    .option-btn {
+        width: 100%;
+        text-align: left;
+        padding: 1rem 1.25rem;
+        background: rgba(255,255,255,0.03);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        color: var(--text);
+        font-family: 'DM Sans', sans-serif;
+        font-size: 0.95rem;
+        cursor: pointer;
+        transition: all 0.2s;
+        display: flex;
+        align-items: flex-start;
+        gap: 0.85rem;
+        margin-bottom: 0.65rem;
+    }
+
+    .option-btn:hover {
+        background: rgba(79,195,247,0.08);
+        border-color: rgba(79,195,247,0.4);
+        transform: translateX(3px);
+    }
+
+    .option-btn.selected {
+        background: rgba(79,195,247,0.12);
+        border-color: var(--accent);
+    }
+
+    .option-label {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background: rgba(79,195,247,0.1);
+        border: 1px solid var(--border);
+        font-weight: 700;
+        font-size: 0.8rem;
+        color: var(--accent);
+        flex-shrink: 0;
+        margin-top: 1px;
+    }
+
+    .option-btn.selected .option-label {
+        background: var(--accent);
+        color: var(--navy);
+    }
+
+    .tf-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 1rem 1.25rem;
+        background: rgba(255,255,255,0.03);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        margin-bottom: 0.65rem;
+        gap: 1rem;
+        transition: border-color 0.2s;
+    }
+
+    .tf-row:hover { border-color: rgba(79,195,247,0.3); }
+
+    .tf-toggle {
+        display: flex;
+        gap: 0.5rem;
+        flex-shrink: 0;
+    }
+
+    .tf-btn {
+        padding: 0.4rem 1rem;
+        border-radius: 8px;
+        border: 1px solid var(--border);
+        background: transparent;
+        color: var(--text-muted);
+        font-family: 'DM Sans', sans-serif;
+        font-size: 0.85rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.15s;
+    }
+
+    .tf-btn.true-btn.active {
+        background: rgba(38,198,162,0.2);
+        border-color: var(--accent-green);
+        color: var(--accent-green);
+    }
+
+    .tf-btn.false-btn.active {
+        background: rgba(239,83,80,0.2);
+        border-color: var(--danger);
+        color: var(--danger);
+    }
+
+    .timer-display {
+        font-family: 'Playfair Display', serif;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--accent);
+        min-width: 80px;
+        text-align: center;
+    }
+
+    .timer-display.warning { color: var(--accent-gold); }
+    .timer-display.danger { color: var(--danger); animation: pulse 1s infinite; }
+
+    @keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.5; }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container" style="padding-top: 2rem; max-width: 780px;">
+
+    <!-- Top bar: progress + timer -->
+    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem;" class="fade-up">
+        <div style="flex: 1; margin-right: 2rem;">
+            <div style="display: flex; justify-content: space-between; font-size: 0.83rem; color: var(--text-muted); margin-bottom: 0.4rem;">
+                <span>Question {{ current }} of {{ total }}</span>
+                <span>{{ ((current / total) * 100) | int }}% complete</span>
+            </div>
+            <div class="progress-bar-wrap">
+                <div class="progress-bar-fill" style="width: {{ (current / total) * 100 }}%;"></div>
+            </div>
+        </div>
+        <div style="display: flex; flex-direction: column; align-items: center;">
+            <div style="font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.1rem;">Time Left</div>
+            <div class="timer-display" id="timer">--:--</div>
+        </div>
+    </div>
+
+    <!-- Question Card -->
+    <div class="card fade-up-delay">
+
+        <!-- Question type badge -->
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem;">
+            {% if question.question_type == 'BOF' %}
+                <span class="badge badge-blue">Best of Five</span>
+            {% else %}
+                <span class="badge badge-gold">True / False</span>
+            {% endif %}
+            <span class="badge" style="background: rgba(255,255,255,0.05); color: var(--text-muted);">{{ question.section }}</span>
+        </div>
+
+        <!-- Question text -->
+        <p style="font-size: 1.05rem; line-height: 1.7; margin-bottom: 1.75rem; color: var(--text);">
+            {{ question.question_text }}
+        </p>
+
+        <!-- Answers form -->
+        <form method="POST" action="/submit_answer" id="answer-form">
+
+            {% if question.question_type == 'BOF' %}
+            <!-- BOF Options -->
+            <div id="bof-options">
+                {% for opt in options %}
+                <button type="button" class="option-btn" onclick="selectOption('{{ opt.option_label }}', this)">
+                    <span class="option-label">{{ opt.option_label }}</span>
+                    <span>{{ opt.option_text }}</span>
+                </button>
+                {% endfor %}
+            </div>
+            <input type="hidden" name="bof_answer" id="bof_answer_input" value="">
+
+            {% else %}
+            <!-- True/False Statements -->
+            <div id="tf-options">
+                {% for stmt in tf_statements %}
+                <div class="tf-row">
+                    <span style="font-size: 0.93rem; line-height: 1.5; color: var(--text);">
+                        <strong style="color: var(--text-muted); margin-right: 0.5rem;">{{ stmt.statement_number }}.</strong>
+                        {{ stmt.statement_text }}
+                    </span>
+                    <div class="tf-toggle">
+                        <button type="button" class="tf-btn true-btn" onclick="setTF({{ stmt.statement_number }}, true, this)">True</button>
+                        <button type="button" class="tf-btn false-btn" onclick="setTF({{ stmt.statement_number }}, false, this)">False</button>
+                    </div>
+                    <input type="hidden" name="tf_{{ stmt.statement_number }}" id="tf_input_{{ stmt.statement_number }}" value="">
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <!-- Bookmark + Submit -->
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 2rem; padding-top: 1.25rem; border-top: 1px solid var(--border);">
+                <button type="button" class="btn btn-outline" id="bookmark-btn" onclick="toggleBookmark({{ question.id }})">
+                    🔖 Bookmark
+                </button>
+                <button type="submit" class="btn btn-primary" id="submit-btn">
+                    {% if current == total %}Submit Quiz{% else %}Next Question →{% endif %}
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// ---- BOF Selection ----
+function selectOption(label, btn) {
+    document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    document.getElementById('bof_answer_input').value = label;
+}
+
+// ---- TF Selection ----
+const tfAnswers = {};
+
+function setTF(num, value, btn) {
+    const row = btn.closest('.tf-row');
+    row.querySelectorAll('.tf-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    tfAnswers[num] = value;
+    document.getElementById('tf_input_' + num).value = value ? 'true' : 'false';
+}
+
+// ---- Form validation ----
+document.getElementById('answer-form').addEventListener('submit', function(e) {
+    const type = "{{ question.question_type }}";
+    if (type === 'BOF') {
+        const val = document.getElementById('bof_answer_input').value;
+        if (!val) {
+            e.preventDefault();
+            alert('Please select an answer before continuing.');
+        }
+    } else {
+        const numStatements = {{ tf_statements | length }};
+        for (let i = 1; i <= numStatements; i++) {
+            if (!document.getElementById('tf_input_' + i).value) {
+                e.preventDefault();
+                alert('Please answer all statements before continuing.');
+                return;
+            }
+        }
+    }
+});
+
+// ---- Timer ----
+const timeLimit = {{ time_limit }};
+const startedAt = new Date("{{ started_at }}");
+
+function updateTimer() {
+    if (timeLimit === 0) {
+        document.getElementById('timer').textContent = '∞';
+        return;
+    }
+    const now = new Date();
+    const elapsed = Math.floor((now - startedAt) / 1000);
+    const remaining = timeLimit - elapsed;
+
+    if (remaining <= 0) {
+        document.getElementById('timer').textContent = '00:00';
+        document.getElementById('answer-form').submit();
+        return;
+    }
+
+    const mins = Math.floor(remaining / 60);
+    const secs = remaining % 60;
+    const display = `${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}`;
+    const timerEl = document.getElementById('timer');
+    timerEl.textContent = display;
+
+    timerEl.className = 'timer-display';
+    if (remaining < 120) timerEl.classList.add('danger');
+    else if (remaining < 300) timerEl.classList.add('warning');
+}
+
+updateTimer();
+setInterval(updateTimer, 1000);
+
+// ---- Bookmark ----
+async function toggleBookmark(questionId) {
+    const btn = document.getElementById('bookmark-btn');
+    const res = await fetch('/bookmark/' + questionId, { method: 'POST' });
+    const data = await res.json();
+    btn.textContent = data.status === 'added' ? '✅ Bookmarked' : '🔖 Bookmark';
+}
+</script>
+{% endblock %}

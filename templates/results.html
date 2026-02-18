@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% block title %}Results — Nelson Peds Quiz{% endblock %}
+
+{% block content %}
+<div class="container" style="padding-top: 2rem; max-width: 820px;">
+
+    <!-- Score Header -->
+    <div class="card fade-up" style="text-align: center; margin-bottom: 1.5rem; padding: 2.5rem;">
+        {% set pct = session_data.percentage %}
+        {% if pct >= 80 %}
+            <div style="font-size: 3.5rem; margin-bottom: 0.5rem;">🏆</div>
+            <h1 style="font-size: 2.5rem; color: var(--accent-green);">{{ pct }}%</h1>
+            <p style="color: var(--accent-green); font-weight: 600; margin-top: 0.25rem;">Excellent Performance!</p>
+        {% elif pct >= 60 %}
+            <div style="font-size: 3.5rem; margin-bottom: 0.5rem;">👍</div>
+            <h1 style="font-size: 2.5rem; color: var(--accent);">{{ pct }}%</h1>
+            <p style="color: var(--accent); font-weight: 600; margin-top: 0.25rem;">Good Work — Keep Improving!</p>
+        {% else %}
+            <div style="font-size: 3.5rem; margin-bottom: 0.5rem;">📖</div>
+            <h1 style="font-size: 2.5rem; color: var(--accent-gold);">{{ pct }}%</h1>
+            <p style="color: var(--accent-gold); font-weight: 600; margin-top: 0.25rem;">Keep Studying — You'll Get There!</p>
+        {% endif %}
+
+        <div style="display: flex; justify-content: center; gap: 2rem; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border);">
+            <div>
+                <div style="font-size: 1.4rem; font-weight: 700; color: var(--text);">{{ session_data.total_questions }}</div>
+                <div style="font-size: 0.8rem; color: var(--text-muted);">Total Questions</div>
+            </div>
+            <div>
+                <div style="font-size: 1.4rem; font-weight: 700; color: var(--accent-green);">{{ session_data.bof_count }}</div>
+                <div style="font-size: 0.8rem; color: var(--text-muted);">BOF Questions</div>
+            </div>
+            <div>
+                <div style="font-size: 1.4rem; font-weight: 700; color: var(--accent-gold);">{{ session_data.tf_count }}</div>
+                <div style="font-size: 0.8rem; color: var(--text-muted);">True/False Questions</div>
+            </div>
+            <div>
+                <div style="font-size: 1.4rem; font-weight: 700; color: var(--accent);">{{ session_data.score | round(1) }}</div>
+                <div style="font-size: 0.8rem; color: var(--text-muted);">Marks Obtained</div>
+            </div>
+        </div>
+
+        <div style="display: flex; gap: 1rem; justify-content: center; margin-top: 1.5rem;">
+            <a href="/start" class="btn btn-success">🔄 Try Again</a>
+            <a href="/dashboard" class="btn btn-outline">← Dashboard</a>
+        </div>
+    </div>
+
+    <!-- Question Review -->
+    <div class="card fade-up-delay">
+        <h2 style="font-size: 1.3rem; margin-bottom: 1.5rem;">Question Review</h2>
+
+        <div style="display: flex; flex-direction: column; gap: 1.25rem;">
+            {% for attempt in attempts %}
+            <div style="padding: 1.25rem; border-radius: 12px; border: 1px solid {% if attempt.is_correct %}rgba(38,198,162,0.3){% else %}rgba(239,83,80,0.3){% endif %}; background: {% if attempt.is_correct %}rgba(38,198,162,0.05){% else %}rgba(239,83,80,0.05){% endif %};">
+
+                <!-- Header row -->
+                <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; margin-bottom: 0.75rem;">
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        {% if attempt.is_correct %}
+                            <span style="color: var(--accent-green); font-size: 1.1rem;">✓</span>
+                        {% else %}
+                            <span style="color: var(--danger); font-size: 1.1rem;">✗</span>
+                        {% endif %}
+                        <span class="badge {% if attempt.question_type == 'BOF' %}badge-blue{% else %}badge-gold{% endif %}">
+                            {{ attempt.question_type }}
+                        </span>
+                        <span style="font-size: 0.8rem; color: var(--text-muted);">{{ attempt.questions.section }}</span>
+                    </div>
+                    <span style="font-size: 0.85rem; font-weight: 600; color: {% if attempt.is_correct %}var(--accent-green){% else %}var(--danger){% endif %};">
+                        {{ attempt.marks_obtained }} mark{% if attempt.marks_obtained != 1 %}s{% endif %}
+                    </span>
+                </div>
+
+                <!-- Question text -->
+                <p style="font-size: 0.93rem; line-height: 1.6; color: var(--text); margin-bottom: 0.75rem;">
+                    {{ attempt.questions.question_text }}
+                </p>
+
+                <!-- Explanation -->
+                {% if attempt.questions.explanation %}
+                <div style="padding: 0.75rem 1rem; background: rgba(79,195,247,0.06); border-left: 3px solid var(--accent); border-radius: 0 8px 8px 0; margin-top: 0.75rem;">
+                    <div style="font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); font-weight: 600; margin-bottom: 0.25rem;">Explanation</div>
+                    <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.6;">{{ attempt.questions.explanation }}</p>
+                </div>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+</div>
+{% endblock %}

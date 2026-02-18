@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Nelson Pediatrics Quiz{% endblock %}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #0a1628;
+            --deep-blue: #112240;
+            --mid-blue: #1a3a6b;
+            --accent: #4fc3f7;
+            --accent-green: #26c6a2;
+            --accent-gold: #f4c542;
+            --danger: #ef5350;
+            --text: #e8edf5;
+            --text-muted: #8899bb;
+            --card: rgba(17, 34, 64, 0.85);
+            --border: rgba(79, 195, 247, 0.15);
+            --shadow: 0 8px 32px rgba(0,0,0,0.4);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--navy);
+            color: var(--text);
+            min-height: 100vh;
+            background-image:
+                radial-gradient(ellipse at 20% 20%, rgba(26,58,107,0.4) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 80%, rgba(38,198,162,0.08) 0%, transparent 50%);
+        }
+
+        /* NAV */
+        nav {
+            background: rgba(10,22,40,0.95);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            padding: 0 2rem;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-brand {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--accent);
+            letter-spacing: 0.02em;
+            text-decoration: none;
+        }
+
+        .nav-brand span {
+            color: var(--accent-green);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover { color: var(--accent); }
+
+        .nav-user {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .nav-user strong { color: var(--accent-green); }
+
+        /* FLASH MESSAGES */
+        .flash-container {
+            padding: 0.75rem 2rem;
+        }
+
+        .flash {
+            padding: 0.75rem 1.25rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            border-left: 4px solid;
+        }
+
+        .flash.success { background: rgba(38,198,162,0.1); border-color: var(--accent-green); color: var(--accent-green); }
+        .flash.danger { background: rgba(239,83,80,0.1); border-color: var(--danger); color: #ff8a80; }
+        .flash.warning { background: rgba(244,197,66,0.1); border-color: var(--accent-gold); color: var(--accent-gold); }
+        .flash.info { background: rgba(79,195,247,0.1); border-color: var(--accent); color: var(--accent); }
+
+        /* CARDS */
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            backdrop-filter: blur(8px);
+            box-shadow: var(--shadow);
+        }
+
+        /* BUTTONS */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.75rem;
+            border-radius: 10px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent), #0288d1);
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(79,195,247,0.35);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, var(--accent-green), #00897b);
+            color: #fff;
+        }
+
+        .btn-success:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(38,198,162,0.35);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, var(--danger), #c62828);
+            color: #fff;
+        }
+
+        /* FORM INPUTS */
+        .form-group { margin-bottom: 1.25rem; }
+
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            margin-bottom: 0.4rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: var(--text);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.95rem;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(79,195,247,0.1);
+        }
+
+        select.form-control option { background: var(--deep-blue); }
+
+        /* BADGES */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.65rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+        }
+
+        .badge-blue { background: rgba(79,195,247,0.15); color: var(--accent); }
+        .badge-green { background: rgba(38,198,162,0.15); color: var(--accent-green); }
+        .badge-gold { background: rgba(244,197,66,0.15); color: var(--accent-gold); }
+        .badge-red { background: rgba(239,83,80,0.15); color: var(--danger); }
+
+        /* PROGRESS BAR */
+        .progress-bar-wrap {
+            background: rgba(255,255,255,0.06);
+            border-radius: 100px;
+            height: 8px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            border-radius: 100px;
+            background: linear-gradient(90deg, var(--accent-green), var(--accent));
+            transition: width 0.5s ease;
+        }
+
+        /* CONTAINER */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .container-sm {
+            max-width: 480px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+        }
+
+        /* ANIMATIONS */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-up { animation: fadeUp 0.5s ease forwards; }
+        .fade-up-delay { animation: fadeUp 0.5s ease 0.15s forwards; opacity: 0; }
+        .fade-up-delay-2 { animation: fadeUp 0.5s ease 0.3s forwards; opacity: 0; }
+    </style>
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+{% if session.get('user_id') %}
+<nav>
+    <a href="/dashboard" class="nav-brand">Nelson <span>Peds</span> Quiz</a>
+    <ul class="nav-links">
+        <li><a href="/dashboard">Dashboard</a></li>
+        <li><a href="/start">Start Quiz</a></li>
+        <li><a href="/bookmarks">Bookmarks</a></li>
+    </ul>
+    <div class="nav-user">
+        👤 Welcome, <strong>{{ session.get('username') }}</strong> &nbsp;|&nbsp;
+        <a href="/logout" style="color: var(--danger); text-decoration: none; font-size:0.85rem;">Logout</a>
+    </div>
+</nav>
+{% endif %}
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+  <div class="flash-container">
+    {% for category, message in messages %}
+      <div class="flash {{ category }}">{{ message }}</div>
+    {% endfor %}
+  </div>
+  {% endif %}
+{% endwith %}
+
+{% block content %}{% endblock %}
+
+{% block extra_js %}{% endblock %}
+</body>
+</html>
