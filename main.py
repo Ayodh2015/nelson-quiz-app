@@ -1,6 +1,7 @@
 import os
+import atexit
 from flask import Flask
-from config import SECRET_KEY
+from config import SECRET_KEY, close_db_pool
 
 app = Flask(__name__)
 app.secret_key = SECRET_KEY
@@ -12,6 +13,9 @@ from routes.dashboard import dashboard
 app.register_blueprint(auth)
 app.register_blueprint(quiz)
 app.register_blueprint(dashboard)
+
+# Register cleanup function to close database pool on shutdown
+atexit.register(close_db_pool)
 
 if __name__ == "__main__":
     debug_mode = os.environ.get("FLASK_DEBUG", "False").lower() == "true"
