@@ -9,8 +9,12 @@ auth = Blueprint("auth", __name__)
 @auth.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
-        email = request.form.get("email").strip().lower()
-        password = request.form.get("password")
+        email = (request.form.get("email") or "").strip().lower()
+        password = request.form.get("password") or ""
+
+        if not email or not password:
+            flash("Please enter both email and password.", "danger")
+            return render_template("login.html")
 
         try:
             with get_db_connection() as conn:
@@ -20,7 +24,9 @@ def login():
                 cur.close()
 
                 if user:
-                    if bcrypt.checkpw(password.encode("utf-8"), user["password_hash"].encode("utf-8")):
+                    pwd_hash = user["password_hash"]
+                    pwd_bytes = pwd_hash.encode("utf-8") if isinstance(pwd_hash, str) else pwd_hash
+                    if bcrypt.checkpw(password.encode("utf-8"), pwd_bytes):
                         session["user_id"] = user["id"]
                         session["username"] = user["username"]
                         cur = conn.cursor()
@@ -42,10 +48,14 @@ def login():
 @auth.route("/register", methods=["GET", "POST"])
 def register():
     if request.method == "POST":
-        username = request.form.get("username").strip()
-        email = request.form.get("email").strip().lower()
-        password = request.form.get("password")
-        confirm = request.form.get("confirm_password")
+        username = (request.form.get("username") or "").strip()
+        email = (request.form.get("email") or "").strip().lower()
+        password = request.form.get("password") or ""
+        confirm = request.form.get("confirm_password") or ""
+
+        if not username or not email or not password:
+            flash("Please fill in all required fields.", "danger")
+            return render_template("register.html")
 
         if password != confirm:
             flash("Passwords do not match.", "danger")

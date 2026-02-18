@@ -19,8 +19,11 @@ def login_required_custom(f):
 @login_required_custom
 def start():
     user_id = session["user_id"]
-    section_filter = request.form.get("section", "ALL")
-    time_limit = int(request.form.get("time_limit", 3600))
+    section_filter = request.form.get("section") or "ALL"
+    try:
+        time_limit = int(request.form.get("time_limit") or 3600)
+    except (ValueError, TypeError):
+        time_limit = 3600
 
     try:
         with get_db_connection() as conn:
