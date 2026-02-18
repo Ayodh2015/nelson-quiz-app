@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session
-from config import supabase
+from config import get_db
 import bcrypt
 import uuid
 
@@ -12,16 +12,23 @@ def login():
         email = request.form.get("email").strip().lower()
         password = request.form.get("password")
 
-        # Fetch user from Supabase
-        result = supabase.table("users").select("*").eq("email", email).execute()
+        conn = get_db()
+        cur = conn.cursor()
+        cur.execute("SELECT * FROM users WHERE email = %s", (email,))
+        user = cur.fetchone()
+        cur.close()
+        conn.close()
 
-        if result.data:
-            user = result.data[0]
+        if user:
             if bcrypt.checkpw(password.encode("utf-8"), user["password_hash"].encode("utf-8")):
                 session["user_id"] = user["id"]
                 session["username"] = user["username"]
-                # Update last login
-                supabase.table("users").update({"last_login": "now()"}).eq("id", user["id"]).execute()
+                conn = get_db()
+                cur = conn.cursor()
+                cur.execute("UPDATE users SET last_login = NOW() WHERE id = %s", (user["id"],))
+                conn.commit()
+                cur.close()
+                conn.close()
                 return redirect(url_for("dashboard.home"))
             else:
                 flash("Incorrect password. Please try again.", "danger")
@@ -43,23 +50,28 @@ def register():
             flash("Passwords do not match.", "danger")
             return render_template("register.html")
 
-        # Check if email already exists
-        existing = supabase.table("users").select("id").eq("email", email).execute()
-        if existing.data:
+        conn = get_db()
+        cur = conn.cursor()
+
+        cur.execute("SELECT id FROM users WHERE email = %s", (email,))
+        existing = cur.fetchone()
+
+        if existing:
             flash("Email already registered. Please login.", "warning")
+            cur.close()
+            conn.close()
             return redirect(url_for("auth.login"))
 
-        # Hash password
         hashed = bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt()).decode("utf-8")
+        user_id = str(uuid.uuid4())
 
-        # Insert user
-        new_user = {
-            "id": str(uuid.uuid4()),
-            "username": username,
-            "email": email,
-            "password_hash": hashed
-        }
-        supabase.table("users").insert(new_user).execute()
+        cur.execute(
+            "INSERT INTO users (id, username, email, password_hash) VALUES (%s, %s, %s, %s)",
+            (user_id, username, email, hashed)
+        )
+        conn.commit()
+        cur.close()
+        conn.close()
 
         flash("Account created successfully! Please login.", "success")
         return redirect(url_for("auth.login"))

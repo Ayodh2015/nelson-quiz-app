@@ -1,8 +1,22 @@
 import os
-from supabase import create_client, Client
+from dotenv import load_dotenv
+import psycopg2
+from psycopg2.extras import RealDictCursor
 
-SUPABASE_URL = os.environ.get("SUPABASE_URL")
-SUPABASE_KEY = os.environ.get("SUPABASE_KEY")
-SECRET_KEY = os.environ.get("SECRET_KEY", "nelson-quiz-secret")
+load_dotenv()
 
-supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
+DB_HOST = os.environ.get("DB_HOST", "localhost")
+DB_NAME = os.environ.get("DB_NAME", "nelsonquiz")
+DB_USER = os.environ.get("DB_USER", "nelsonuser")
+DB_PASSWORD = os.environ.get("DB_PASSWORD", "")
+SECRET_KEY = os.environ.get("SECRET_KEY", "nelson2024xyz")
+
+def get_db():
+    conn = psycopg2.connect(
+        host=DB_HOST,
+        database=DB_NAME,
+        user=DB_USER,
+        password=DB_PASSWORD,
+        cursor_factory=RealDictCursor
+    )
+    return conn

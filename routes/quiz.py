@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, session, redirect, url_for, request, jsonify
-from config import supabase
+from config import get_db
 import uuid
 import random
 
@@ -20,50 +20,52 @@ def login_required_custom(f):
 def start():
     user_id = session["user_id"]
     section_filter = request.form.get("section", "ALL")
-    time_limit = int(request.form.get("time_limit", 3600))  # default 60 min
+    time_limit = int(request.form.get("time_limit", 3600))
 
-    # Fetch 30 BOF questions
-    bof_query = supabase.table("questions").select("id").eq("question_type", "BOF")
-    if section_filter != "ALL":
-        bof_query = bof_query.eq("section", section_filter)
-    bof_result = bof_query.execute()
+    conn = get_db()
+    cur = conn.cursor()
 
-    # Fetch 30 TF questions
-    tf_query = supabase.table("questions").select("id").eq("question_type", "TF")
-    if section_filter != "ALL":
-        tf_query = tf_query.eq("section", section_filter)
-    tf_result = tf_query.execute()
+    # Fetch BOF question IDs
+    if section_filter == "ALL":
+        cur.execute("SELECT id FROM questions WHERE question_type = 'BOF'")
+    else:
+        cur.execute("SELECT id FROM questions WHERE question_type = 'BOF' AND section = %s", (section_filter,))
+    bof_ids = [r["id"] for r in cur.fetchall()]
 
-    bof_ids = [q["id"] for q in bof_result.data]
-    tf_ids = [q["id"] for q in tf_result.data]
+    # Fetch TF question IDs
+    if section_filter == "ALL":
+        cur.execute("SELECT id FROM questions WHERE question_type = 'TF'")
+    else:
+        cur.execute("SELECT id FROM questions WHERE question_type = 'TF' AND section = %s", (section_filter,))
+    tf_ids = [r["id"] for r in cur.fetchall()]
 
-    # Randomly pick 30 from each
     selected_bof = random.sample(bof_ids, min(30, len(bof_ids)))
     selected_tf = random.sample(tf_ids, min(30, len(tf_ids)))
     all_question_ids = selected_bof + selected_tf
     random.shuffle(all_question_ids)
 
-    if len(all_question_ids) == 0:
+    if not all_question_ids:
+        cur.close()
+        conn.close()
         return redirect(url_for("dashboard.home"))
 
     # Create session
     session_id = str(uuid.uuid4())
-    supabase.table("sessions").insert({
-        "id": session_id,
-        "user_id": user_id,
-        "section_filter": section_filter,
-        "total_questions": len(all_question_ids),
-        "bof_count": len(selected_bof),
-        "tf_count": len(selected_tf),
-        "time_limit_seconds": time_limit
-    }).execute()
+    cur.execute("""
+        INSERT INTO sessions (id, user_id, section_filter, total_questions, bof_count, tf_count, time_limit_seconds)
+        VALUES (%s, %s, %s, %s, %s, %s, %s)
+    """, (session_id, user_id, section_filter, len(all_question_ids), len(selected_bof), len(selected_tf), time_limit))
 
     # Insert session questions
-    session_questions = [
-        {"session_id": session_id, "question_id": qid, "question_order": i+1}
-        for i, qid in enumerate(all_question_ids)
-    ]
-    supabase.table("session_questions").insert(session_questions).execute()
+    for i, qid in enumerate(all_question_ids):
+        cur.execute("""
+            INSERT INTO session_questions (session_id, question_id, question_order)
+            VALUES (%s, %s, %s)
+        """, (session_id, qid, i + 1))
+
+    conn.commit()
+    cur.close()
+    conn.close()
 
     session["quiz_session_id"] = session_id
     session["quiz_question_ids"] = all_question_ids
@@ -84,24 +86,28 @@ def question():
 
     question_id = question_ids[current]
 
-    # Fetch question
-    q_result = supabase.table("questions").select("*").eq("id", question_id).execute()
-    question_data = q_result.data[0] if q_result.data else None
+    conn = get_db()
+    cur = conn.cursor()
+
+    cur.execute("SELECT * FROM questions WHERE id = %s", (question_id,))
+    question_data = cur.fetchone()
 
     options = []
     tf_statements = []
 
     if question_data:
         if question_data["question_type"] == "BOF":
-            opt_result = supabase.table("options").select("*").eq("question_id", question_id).order("option_label").execute()
-            options = opt_result.data
+            cur.execute("SELECT * FROM options WHERE question_id = %s ORDER BY option_label", (question_id,))
+            options = cur.fetchall()
         else:
-            tf_result = supabase.table("tf_statements").select("*").eq("question_id", question_id).order("statement_number").execute()
-            tf_statements = tf_result.data
+            cur.execute("SELECT * FROM tf_statements WHERE question_id = %s ORDER BY statement_number", (question_id,))
+            tf_statements = cur.fetchall()
 
-    # Get session time info
-    sess_result = supabase.table("sessions").select("started_at, time_limit_seconds").eq("id", quiz_session_id).execute()
-    sess_data = sess_result.data[0] if sess_result.data else {}
+    cur.execute("SELECT started_at, time_limit_seconds FROM sessions WHERE id = %s", (quiz_session_id,))
+    sess_data = cur.fetchone()
+
+    cur.close()
+    conn.close()
 
     return render_template("quiz.html",
                            question=question_data,
@@ -110,8 +116,8 @@ def question():
                            current=current + 1,
                            total=len(question_ids),
                            session_id=quiz_session_id,
-                           time_limit=sess_data.get("time_limit_seconds", 3600),
-                           started_at=sess_data.get("started_at"))
+                           time_limit=sess_data["time_limit_seconds"] if sess_data else 3600,
+                           started_at=sess_data["started_at"] if sess_data else None)
 
 
 @quiz.route("/submit_answer", methods=["POST"])
@@ -125,9 +131,12 @@ def submit_answer():
     question_id = question_ids[current]
     data = request.form
 
-    # Fetch correct answer
-    q_result = supabase.table("questions").select("question_type").eq("id", question_id).execute()
-    q_type = q_result.data[0]["question_type"] if q_result.data else None
+    conn = get_db()
+    cur = conn.cursor()
+
+    cur.execute("SELECT question_type FROM questions WHERE id = %s", (question_id,))
+    q = cur.fetchone()
+    q_type = q["question_type"] if q else None
 
     is_correct = False
     marks = 0
@@ -136,37 +145,34 @@ def submit_answer():
 
     if q_type == "BOF":
         bof_answer = data.get("bof_answer")
-        correct_opt = supabase.table("options").select("option_label").eq("question_id", question_id).eq("is_correct", True).execute()
-        correct_label = correct_opt.data[0]["option_label"] if correct_opt.data else None
+        cur.execute("SELECT option_label FROM options WHERE question_id = %s AND is_correct = TRUE", (question_id,))
+        correct = cur.fetchone()
+        correct_label = correct["option_label"] if correct else None
         is_correct = bof_answer == correct_label
         marks = 1 if is_correct else 0
 
     elif q_type == "TF":
-        tf_statements = supabase.table("tf_statements").select("*").eq("question_id", question_id).order("statement_number").execute()
+        cur.execute("SELECT * FROM tf_statements WHERE question_id = %s ORDER BY statement_number", (question_id,))
+        tf_stmts = cur.fetchall()
         tf_answers = []
         correct_count = 0
-        total_statements = len(tf_statements.data)
-        for stmt in tf_statements.data:
+        for stmt in tf_stmts:
             user_ans = data.get(f"tf_{stmt['statement_number']}") == "true"
             tf_answers.append(user_ans)
             if user_ans == stmt["is_true"]:
                 correct_count += 1
-        is_correct = correct_count == total_statements
-        marks = round(correct_count / total_statements, 1)
+        is_correct = correct_count == len(tf_stmts)
+        marks = round(correct_count / len(tf_stmts), 1) if tf_stmts else 0
 
-    # Save attempt
-    supabase.table("attempts").insert({
-        "session_id": quiz_session_id,
-        "user_id": user_id,
-        "question_id": question_id,
-        "question_type": q_type,
-        "bof_answer": bof_answer,
-        "tf_answers": tf_answers,
-        "is_correct": is_correct,
-        "marks_obtained": marks
-    }).execute()
+    cur.execute("""
+        INSERT INTO attempts (session_id, user_id, question_id, question_type, bof_answer, tf_answers, is_correct, marks_obtained)
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+    """, (quiz_session_id, user_id, question_id, q_type, bof_answer, tf_answers, is_correct, marks))
 
-    # Move to next question
+    conn.commit()
+    cur.close()
+    conn.close()
+
     session["quiz_current"] = current + 1
 
     if session["quiz_current"] >= len(question_ids):
@@ -181,45 +187,51 @@ def finish():
     user_id = session["user_id"]
     quiz_session_id = session.get("quiz_session_id")
 
-    # Calculate score
-    attempts = supabase.table("attempts").select("marks_obtained, is_correct").eq("session_id", quiz_session_id).execute()
-    total_marks = sum(a["marks_obtained"] for a in attempts.data)
-    total_possible = len(attempts.data)
+    conn = get_db()
+    cur = conn.cursor()
+
+    cur.execute("SELECT marks_obtained, is_correct FROM attempts WHERE session_id = %s", (quiz_session_id,))
+    attempts = cur.fetchall()
+
+    total_marks = sum(a["marks_obtained"] for a in attempts)
+    total_possible = len(attempts)
     percentage = round((total_marks / total_possible) * 100, 2) if total_possible > 0 else 0
 
-    # Update session
-    supabase.table("sessions").update({
-        "score": total_marks,
-        "total_score": total_possible,
-        "percentage": percentage,
-        "completed": True,
-        "completed_at": "now()"
-    }).eq("id", quiz_session_id).execute()
+    cur.execute("""
+        UPDATE sessions
+        SET score = %s, total_score = %s, percentage = %s, completed = TRUE, completed_at = NOW()
+        WHERE id = %s
+    """, (total_marks, total_possible, percentage, quiz_session_id))
 
-    # Update section progress
-    sess_info = supabase.table("sessions").select("section_filter").eq("id", quiz_session_id).execute()
-    section = sess_info.data[0]["section_filter"] if sess_info.data else "ALL"
+    cur.execute("SELECT section_filter FROM sessions WHERE id = %s", (quiz_session_id,))
+    sess = cur.fetchone()
+    section = sess["section_filter"] if sess else "ALL"
 
-    existing = supabase.table("section_progress").select("*").eq("user_id", user_id).eq("section", section).execute()
-    correct_count = sum(1 for a in attempts.data if a["is_correct"])
+    correct_count = sum(1 for a in attempts if a["is_correct"])
 
-    if existing.data:
-        prev = existing.data[0]
-        supabase.table("section_progress").update({
-            "questions_attempted": prev["questions_attempted"] + total_possible,
-            "questions_correct": prev["questions_correct"] + correct_count,
-            "best_score_percentage": max(prev["best_score_percentage"], percentage),
-            "last_attempted": "now()"
-        }).eq("user_id", user_id).eq("section", section).execute()
+    cur.execute("""
+        SELECT * FROM section_progress WHERE user_id = %s AND section = %s
+    """, (user_id, section))
+    existing = cur.fetchone()
+
+    if existing:
+        cur.execute("""
+            UPDATE section_progress
+            SET questions_attempted = questions_attempted + %s,
+                questions_correct = questions_correct + %s,
+                best_score_percentage = GREATEST(best_score_percentage, %s),
+                last_attempted = NOW()
+            WHERE user_id = %s AND section = %s
+        """, (total_possible, correct_count, percentage, user_id, section))
     else:
-        supabase.table("section_progress").insert({
-            "user_id": user_id,
-            "section": section,
-            "questions_attempted": total_possible,
-            "questions_correct": correct_count,
-            "best_score_percentage": percentage,
-            "last_attempted": "now()"
-        }).execute()
+        cur.execute("""
+            INSERT INTO section_progress (user_id, section, questions_attempted, questions_correct, best_score_percentage, last_attempted)
+            VALUES (%s, %s, %s, %s, %s, NOW())
+        """, (user_id, section, total_possible, correct_count, percentage))
+
+    conn.commit()
+    cur.close()
+    conn.close()
 
     return redirect(url_for("quiz.results"))
 
@@ -228,27 +240,49 @@ def finish():
 @login_required_custom
 def results():
     quiz_session_id = session.get("quiz_session_id")
-    user_id = session["user_id"]
 
-    sess = supabase.table("sessions").select("*").eq("id", quiz_session_id).execute()
-    session_data = sess.data[0] if sess.data else {}
+    conn = get_db()
+    cur = conn.cursor()
 
-    # Get all attempts with question details
-    attempts = supabase.table("attempts").select("*, questions(question_text, question_type, explanation, section)").eq("session_id", quiz_session_id).execute()
+    cur.execute("SELECT * FROM sessions WHERE id = %s", (quiz_session_id,))
+    session_data = cur.fetchone()
+
+    cur.execute("""
+        SELECT a.*, q.question_text, q.question_type, q.explanation, q.section
+        FROM attempts a
+        JOIN questions q ON a.question_id = q.id
+        WHERE a.session_id = %s
+    """, (quiz_session_id,))
+    attempts = cur.fetchall()
+
+    cur.close()
+    conn.close()
 
     return render_template("results.html",
                            session_data=session_data,
-                           attempts=attempts.data)
+                           attempts=attempts)
 
 
 @quiz.route("/bookmark/<int:question_id>", methods=["POST"])
 @login_required_custom
 def bookmark(question_id):
     user_id = session["user_id"]
-    existing = supabase.table("bookmarks").select("id").eq("user_id", user_id).eq("question_id", question_id).execute()
-    if existing.data:
-        supabase.table("bookmarks").delete().eq("user_id", user_id).eq("question_id", question_id).execute()
+
+    conn = get_db()
+    cur = conn.cursor()
+
+    cur.execute("SELECT id FROM bookmarks WHERE user_id = %s AND question_id = %s", (user_id, question_id))
+    existing = cur.fetchone()
+
+    if existing:
+        cur.execute("DELETE FROM bookmarks WHERE user_id = %s AND question_id = %s", (user_id, question_id))
+        conn.commit()
+        cur.close()
+        conn.close()
         return jsonify({"status": "removed"})
     else:
-        supabase.table("bookmarks").insert({"user_id": user_id, "question_id": question_id}).execute()
+        cur.execute("INSERT INTO bookmarks (user_id, question_id) VALUES (%s, %s)", (user_id, question_id))
+        conn.commit()
+        cur.close()
+        conn.close()
         return jsonify({"status": "added"})
