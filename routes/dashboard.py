@@ -67,5 +67,5 @@ def home():
                                sections=sections,
                                stats=stats)
     except Exception as e:
-        # Log error in production: logger.error(f"Dashboard load error: {e}")
-        return redirect(url_for("auth.login"))
+        # Don't redirect to login - user is logged in; that would cause a redirect loop
+        return render_template("dashboard_error.html")
