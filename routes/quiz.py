@@ -1,5 +1,5 @@
-from flask import Blueprint, render_template, session, redirect, url_for, request, jsonify
-from config import get_db_connection
+from flask import Blueprint, render_template, session, redirect, url_for, request, jsonify, flash
+from config import get_db, init_db_pool
 import uuid
 import random
 
@@ -18,38 +18,81 @@ def login_required_custom(f):
 @quiz.route("/start", methods=["GET", "POST"])
 @login_required_custom
 def start():
+    if request.method == "GET":
+        try:
+            conn = get_db()
+            try:
+                cur = conn.cursor()
+                cur.execute("SELECT * FROM sections ORDER BY id")
+                sections = cur.fetchall()
+                cur.close()
+            finally:
+                pool = init_db_pool()
+                pool.putconn(conn)
+            return render_template("start_quiz.html", sections=sections)
+        except Exception:
+            return redirect(url_for("dashboard.home"))
+
+    # POST - process form
     user_id = session["user_id"]
-    section_filter = request.form.get("section") or "ALL"
-    try:
-        time_limit = int(request.form.get("time_limit") or 3600)
-    except (ValueError, TypeError):
-        time_limit = 3600
+    question_type = request.form.get("question_type", "both")
+    num_questions = int(request.form.get("num_questions", 60))
+    time_limit = int(request.form.get("time_limit", 3600))
+    selected_sections = request.form.getlist("sections")
+
+    if not selected_sections:
+        return redirect(url_for("quiz.start"))
+
+    # Build section filter string for display
+    section_filter = "ALL" if len(selected_sections) >= 22 else ", ".join(selected_sections[:3]) + ("..." if len(selected_sections) > 3 else "")
+
+    # Calculate split based on type
+    if question_type == "both":
+        bof_count = num_questions // 2
+        tf_count = num_questions - bof_count
+    elif question_type == "BOF":
+        bof_count = num_questions
+        tf_count = 0
+    else:  # TF
+        bof_count = 0
+        tf_count = num_questions
 
     try:
-        with get_db_connection() as conn:
+        conn = get_db()
+        try:
             cur = conn.cursor()
 
-            # Fetch BOF question IDs
-            if section_filter == "ALL":
-                cur.execute("SELECT id FROM questions WHERE question_type = 'BOF'")
-            else:
-                cur.execute("SELECT id FROM questions WHERE question_type = 'BOF' AND section = %s", (section_filter,))
-            bof_ids = [r["id"] for r in cur.fetchall()]
+            # Fetch BOF questions
+            selected_bof = []
+            if bof_count > 0:
+                placeholders = ','.join(['%s'] * len(selected_sections))
+                cur.execute(f"""
+                    SELECT id FROM questions
+                    WHERE question_type = 'BOF'
+                    AND section IN ({placeholders})
+                """, selected_sections)
+                bof_ids = [r["id"] for r in cur.fetchall()]
+                selected_bof = random.sample(bof_ids, min(bof_count, len(bof_ids)))
 
-            # Fetch TF question IDs
-            if section_filter == "ALL":
-                cur.execute("SELECT id FROM questions WHERE question_type = 'TF'")
-            else:
-                cur.execute("SELECT id FROM questions WHERE question_type = 'TF' AND section = %s", (section_filter,))
-            tf_ids = [r["id"] for r in cur.fetchall()]
+            # Fetch TF questions
+            selected_tf = []
+            if tf_count > 0:
+                placeholders = ','.join(['%s'] * len(selected_sections))
+                cur.execute(f"""
+                    SELECT id FROM questions
+                    WHERE question_type = 'TF'
+                    AND section IN ({placeholders})
+                """, selected_sections)
+                tf_ids = [r["id"] for r in cur.fetchall()]
+                selected_tf = random.sample(tf_ids, min(tf_count, len(tf_ids)))
 
-            selected_bof = random.sample(bof_ids, min(30, len(bof_ids)))
-            selected_tf = random.sample(tf_ids, min(30, len(tf_ids)))
-            all_question_ids = selected_bof + selected_tf
-            random.shuffle(all_question_ids)
+            # Default order: TF first then BOF (as requested)
+            all_question_ids = selected_tf + selected_bof
 
             if not all_question_ids:
-                return redirect(url_for("dashboard.home"))
+                flash("No questions found for selected options. Please try different settings.", "warning")
+                cur.close()
+                return redirect(url_for("quiz.start"))
 
             # Create session
             session_id = str(uuid.uuid4())
@@ -58,7 +101,6 @@ def start():
                 VALUES (%s, %s, %s, %s, %s, %s, %s)
             """, (session_id, user_id, section_filter, len(all_question_ids), len(selected_bof), len(selected_tf), time_limit))
 
-            # Insert session questions
             for i, qid in enumerate(all_question_ids):
                 cur.execute("""
                     INSERT INTO session_questions (session_id, question_id, question_order)
@@ -68,13 +110,15 @@ def start():
             conn.commit()
             cur.close()
 
-        session["quiz_session_id"] = session_id
-        session["quiz_question_ids"] = all_question_ids
-        session["quiz_current"] = 0
+            session["quiz_session_id"] = session_id
+            session["quiz_question_ids"] = all_question_ids
+            session["quiz_current"] = 0
 
-        return redirect(url_for("quiz.question"))
-    except Exception as e:
-        # Log error in production: logger.error(f"Quiz start error: {e}")
+            return redirect(url_for("quiz.question"))
+        finally:
+            pool = init_db_pool()
+            pool.putconn(conn)
+    except Exception:
         return redirect(url_for("dashboard.home"))
 
 
@@ -91,7 +135,8 @@ def question():
     question_id = question_ids[current]
 
     try:
-        with get_db_connection() as conn:
+        conn = get_db()
+        try:
             cur = conn.cursor()
 
             cur.execute("SELECT * FROM questions WHERE id = %s", (question_id,))
@@ -112,6 +157,9 @@ def question():
             sess_data = cur.fetchone()
 
             cur.close()
+        finally:
+            pool = init_db_pool()
+            pool.putconn(conn)
 
         time_limit = sess_data["time_limit_seconds"] if sess_data else 3600
         started_at = sess_data["started_at"] if sess_data else None
@@ -143,14 +191,16 @@ def submit_answer():
     data = request.form
 
     try:
-        with get_db_connection() as conn:
+        conn = get_db()
+        try:
             cur = conn.cursor()
 
             cur.execute("SELECT id FROM attempts WHERE session_id = %s AND question_id = %s", (quiz_session_id, question_id))
             if cur.fetchone():
                 # Double-submit: already recorded, just advance and redirect
-                session["quiz_current"] = current + 1
                 cur.close()
+                session["quiz_current"] = current + 1
+                
                 if session["quiz_current"] >= len(question_ids):
                     return redirect(url_for("quiz.finish"))
                 return redirect(url_for("quiz.question"))
@@ -193,12 +243,16 @@ def submit_answer():
             conn.commit()
             cur.close()
 
-        session["quiz_current"] = current + 1
+            session["quiz_current"] = current + 1
+            session.modified = True
 
-        if session["quiz_current"] >= len(question_ids):
-            return redirect(url_for("quiz.finish"))
+            if session["quiz_current"] >= len(question_ids):
+                return redirect(url_for("quiz.finish"))
 
-        return redirect(url_for("quiz.question"))
+            return redirect(url_for("quiz.question"))
+        finally:
+            pool = init_db_pool()
+            pool.putconn(conn)
     except Exception as e:
         # Log error in production: logger.error(f"Submit answer error: {e}")
         return redirect(url_for("quiz.question"))
@@ -211,7 +265,8 @@ def finish():
     quiz_session_id = session.get("quiz_session_id")
 
     try:
-        with get_db_connection() as conn:
+        conn = get_db()
+        try:
             cur = conn.cursor()
 
             cur.execute("SELECT marks_obtained, is_correct FROM attempts WHERE session_id = %s", (quiz_session_id,))
@@ -227,36 +282,56 @@ def finish():
                 WHERE id = %s
             """, (total_marks, total_possible, percentage, quiz_session_id))
 
-            cur.execute("SELECT section_filter FROM sessions WHERE id = %s", (quiz_session_id,))
-            sess = cur.fetchone()
-            section = sess["section_filter"] if sess else "ALL"
-
-            correct_count = sum(1 for a in attempts if a["is_correct"])
-
+            # Get attempts with their sections to update progress per section
             cur.execute("""
-                SELECT * FROM section_progress WHERE user_id = %s AND section = %s
-            """, (user_id, section))
-            existing = cur.fetchone()
+                SELECT a.is_correct, q.section
+                FROM attempts a
+                JOIN questions q ON a.question_id = q.id
+                WHERE a.session_id = %s
+            """, (quiz_session_id,))
+            attempts_by_section = cur.fetchall()
 
-            if existing:
+            # Group attempts by section and update progress for each section
+            from collections import defaultdict
+            section_stats = defaultdict(lambda: {"total": 0, "correct": 0})
+            
+            for attempt in attempts_by_section:
+                section_name = attempt["section"]
+                section_stats[section_name]["total"] += 1
+                if attempt["is_correct"]:
+                    section_stats[section_name]["correct"] += 1
+
+            # Update section_progress for each section
+            for section_name, stats in section_stats.items():
+                section_percentage = round((stats["correct"] / stats["total"]) * 100, 2) if stats["total"] > 0 else 0
+                
                 cur.execute("""
-                    UPDATE section_progress
-                    SET questions_attempted = questions_attempted + %s,
-                        questions_correct = questions_correct + %s,
-                        best_score_percentage = GREATEST(best_score_percentage, %s),
-                        last_attempted = NOW()
-                    WHERE user_id = %s AND section = %s
-                """, (total_possible, correct_count, percentage, user_id, section))
-            else:
-                cur.execute("""
-                    INSERT INTO section_progress (user_id, section, questions_attempted, questions_correct, best_score_percentage, last_attempted)
-                    VALUES (%s, %s, %s, %s, %s, NOW())
-                """, (user_id, section, total_possible, correct_count, percentage))
+                    SELECT * FROM section_progress WHERE user_id = %s AND section = %s
+                """, (user_id, section_name))
+                existing = cur.fetchone()
+
+                if existing:
+                    cur.execute("""
+                        UPDATE section_progress
+                        SET questions_attempted = questions_attempted + %s,
+                            questions_correct = questions_correct + %s,
+                            best_score_percentage = GREATEST(best_score_percentage, %s),
+                            last_attempted = NOW()
+                        WHERE user_id = %s AND section = %s
+                    """, (stats["total"], stats["correct"], section_percentage, user_id, section_name))
+                else:
+                    cur.execute("""
+                        INSERT INTO section_progress (user_id, section, questions_attempted, questions_correct, best_score_percentage, last_attempted)
+                        VALUES (%s, %s, %s, %s, %s, NOW())
+                    """, (user_id, section_name, stats["total"], stats["correct"], section_percentage))
 
             conn.commit()
             cur.close()
 
-        return redirect(url_for("quiz.results"))
+            return redirect(url_for("quiz.results"))
+        finally:
+            pool = init_db_pool()
+            pool.putconn(conn)
     except Exception as e:
         # Log error in production: logger.error(f"Quiz finish error: {e}")
         return redirect(url_for("quiz.results"))
@@ -268,7 +343,8 @@ def results():
     quiz_session_id = session.get("quiz_session_id")
 
     try:
-        with get_db_connection() as conn:
+        conn = get_db()
+        try:
             cur = conn.cursor()
 
             cur.execute("SELECT * FROM sessions WHERE id = %s", (quiz_session_id,))
@@ -279,16 +355,44 @@ def results():
                 FROM attempts a
                 JOIN questions q ON a.question_id = q.id
                 WHERE a.session_id = %s
+                ORDER BY a.id
             """, (quiz_session_id,))
             attempts = cur.fetchall()
 
+            # Convert to mutable list and enrich with options/statements
+            attempts_list = []
+            for attempt in attempts:
+                att = dict(attempt)
+
+                if att["question_type"] == "BOF":
+                    cur.execute("""
+                        SELECT * FROM options
+                        WHERE question_id = %s
+                        ORDER BY option_label
+                    """, (att["question_id"],))
+                    att["bof_options"] = cur.fetchall()
+                    att["tf_statements"] = []
+
+                else:
+                    cur.execute("""
+                        SELECT * FROM tf_statements
+                        WHERE question_id = %s
+                        ORDER BY statement_number
+                    """, (att["question_id"],))
+                    att["tf_statements"] = cur.fetchall()
+                    att["bof_options"] = []
+
+                attempts_list.append(att)
+
             cur.close()
+        finally:
+            pool = init_db_pool()
+            pool.putconn(conn)
 
         return render_template("results.html",
                                session_data=session_data,
-                               attempts=attempts)
-    except Exception as e:
-        # Log error in production: logger.error(f"Results load error: {e}")
+                               attempts=attempts_list)
+    except Exception:
         return redirect(url_for("dashboard.home"))
 
 
@@ -298,7 +402,8 @@ def bookmark(question_id):
     user_id = session["user_id"]
 
     try:
-        with get_db_connection() as conn:
+        conn = get_db()
+        try:
             cur = conn.cursor()
 
             cur.execute("SELECT id FROM bookmarks WHERE user_id = %s AND question_id = %s", (user_id, question_id))
@@ -314,6 +419,9 @@ def bookmark(question_id):
                 conn.commit()
                 cur.close()
                 return jsonify({"status": "added"})
+        finally:
+            pool = init_db_pool()
+            pool.putconn(conn)
     except Exception as e:
         # Log error in production: logger.error(f"Bookmark error: {e}")
         return jsonify({"status": "error", "message": "An error occurred"}), 500

@@ -1,0 +1,282 @@
+{% extends "base.html" %}
+{% block title %}Start Quiz — GoAziro{% endblock %}
+
+{% block extra_css %}
+<style>
+.section-checkbox { display: none; }
+.section-label {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.5rem 0.85rem;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: rgba(255,255,255,0.03);
+    cursor: pointer;
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    transition: all 0.15s;
+    user-select: none;
+}
+.section-checkbox:checked + .section-label {
+    background: rgba(79,195,247,0.1);
+    border-color: var(--accent);
+    color: var(--accent);
+}
+.section-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 0.5rem;
+    max-height: 280px;
+    overflow-y: auto;
+    padding-right: 0.25rem;
+}
+.type-btn {
+    flex: 1;
+    padding: 0.85rem;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: rgba(255,255,255,0.03);
+    color: var(--text-muted);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 500;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.15s;
+}
+.type-btn.selected {
+    background: rgba(79,195,247,0.1);
+    border-color: var(--accent);
+    color: var(--accent);
+}
+.type-btn:hover { border-color: rgba(79,195,247,0.4); color: var(--text); }
+.step-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.step-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+}
+.q-slider {
+    width: 100%;
+    height: 6px;
+    border-radius: 3px;
+    background: rgba(255,255,255,0.08);
+    outline: none;
+    cursor: pointer;
+    -webkit-appearance: none;
+}
+.q-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--accent);
+    cursor: pointer;
+    box-shadow: 0 0 8px rgba(79,195,247,0.4);
+}
+.summary-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.4rem 0.85rem;
+    border-radius: 20px;
+    background: rgba(79,195,247,0.08);
+    border: 1px solid rgba(79,195,247,0.2);
+    font-size: 0.82rem;
+    color: var(--accent);
+    margin: 0.25rem;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container" style="padding-top: 2rem; max-width: 820px;">
+
+    <div style="margin-bottom: 2rem;" class="fade-up">
+        <h1 style="font-size: 1.8rem; margin-bottom: 0.25rem;">🚀 Configure Your Quiz</h1>
+        <p style="color: var(--text-muted);">Customize your session or use the default 60-question mode</p>
+    </div>
+
+    <form method="POST" action="/start" id="quiz-form">
+
+        <!-- STEP 1: Question Type -->
+        <div class="card fade-up" style="margin-bottom: 1.25rem;">
+            <div class="step-label">Step 1 — Question Type</div>
+            <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+                <button type="button" class="type-btn selected" id="type-both" onclick="setType('both')">
+                    🔀 Both Types<br>
+                    <span style="font-size: 0.75rem; opacity: 0.7;">30 T/F + 30 BOF</span>
+                </button>
+                <button type="button" class="type-btn" id="type-tf" onclick="setType('TF')">
+                    ⚖️ True / False Only<br>
+                    <span style="font-size: 0.75rem; opacity: 0.7;">All T/F questions</span>
+                </button>
+                <button type="button" class="type-btn" id="type-bof" onclick="setType('BOF')">
+                    🎯 Best of Five Only<br>
+                    <span style="font-size: 0.75rem; opacity: 0.7;">All BOF questions</span>
+                </button>
+            </div>
+            <input type="hidden" name="question_type" id="question_type_input" value="both">
+        </div>
+
+        <!-- STEP 2: Number of Questions -->
+        <div class="card fade-up" style="margin-bottom: 1.25rem;">
+            <div class="step-label">Step 2 — Number of Questions</div>
+            <div style="display: flex; align-items: center; gap: 1.5rem;">
+                <input type="range" class="q-slider" id="q-slider"
+                    min="10" max="120" step="10" value="60"
+                    oninput="updateSlider(this.value)">
+                <div style="text-align: center; min-width: 80px;">
+                    <div style="font-size: 2rem; font-weight: 700; font-family: 'Playfair Display', serif; color: var(--accent);" id="q-count-display">60</div>
+                    <div style="font-size: 0.75rem; color: var(--text-muted);">questions</div>
+                </div>
+            </div>
+            <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted); margin-top: 0.5rem;">
+                <span>10</span><span>30</span><span>60</span><span>90</span><span>120</span>
+            </div>
+            <input type="hidden" name="num_questions" id="num_questions_input" value="60">
+        </div>
+
+        <!-- STEP 3: Sections -->
+        <div class="card fade-up" style="margin-bottom: 1.25rem;">
+            <div class="step-label">Step 3 — Sections</div>
+            <div style="display: flex; gap: 0.75rem; margin-bottom: 1rem;">
+                <button type="button" onclick="selectAllSections()" class="btn btn-outline" style="padding: 0.35rem 0.85rem; font-size: 0.8rem;">✅ Select All</button>
+                <button type="button" onclick="clearAllSections()" class="btn btn-outline" style="padding: 0.35rem 0.85rem; font-size: 0.8rem;">❌ Clear All</button>
+            </div>
+            <div class="section-grid">
+                {% for sec in sections %}
+                <div>
+                    <input type="checkbox" class="section-checkbox" name="sections" value="{{ sec.section_name }}" id="sec-{{ loop.index }}" checked>
+                    <label for="sec-{{ loop.index }}" class="section-label">
+                        <span>{{ sec.section_name[:30] }}</span>
+                    </label>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- STEP 4: Time Limit -->
+        <div class="card fade-up" style="margin-bottom: 1.25rem;">
+            <div class="step-label">Step 4 — Time Limit</div>
+            <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+                <button type="button" class="type-btn" id="time-30" onclick="setTime(1800)">⏱ 30 min</button>
+                <button type="button" class="type-btn selected" id="time-60" onclick="setTime(3600)">⏱ 60 min</button>
+                <button type="button" class="type-btn" id="time-90" onclick="setTime(5400)">⏱ 90 min</button>
+                <button type="button" class="type-btn" id="time-120" onclick="setTime(7200)">⏱ 120 min</button>
+                <button type="button" class="type-btn" id="time-0" onclick="setTime(0)">∞ No Limit</button>
+            </div>
+            <input type="hidden" name="time_limit" id="time_limit_input" value="3600">
+        </div>
+
+        <!-- SUMMARY -->
+        <div class="card fade-up" style="margin-bottom: 1.5rem; background: rgba(79,195,247,0.04); border-color: rgba(79,195,247,0.2);">
+            <div style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.07em;">Quiz Summary</div>
+            <div id="summary-pills" style="display: flex; flex-wrap: wrap;">
+                <span class="summary-pill" id="pill-type">🔀 Both Types</span>
+                <span class="summary-pill" id="pill-count">📝 60 Questions</span>
+                <span class="summary-pill" id="pill-time">⏱ 60 Minutes</span>
+                <span class="summary-pill" id="pill-sections">📚 All Sections</span>
+            </div>
+        </div>
+
+        <!-- START BUTTON -->
+        <button type="submit" class="btn btn-success" style="width: 100%; padding: 1rem; font-size: 1.05rem;">
+            🚀 Start Quiz
+        </button>
+
+    </form>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// ---- Type selection ----
+let currentType = 'both';
+function setType(type) {
+    currentType = type;
+    document.querySelectorAll('.type-btn[id^="type-"]').forEach(b => b.classList.remove('selected'));
+    document.getElementById('type-' + type).classList.add('selected');
+    document.getElementById('question_type_input').value = type;
+    updatePills();
+}
+
+// ---- Slider ----
+function updateSlider(val) {
+    document.getElementById('q-count-display').textContent = val;
+    document.getElementById('num_questions_input').value = val;
+    updatePills();
+}
+
+// ---- Time selection ----
+let currentTime = 3600;
+function setTime(seconds) {
+    currentTime = seconds;
+    document.querySelectorAll('.type-btn[id^="time-"]').forEach(b => b.classList.remove('selected'));
+    const map = { 1800: 'time-30', 3600: 'time-60', 5400: 'time-90', 7200: 'time-120', 0: 'time-0' };
+    document.getElementById(map[seconds]).classList.add('selected');
+    document.getElementById('time_limit_input').value = seconds;
+    updatePills();
+}
+
+// ---- Sections ----
+function selectAllSections() {
+    document.querySelectorAll('.section-checkbox').forEach(c => c.checked = true);
+    document.querySelectorAll('.section-label').forEach(l => {
+        l.style.background = 'rgba(79,195,247,0.1)';
+        l.style.borderColor = 'var(--accent)';
+        l.style.color = 'var(--accent)';
+    });
+    updatePills();
+}
+
+function clearAllSections() {
+    document.querySelectorAll('.section-checkbox').forEach(c => c.checked = false);
+    document.querySelectorAll('.section-label').forEach(l => {
+        l.style.background = '';
+        l.style.borderColor = '';
+        l.style.color = '';
+    });
+    updatePills();
+}
+
+// ---- Update summary pills ----
+function updatePills() {
+    const typeLabels = { both: '🔀 Both Types', TF: '⚖️ True/False Only', BOF: '🎯 BOF Only' };
+    document.getElementById('pill-type').textContent = typeLabels[currentType];
+
+    const count = document.getElementById('q-count-display').textContent;
+    document.getElementById('pill-count').textContent = '📝 ' + count + ' Questions';
+
+    const timeLabels = { 1800: '⏱ 30 Minutes', 3600: '⏱ 60 Minutes', 5400: '⏱ 90 Minutes', 7200: '⏱ 120 Minutes', 0: '∞ No Limit' };
+    document.getElementById('pill-time').textContent = timeLabels[currentTime];
+
+    const checked = document.querySelectorAll('.section-checkbox:checked').length;
+    const total = document.querySelectorAll('.section-checkbox').length;
+    document.getElementById('pill-sections').textContent = checked === total ? '📚 All Sections' : '📚 ' + checked + ' Sections';
+}
+
+// ---- Form validation ----
+document.getElementById('quiz-form').addEventListener('submit', function(e) {
+    const checked = document.querySelectorAll('.section-checkbox:checked').length;
+    if (checked === 0) {
+        e.preventDefault();
+        alert('Please select at least one section.');
+    }
+});
+
+updatePills();
+</script>
+{% endblock %}

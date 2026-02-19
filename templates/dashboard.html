@@ -36,6 +36,57 @@
         </div>
     </div>
 
+    <!-- Detailed Performance Stats -->
+    {% if stats.total_questions > 0 %}
+    <div class="card fade-up-delay" style="margin-bottom: 2.5rem;">
+        <h2 style="font-size: 1.3rem; margin-bottom: 1.25rem;">📊 Overall Performance Summary</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 1rem;">
+            <div style="display: flex; align-items: center; gap: 0.75rem; padding: 1rem 1.25rem; background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 12px;">
+                <div style="font-size: 1.5rem;">✅</div>
+                <div>
+                    <div style="font-size: 1.3rem; font-weight: 700; font-family: 'Playfair Display', serif; color: var(--accent-green);">{{ stats.total_correct }}</div>
+                    <div style="font-size: 0.78rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.07em;">Correct</div>
+                </div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.75rem; padding: 1rem 1.25rem; background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 12px;">
+                <div style="font-size: 1.5rem;">❌</div>
+                <div>
+                    <div style="font-size: 1.3rem; font-weight: 700; font-family: 'Playfair Display', serif; color: var(--danger);">{{ stats.total_wrong }}</div>
+                    <div style="font-size: 0.78rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.07em;">Wrong</div>
+                </div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.75rem; padding: 1rem 1.25rem; background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 12px;">
+                <div style="font-size: 1.5rem;">🎯</div>
+                <div>
+                    <div style="font-size: 1.3rem; font-weight: 700; font-family: 'Playfair Display', serif; color: var(--accent);">{{ stats.bof_correct }}/{{ stats.bof_total }}</div>
+                    <div style="font-size: 0.78rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.07em;">BOF Score</div>
+                </div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.75rem; padding: 1rem 1.25rem; background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 12px;">
+                <div style="font-size: 1.5rem;">⚖️</div>
+                <div>
+                    <div style="font-size: 1.3rem; font-weight: 700; font-family: 'Playfair Display', serif; color: var(--accent-gold);">{{ stats.tf_correct }}/{{ stats.tf_total }}</div>
+                    <div style="font-size: 0.78rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.07em;">T/F Score</div>
+                </div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.75rem; padding: 1rem 1.25rem; background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 12px;">
+                <div style="font-size: 1.5rem;">📊</div>
+                <div>
+                    <div style="font-size: 1.3rem; font-weight: 700; font-family: 'Playfair Display', serif; color: var(--text);">{{ stats.total_marks }}</div>
+                    <div style="font-size: 0.78rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.07em;">Total Marks</div>
+                </div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.75rem; padding: 1rem 1.25rem; background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 12px;">
+                <div style="font-size: 1.5rem;">📝</div>
+                <div>
+                    <div style="font-size: 1.3rem; font-weight: 700; font-family: 'Playfair Display', serif; color: var(--text);">{{ stats.total_questions }}</div>
+                    <div style="font-size: 0.78rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.07em;">Total Questions</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
     <!-- Start Quiz + Sections -->
     <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 1.5rem; margin-bottom: 2.5rem;" class="fade-up-delay-2">
 
@@ -46,31 +97,9 @@
                 <p style="color: var(--text-muted); font-size: 0.85rem;">60 questions — 30 BOF + 30 True/False</p>
             </div>
 
-            <form method="POST" action="/start" style="display: flex; flex-direction: column; gap: 1rem;">
-                <div class="form-group" style="margin-bottom: 0;">
-                    <label>Select Section</label>
-                    <select name="section" class="form-control">
-                        <option value="ALL">All Sections (Random)</option>
-                        {% for sec in sections %}
-                        <option value="{{ sec.section_name }}">{{ sec.section_name }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-
-                <div class="form-group" style="margin-bottom: 0;">
-                    <label>Time Limit</label>
-                    <select name="time_limit" class="form-control">
-                        <option value="3600">60 minutes</option>
-                        <option value="5400">90 minutes</option>
-                        <option value="7200">120 minutes</option>
-                        <option value="0">No limit</option>
-                    </select>
-                </div>
-
-                <button type="submit" class="btn btn-success" style="width: 100%;">
-                    🚀 Start Quiz
-                </button>
-            </form>
+            <a href="/start" class="btn btn-success" style="width:100%; margin-top:1rem;">
+                🚀 Configure & Start Quiz
+            </a>
         </div>
 
         <!-- Section Progress -->

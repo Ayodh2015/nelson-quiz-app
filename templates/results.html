@@ -1,93 +1,299 @@
 {% extends "base.html" %}
-{% block title %}Results — Nelson Peds Quiz{% endblock %}
+{% block title %}Results — GoAziro{% endblock %}
+
+{% block extra_css %}
+<style>
+.donut-ring { transform: rotate(-90deg); transform-origin: 50% 50%; }
+.stat-pill { display: flex; align-items: center; gap: 0.75rem; padding: 1rem 1.25rem; background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 12px; }
+.stat-pill-icon { font-size: 1.5rem; }
+.stat-pill-value { font-size: 1.3rem; font-weight: 700; font-family: 'Playfair Display', serif; }
+.stat-pill-label { font-size: 0.78rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.07em; }
+.section-bar { display: flex; align-items: center; gap: 1rem; margin-bottom: 0.75rem; }
+.section-bar-name { font-size: 0.85rem; min-width: 200px; }
+.section-bar-wrap { flex: 1; background: rgba(255,255,255,0.06); border-radius: 100px; height: 8px; overflow: hidden; }
+.section-bar-fill { height: 100%; border-radius: 100px; background: linear-gradient(90deg, var(--accent-green), var(--accent)); }
+.section-bar-pct { font-size: 0.82rem; color: var(--text-muted); min-width: 45px; text-align: right; }
+.q-item { border: 1px solid var(--border); border-radius: 12px; margin-bottom: 0.75rem; overflow: hidden; transition: border-color 0.2s; }
+.q-item.correct { border-color: rgba(38,198,162,0.3); }
+.q-item.wrong { border-color: rgba(239,83,80,0.3); }
+.q-item.partial { border-color: rgba(244,197,66,0.3); }
+.q-header { display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.25rem; cursor: pointer; user-select: none; }
+.q-header:hover { background: rgba(255,255,255,0.02); }
+.q-body { padding: 0 1.25rem 1.25rem; display: none; border-top: 1px solid var(--border); }
+.q-body.open { display: block; }
+.q-text { font-size: 0.93rem; line-height: 1.7; margin: 1rem 0; }
+.opt-row { display: flex; align-items: flex-start; gap: 0.75rem; padding: 0.65rem 0.85rem; border-radius: 8px; margin-bottom: 0.4rem; font-size: 0.88rem; }
+.opt-row.correct-ans { background: rgba(38,198,162,0.1); border: 1px solid rgba(38,198,162,0.3); }
+.opt-row.wrong-ans { background: rgba(239,83,80,0.1); border: 1px solid rgba(239,83,80,0.3); }
+.opt-row.neutral { background: rgba(255,255,255,0.03); border: 1px solid var(--border); }
+.opt-label { display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; border-radius: 50%; font-weight: 700; font-size: 0.75rem; flex-shrink: 0; }
+.tf-stmt-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; padding: 0.65rem 0.85rem; border-radius: 8px; margin-bottom: 0.4rem; font-size: 0.88rem; background: rgba(255,255,255,0.03); border: 1px solid var(--border); }
+.tf-stmt-row.stmt-correct { background: rgba(38,198,162,0.08); border-color: rgba(38,198,162,0.25); }
+.tf-stmt-row.stmt-wrong { background: rgba(239,83,80,0.08); border-color: rgba(239,83,80,0.25); }
+.explanation-box { margin-top: 1rem; padding: 0.85rem 1rem; background: rgba(79,195,247,0.06); border-left: 3px solid var(--accent); border-radius: 0 8px 8px 0; }
+.explanation-box .key { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); font-weight: 600; margin-bottom: 0.35rem; }
+.explanation-box p { font-size: 0.87rem; color: var(--text-muted); line-height: 1.65; }
+.chevron { transition: transform 0.3s; font-size: 0.8rem; color: var(--text-muted); }
+.chevron.open { transform: rotate(180deg); }
+</style>
+{% endblock %}
 
 {% block content %}
-<div class="container" style="padding-top: 2rem; max-width: 820px;">
+<div class="container" style="padding-top: 2rem; max-width: 900px;">
 
-    <!-- Score Header -->
-    <div class="card fade-up" style="text-align: center; margin-bottom: 1.5rem; padding: 2.5rem;">
-        {% set pct = session_data.percentage %}
-        {% if pct >= 80 %}
-            <div style="font-size: 3.5rem; margin-bottom: 0.5rem;">🏆</div>
-            <h1 style="font-size: 2.5rem; color: var(--accent-green);">{{ pct }}%</h1>
-            <p style="color: var(--accent-green); font-weight: 600; margin-top: 0.25rem;">Excellent Performance!</p>
-        {% elif pct >= 60 %}
-            <div style="font-size: 3.5rem; margin-bottom: 0.5rem;">👍</div>
-            <h1 style="font-size: 2.5rem; color: var(--accent);">{{ pct }}%</h1>
-            <p style="color: var(--accent); font-weight: 600; margin-top: 0.25rem;">Good Work — Keep Improving!</p>
-        {% else %}
-            <div style="font-size: 3.5rem; margin-bottom: 0.5rem;">📖</div>
-            <h1 style="font-size: 2.5rem; color: var(--accent-gold);">{{ pct }}%</h1>
-            <p style="color: var(--accent-gold); font-weight: 600; margin-top: 0.25rem;">Keep Studying — You'll Get There!</p>
+{% set pct = session_data.percentage | float %}
+{% set correct_count = attempts | selectattr('is_correct') | list | length %}
+{% set wrong_count = attempts | length - correct_count %}
+{% set bof_attempts = attempts | selectattr('question_type', 'equalto', 'BOF') | list %}
+{% set tf_attempts = attempts | selectattr('question_type', 'equalto', 'TF') | list %}
+{% set bof_correct = bof_attempts | selectattr('is_correct') | list | length %}
+{% set tf_correct = tf_attempts | selectattr('is_correct') | list | length %}
+
+<!-- ===== SCORE HERO ===== -->
+<div class="card fade-up" style="text-align: center; padding: 2.5rem; margin-bottom: 1.5rem; position: relative; overflow: hidden;">
+    <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(ellipse at 50% 0%, {% if pct >= 70 %}rgba(38,198,162,0.08){% else %}rgba(239,83,80,0.08){% endif %} 0%, transparent 70%); pointer-events: none;"></div>
+
+    <!-- Donut chart -->
+    <div style="display: flex; justify-content: center; margin-bottom: 1.5rem;">
+        <svg width="160" height="160" viewBox="0 0 160 160">
+            <circle cx="80" cy="80" r="65" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="14"/>
+            <circle cx="80" cy="80" r="65" fill="none"
+                stroke="{% if pct >= 70 %}#26c6a2{% elif pct >= 50 %}#4fc3f7{% else %}#ef5350{% endif %}"
+                stroke-width="14"
+                stroke-dasharray="{{ (pct / 100 * 408.41) | round(1) }} 408.41"
+                stroke-linecap="round"
+                class="donut-ring"/>
+            <text x="80" y="75" text-anchor="middle" fill="#e8edf5" font-size="28" font-weight="700" font-family="Playfair Display, serif">{{ pct | round(1) }}%</text>
+            <text x="80" y="98" text-anchor="middle" fill="#8899bb" font-size="11" font-family="DM Sans, sans-serif">
+                {% if pct >= 70 %}PASS{% else %}REVIEW{% endif %}
+            </text>
+        </svg>
+    </div>
+
+    <h1 style="font-size: 1.6rem; margin-bottom: 0.25rem;">
+        {% if pct >= 80 %}🏆 Excellent Performance!
+        {% elif pct >= 70 %}👍 Good Work — Keep It Up!
+        {% elif pct >= 50 %}📖 Fair Attempt — Review Weak Areas
+        {% else %}💪 Keep Studying — You'll Improve!
         {% endif %}
+    </h1>
+    <p style="color: var(--text-muted); font-size: 0.9rem;">
+        {{ session_data.section_filter }} &nbsp;•&nbsp;
+        {% if session_data.time_taken_seconds %}
+            ⏱ {{ (session_data.time_taken_seconds // 60) }}m {{ (session_data.time_taken_seconds % 60) }}s
+        {% endif %}
+    </p>
 
-        <div style="display: flex; justify-content: center; gap: 2rem; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border);">
-            <div>
-                <div style="font-size: 1.4rem; font-weight: 700; color: var(--text);">{{ session_data.total_questions }}</div>
-                <div style="font-size: 0.8rem; color: var(--text-muted);">Total Questions</div>
-            </div>
-            <div>
-                <div style="font-size: 1.4rem; font-weight: 700; color: var(--accent-green);">{{ session_data.bof_count }}</div>
-                <div style="font-size: 0.8rem; color: var(--text-muted);">BOF Questions</div>
-            </div>
-            <div>
-                <div style="font-size: 1.4rem; font-weight: 700; color: var(--accent-gold);">{{ session_data.tf_count }}</div>
-                <div style="font-size: 0.8rem; color: var(--text-muted);">True/False Questions</div>
-            </div>
-            <div>
-                <div style="font-size: 1.4rem; font-weight: 700; color: var(--accent);">{{ session_data.score | round(1) }}</div>
-                <div style="font-size: 0.8rem; color: var(--text-muted);">Marks Obtained</div>
-            </div>
+    <div style="display: flex; gap: 1rem; justify-content: center; margin-top: 1.5rem;">
+        <a href="/start" class="btn btn-success">🔄 New Quiz</a>
+        <a href="/dashboard" class="btn btn-outline">← Dashboard</a>
+    </div>
+</div>
+
+<!-- ===== STAT PILLS ===== -->
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;" class="fade-up-delay">
+    <div class="stat-pill">
+        <div class="stat-pill-icon">✅</div>
+        <div>
+            <div class="stat-pill-value" style="color: var(--accent-green);">{{ correct_count }}</div>
+            <div class="stat-pill-label">Correct</div>
         </div>
+    </div>
+    <div class="stat-pill">
+        <div class="stat-pill-icon">❌</div>
+        <div>
+            <div class="stat-pill-value" style="color: var(--danger);">{{ wrong_count }}</div>
+            <div class="stat-pill-label">Wrong</div>
+        </div>
+    </div>
+    <div class="stat-pill">
+        <div class="stat-pill-icon">🎯</div>
+        <div>
+            <div class="stat-pill-value" style="color: var(--accent);">{{ bof_correct }}/{{ bof_attempts|length }}</div>
+            <div class="stat-pill-label">BOF Score</div>
+        </div>
+    </div>
+    <div class="stat-pill">
+        <div class="stat-pill-icon">⚖️</div>
+        <div>
+            <div class="stat-pill-value" style="color: var(--accent-gold);">{{ tf_correct }}/{{ tf_attempts|length }}</div>
+            <div class="stat-pill-label">T/F Score</div>
+        </div>
+    </div>
+    <div class="stat-pill">
+        <div class="stat-pill-icon">📊</div>
+        <div>
+            <div class="stat-pill-value" style="color: var(--purple);">{{ session_data.score | round(1) }}</div>
+            <div class="stat-pill-label">Marks Obtained</div>
+        </div>
+    </div>
+    <div class="stat-pill">
+        <div class="stat-pill-icon">📝</div>
+        <div>
+            <div class="stat-pill-value" style="color: var(--text);">{{ attempts|length }}</div>
+            <div class="stat-pill-label">Total Questions</div>
+        </div>
+    </div>
+</div>
 
-        <div style="display: flex; gap: 1rem; justify-content: center; margin-top: 1.5rem;">
-            <a href="/start" class="btn btn-success">🔄 Try Again</a>
-            <a href="/dashboard" class="btn btn-outline">← Dashboard</a>
+<!-- ===== SECTION BREAKDOWN ===== -->
+{% set sections_seen = [] %}
+{% for attempt in attempts %}
+    {% if attempt.section not in sections_seen %}
+        {% set _ = sections_seen.append(attempt.section) %}
+    {% endif %}
+{% endfor %}
+
+{% if sections_seen | length > 1 %}
+<div class="card fade-up-delay" style="margin-bottom: 1.5rem;">
+    <h2 style="font-family: 'Playfair Display', serif; font-size: 1.2rem; margin-bottom: 1.25rem;">📈 Section Performance</h2>
+    {% for sec in sections_seen %}
+        {% set sec_attempts = attempts | selectattr('section', 'equalto', sec) | list %}
+        {% set sec_correct = sec_attempts | selectattr('is_correct') | list | length %}
+        {% set sec_pct = ((sec_correct / sec_attempts|length) * 100) | round(1) if sec_attempts else 0 %}
+        <div class="section-bar">
+            <div class="section-bar-name">{{ sec[:35] }}</div>
+            <div class="section-bar-wrap">
+                <div class="section-bar-fill" style="width: {{ sec_pct }}%; background: {% if sec_pct >= 70 %}linear-gradient(90deg, var(--accent-green), #00bcd4){% elif sec_pct >= 50 %}linear-gradient(90deg, var(--accent-gold), var(--accent)){% else %}linear-gradient(90deg, var(--danger), #ff7043){% endif %};"></div>
+            </div>
+            <div class="section-bar-pct">{{ sec_pct }}%</div>
+        </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<!-- ===== QUESTION REVIEW ===== -->
+<div class="card fade-up-delay-2">
+    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem;">
+        <h2 style="font-family: 'Playfair Display', serif; font-size: 1.2rem;">🔍 Question Review</h2>
+        <div style="display: flex; gap: 0.5rem;">
+            <button onclick="expandAll()" class="btn btn-outline" style="padding: 0.4rem 0.85rem; font-size: 0.8rem;">Expand All</button>
+            <button onclick="collapseAll()" class="btn btn-outline" style="padding: 0.4rem 0.85rem; font-size: 0.8rem;">Collapse All</button>
         </div>
     </div>
 
-    <!-- Question Review -->
-    <div class="card fade-up-delay">
-        <h2 style="font-size: 1.3rem; margin-bottom: 1.5rem;">Question Review</h2>
+    {% for attempt in attempts %}
+    {% set marks = attempt.marks_obtained | float %}
+    {% set is_partial = not attempt.is_correct and marks > 0 %}
 
-        <div style="display: flex; flex-direction: column; gap: 1.25rem;">
-            {% for attempt in attempts %}
-            <div style="padding: 1.25rem; border-radius: 12px; border: 1px solid {% if attempt.is_correct %}rgba(38,198,162,0.3){% else %}rgba(239,83,80,0.3){% endif %}; background: {% if attempt.is_correct %}rgba(38,198,162,0.05){% else %}rgba(239,83,80,0.05){% endif %};">
+    <div class="q-item {% if attempt.is_correct %}correct{% elif is_partial %}partial{% else %}wrong{% endif %}" id="q-{{ loop.index }}">
 
-                <!-- Header row -->
-                <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; margin-bottom: 0.75rem;">
-                    <div style="display: flex; align-items: center; gap: 0.5rem;">
-                        {% if attempt.is_correct %}
-                            <span style="color: var(--accent-green); font-size: 1.1rem;">✓</span>
-                        {% else %}
-                            <span style="color: var(--danger); font-size: 1.1rem;">✗</span>
-                        {% endif %}
-                        <span class="badge {% if attempt.question_type == 'BOF' %}badge-blue{% else %}badge-gold{% endif %}">
-                            {{ attempt.question_type }}
-                        </span>
-                        <span style="font-size: 0.8rem; color: var(--text-muted);">{{ attempt.questions.section }}</span>
+        <!-- Header (always visible) -->
+        <div class="q-header" onclick="toggleQ({{ loop.index }})">
+            <div style="display: flex; align-items: center; gap: 0.85rem; flex: 1;">
+                <span style="font-size: 1.1rem;">
+                    {% if attempt.is_correct %}✅
+                    {% elif is_partial %}🟡
+                    {% else %}❌
+                    {% endif %}
+                </span>
+                <div style="flex: 1;">
+                    <div style="font-size: 0.88rem; line-height: 1.5; color: var(--text);">
+                        <strong style="color: var(--text-muted); margin-right: 0.4rem;">Q{{ loop.index }}.</strong>
+                        {{ attempt.question_text[:120] }}{% if attempt.question_text|length > 120 %}...{% endif %}
                     </div>
-                    <span style="font-size: 0.85rem; font-weight: 600; color: {% if attempt.is_correct %}var(--accent-green){% else %}var(--danger){% endif %};">
-                        {{ attempt.marks_obtained }} mark{% if attempt.marks_obtained != 1 %}s{% endif %}
+                    <div style="display: flex; gap: 0.5rem; margin-top: 0.3rem;">
+                        <span class="badge {% if attempt.question_type == 'BOF' %}badge-blue{% else %}badge-gold{% endif %}">{{ attempt.question_type }}</span>
+                        <span style="font-size: 0.75rem; color: var(--text-muted);">{{ attempt.section }}</span>
+                    </div>
+                </div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 1rem;">
+                <span style="font-size: 0.85rem; font-weight: 700; color: {% if attempt.is_correct %}var(--accent-green){% elif is_partial %}var(--accent-gold){% else %}var(--danger){% endif %};">
+                    {{ marks }}/{% if attempt.question_type == 'BOF' %}1{% else %}1{% endif %}
+                </span>
+                <span class="chevron" id="chevron-{{ loop.index }}">▼</span>
+            </div>
+        </div>
+
+        <!-- Body (expandable) -->
+        <div class="q-body" id="body-{{ loop.index }}">
+            <p class="q-text">{{ attempt.question_text }}</p>
+
+            {% if attempt.question_type == 'BOF' %}
+            <!-- BOF Answer Review -->
+            {% if attempt.bof_options %}
+                {% for opt in attempt.bof_options %}
+                <div class="opt-row {% if opt.is_correct %}correct-ans{% elif opt.option_label == attempt.bof_answer and not opt.is_correct %}wrong-ans{% else %}neutral{% endif %}">
+                    <span class="opt-label" style="background: {% if opt.is_correct %}rgba(38,198,162,0.2); color: var(--accent-green){% elif opt.option_label == attempt.bof_answer %}rgba(239,83,80,0.2); color: var(--danger){% else %}rgba(255,255,255,0.06); color: var(--text-muted){% endif %};">
+                        {{ opt.option_label }}
+                    </span>
+                    <span style="{% if opt.is_correct %}color: var(--accent-green); font-weight: 600;{% elif opt.option_label == attempt.bof_answer %}color: var(--danger);{% endif %}">
+                        {{ opt.option_text }}
+                        {% if opt.is_correct %} ✓ Correct answer{% endif %}
+                        {% if opt.option_label == attempt.bof_answer and not opt.is_correct %} ✗ Your answer{% endif %}
                     </span>
                 </div>
-
-                <!-- Question text -->
-                <p style="font-size: 0.93rem; line-height: 1.6; color: var(--text); margin-bottom: 0.75rem;">
-                    {{ attempt.questions.question_text }}
-                </p>
-
-                <!-- Explanation -->
-                {% if attempt.questions.explanation %}
-                <div style="padding: 0.75rem 1rem; background: rgba(79,195,247,0.06); border-left: 3px solid var(--accent); border-radius: 0 8px 8px 0; margin-top: 0.75rem;">
-                    <div style="font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); font-weight: 600; margin-bottom: 0.25rem;">Explanation</div>
-                    <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.6;">{{ attempt.questions.explanation }}</p>
-                </div>
-                {% endif %}
+                {% endfor %}
+            {% else %}
+            <div style="font-size: 0.85rem; color: var(--text-muted); padding: 0.5rem;">
+                Your answer: <strong style="color: {% if attempt.is_correct %}var(--accent-green){% else %}var(--danger){% endif %};">{{ attempt.bof_answer or 'Not answered' }}</strong>
             </div>
-            {% endfor %}
+            {% endif %}
+
+            {% else %}
+            <!-- TF Answer Review -->
+            {% if attempt.tf_statements %}
+                {% for stmt in attempt.tf_statements %}
+                {% set user_ans = attempt.tf_answers[loop.index0] if attempt.tf_answers and loop.index0 < attempt.tf_answers|length else none %}
+                {% set is_stmt_correct = user_ans == stmt.is_true if user_ans is not none else false %}
+                <div class="tf-stmt-row {% if is_stmt_correct %}stmt-correct{% else %}stmt-wrong{% endif %}">
+                    <span style="font-size: 0.88rem; flex: 1;">
+                        <strong style="color: var(--text-muted);">{{ loop.index }}.</strong> {{ stmt.statement_text }}
+                    </span>
+                    <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 0.2rem; flex-shrink: 0;">
+                        <span style="font-size: 0.78rem; color: var(--text-muted);">Correct: <strong style="color: {% if stmt.is_true %}var(--accent-green){% else %}var(--danger){% endif %};">{{ 'TRUE' if stmt.is_true else 'FALSE' }}</strong></span>
+                        <span style="font-size: 0.78rem; color: var(--text-muted);">Your answer: <strong style="color: {% if is_stmt_correct %}var(--accent-green){% else %}var(--danger){% endif %};">
+                            {% if user_ans is none %}—
+                            {% elif user_ans %}TRUE{% else %}FALSE{% endif %}
+                        </strong></span>
+                        <span>{% if is_stmt_correct %}✅{% else %}❌{% endif %}</span>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+            <div style="font-size: 0.85rem; color: var(--text-muted); padding: 0.5rem;">
+                Detailed statement review not available.
+            </div>
+            {% endif %}
+            {% endif %}
+
+            <!-- Explanation -->
+            {% if attempt.explanation %}
+            <div class="explanation-box">
+                <div class="key">💡 Key Learning Point</div>
+                <p>{{ attempt.explanation }}</p>
+            </div>
+            {% endif %}
         </div>
     </div>
+    {% endfor %}
+</div>
+
+<!-- Bottom actions -->
+<div style="display: flex; gap: 1rem; justify-content: center; margin-top: 2rem; padding-bottom: 2rem;">
+    <a href="/start" class="btn btn-success">🔄 Start New Quiz</a>
+    <a href="/dashboard" class="btn btn-outline">← Back to Dashboard</a>
+</div>
 
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function toggleQ(n) {
+    const body = document.getElementById('body-' + n);
+    const chevron = document.getElementById('chevron-' + n);
+    body.classList.toggle('open');
+    chevron.classList.toggle('open');
+}
+function expandAll() {
+    document.querySelectorAll('.q-body').forEach(b => b.classList.add('open'));
+    document.querySelectorAll('.chevron').forEach(c => c.classList.add('open'));
+}
+function collapseAll() {
+    document.querySelectorAll('.q-body').forEach(b => b.classList.remove('open'));
+    document.querySelectorAll('.chevron').forEach(c => c.classList.remove('open'));
+}
+</script>
 {% endblock %}

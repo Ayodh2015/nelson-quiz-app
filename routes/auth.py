@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session, current_app
-from config import get_db_connection
+from config import get_db, init_db_pool
 import bcrypt
 import uuid
 
@@ -19,7 +19,8 @@ def login():
             return render_template("login.html")
 
         try:
-            with get_db_connection() as conn:
+            conn = get_db()
+            try:
                 cur = conn.cursor()
                 cur.execute("SELECT * FROM users WHERE email = %s", (email,))
                 user = cur.fetchone()
@@ -40,6 +41,9 @@ def login():
                         flash("Incorrect password. Please try again.", "danger")
                 else:
                     flash("No account found with that email.", "danger")
+            finally:
+                pool = init_db_pool()
+                pool.putconn(conn)
         except Exception as e:
             flash("An error occurred. Please try again.", "danger")
             # Log error in production: logger.error(f"Login error: {e}")
@@ -64,7 +68,8 @@ def register():
             return render_template("register.html")
 
         try:
-            with get_db_connection() as conn:
+            conn = get_db()
+            try:
                 cur = conn.cursor()
 
                 cur.execute("SELECT id FROM users WHERE email = %s", (email,))
@@ -84,8 +89,11 @@ def register():
                 conn.commit()
                 cur.close()
 
-            flash("Account created successfully! Please login.", "success")
-            return redirect(url_for("auth.login"))
+                flash("Account created successfully! Please login.", "success")
+                return redirect(url_for("auth.login"))
+            finally:
+                pool = init_db_pool()
+                pool.putconn(conn)
         except Exception as e:
             current_app.logger.exception("Registration error: %s", e)
             msg = "An error occurred during registration. Please try again."
