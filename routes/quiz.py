@@ -113,6 +113,10 @@ def question():
 
             cur.close()
 
+        time_limit = sess_data["time_limit_seconds"] if sess_data else 3600
+        started_at = sess_data["started_at"] if sess_data else None
+        started_at_epoch = int(started_at.timestamp()) if started_at else None
+
         return render_template("quiz.html",
                                question=question_data,
                                options=options,
@@ -120,8 +124,8 @@ def question():
                                current=current + 1,
                                total=len(question_ids),
                                session_id=quiz_session_id,
-                               time_limit=sess_data["time_limit_seconds"] if sess_data else 3600,
-                               started_at=sess_data["started_at"] if sess_data else None)
+                               time_limit=time_limit,
+                               started_at_epoch=started_at_epoch)
     except Exception as e:
         # Log error in production: logger.error(f"Question load error: {e}")
         return redirect(url_for("dashboard.home"))
@@ -141,6 +145,15 @@ def submit_answer():
     try:
         with get_db_connection() as conn:
             cur = conn.cursor()
+
+            cur.execute("SELECT id FROM attempts WHERE session_id = %s AND question_id = %s", (quiz_session_id, question_id))
+            if cur.fetchone():
+                # Double-submit: already recorded, just advance and redirect
+                session["quiz_current"] = current + 1
+                cur.close()
+                if session["quiz_current"] >= len(question_ids):
+                    return redirect(url_for("quiz.finish"))
+                return redirect(url_for("quiz.question"))
 
             cur.execute("SELECT question_type FROM questions WHERE id = %s", (question_id,))
             q = cur.fetchone()

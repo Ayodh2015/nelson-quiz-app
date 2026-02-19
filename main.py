@@ -5,6 +5,10 @@ from config import SECRET_KEY, close_db_pool
 
 app = Flask(__name__)
 app.secret_key = SECRET_KEY
+app.config["SESSION_COOKIE_SAMESITE"] = "Lax"
+app.config["SESSION_COOKIE_HTTPONLY"] = True
+if os.environ.get("SESSION_COOKIE_SECURE", "").lower() == "true":
+    app.config["SESSION_COOKIE_SECURE"] = True
 
 from routes.auth import auth
 from routes.quiz import quiz

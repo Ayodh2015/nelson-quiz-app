@@ -275,7 +275,9 @@
     </ul>
     <div class="nav-user">
         👤 Welcome, <strong>{{ session.get('username') }}</strong> &nbsp;|&nbsp;
-        <a href="/logout" style="color: var(--danger); text-decoration: none; font-size:0.85rem;">Logout</a>
+        <form method="POST" action="/logout" style="display:inline;">
+            <button type="submit" style="background:none;border:none;color:var(--danger);cursor:pointer;font-size:0.85rem;font-family:inherit;padding:0;">Logout</button>
+        </form>
     </div>
 </nav>
 {% endif %}

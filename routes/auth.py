@@ -94,8 +94,10 @@ def register():
     return render_template("register.html")
 
 
-@auth.route("/logout")
+@auth.route("/logout", methods=["GET", "POST"])
 def logout():
     session.clear()
     flash("You have been logged out.", "info")
-    return redirect(url_for("auth.login"))
+    resp = redirect(url_for("auth.login"))
+    resp.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0"
+    return resp

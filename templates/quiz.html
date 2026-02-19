@@ -224,7 +224,7 @@ function setTF(num, value, btn) {
     document.getElementById('tf_input_' + num).value = value ? 'true' : 'false';
 }
 
-// ---- Form validation ----
+// ---- Form validation + prevent double-submit ----
 document.getElementById('answer-form').addEventListener('submit', function(e) {
     const type = "{{ question.question_type }}";
     if (type === 'BOF') {
@@ -232,6 +232,7 @@ document.getElementById('answer-form').addEventListener('submit', function(e) {
         if (!val) {
             e.preventDefault();
             alert('Please select an answer before continuing.');
+            return;
         }
     } else {
         const numStatements = {{ tf_statements | length }};
@@ -243,11 +244,17 @@ document.getElementById('answer-form').addEventListener('submit', function(e) {
             }
         }
     }
+    // Prevent double-submit
+    const btn = document.getElementById('submit-btn');
+    if (btn && !btn.disabled) {
+        btn.disabled = true;
+        btn.textContent = 'Submitting...';
+    }
 });
 
-// ---- Timer ----
+// ---- Timer (uses server epoch to avoid timezone issues) ----
 const timeLimit = {{ time_limit }};
-const startedAt = new Date("{{ started_at }}");
+const startedAtEpoch = {{ started_at_epoch | default('null') }};
 let timerInterval = null;
 let timeExpired = false;
 
@@ -256,8 +263,9 @@ function updateTimer() {
         document.getElementById('timer').textContent = '∞';
         return;
     }
-    const now = new Date();
-    const elapsed = Math.floor((now - startedAt) / 1000);
+    if (startedAtEpoch == null) return;
+    const nowEpoch = Math.floor(Date.now() / 1000);
+    const elapsed = nowEpoch - startedAtEpoch;
     const remaining = timeLimit - elapsed;
 
     if (remaining <= 0) {
