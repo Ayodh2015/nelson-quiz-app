@@ -248,6 +248,8 @@ document.getElementById('answer-form').addEventListener('submit', function(e) {
 // ---- Timer ----
 const timeLimit = {{ time_limit }};
 const startedAt = new Date("{{ started_at }}");
+let timerInterval = null;
+let timeExpired = false;
 
 function updateTimer() {
     if (timeLimit === 0) {
@@ -259,7 +261,11 @@ function updateTimer() {
     const remaining = timeLimit - elapsed;
 
     if (remaining <= 0) {
+        if (timeExpired) return;
+        timeExpired = true;
+        if (timerInterval) clearInterval(timerInterval);
         document.getElementById('timer').textContent = '00:00';
+        document.getElementById('submit-btn').disabled = true;
         document.getElementById('answer-form').submit();
         return;
     }
@@ -276,7 +282,7 @@ function updateTimer() {
 }
 
 updateTimer();
-setInterval(updateTimer, 1000);
+timerInterval = setInterval(updateTimer, 1000);
 
 // ---- Bookmark ----
 async function toggleBookmark(questionId) {
