@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash, session
+from flask import Blueprint, render_template, request, redirect, url_for, flash, session, current_app
 from config import get_db_connection
 import bcrypt
 import uuid
@@ -85,8 +85,11 @@ def register():
             flash("Account created successfully! Please login.", "success")
             return redirect(url_for("auth.login"))
         except Exception as e:
-            flash("An error occurred during registration. Please try again.", "danger")
-            # Log error in production: logger.error(f"Registration error: {e}")
+            current_app.logger.exception("Registration error: %s", e)
+            msg = "An error occurred during registration. Please try again."
+            if current_app.debug:
+                msg += f" ({type(e).__name__}: {e})"
+            flash(msg, "danger")
 
     return render_template("register.html")
 
