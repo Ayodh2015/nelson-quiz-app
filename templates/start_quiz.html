@@ -208,7 +208,11 @@ let currentType = 'both';
 function setType(type) {
     currentType = type;
     document.querySelectorAll('.type-btn[id^="type-"]').forEach(b => b.classList.remove('selected'));
-    document.getElementById('type-' + type).classList.add('selected');
+    const typeIdMap = { both: 'type-both', TF: 'type-tf', BOF: 'type-bof' };
+    const targetBtn = document.getElementById(typeIdMap[type] || 'type-both');
+    if (targetBtn) {
+        targetBtn.classList.add('selected');
+    }
     document.getElementById('question_type_input').value = type;
     updatePills();
 }

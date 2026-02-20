@@ -30,6 +30,9 @@ def login():
                     pwd_hash = user["password_hash"]
                     pwd_bytes = pwd_hash.encode("utf-8") if isinstance(pwd_hash, str) else pwd_hash
                     if bcrypt.checkpw(password.encode("utf-8"), pwd_bytes):
+                        # Start a clean authenticated session so data is always scoped
+                        # to the newly logged-in user.
+                        session.clear()
                         session["user_id"] = user["id"]
                         session["username"] = user["username"]
                         cur = conn.cursor()

@@ -107,9 +107,9 @@
             <h2 style="font-size: 1.3rem; margin-bottom: 1.25rem;">Section Progress</h2>
             <div style="display: flex; flex-direction: column; gap: 0.75rem; max-height: 320px; overflow-y: auto; padding-right: 0.5rem;">
                 {% for sec in sections %}
-                {% set prog = progress | selectattr('section', 'equalto', sec.section_name) | list %}
-                {% set pct = prog[0].best_score_percentage if prog else 0 %}
-                {% set attempted = prog[0].questions_attempted if prog else 0 %}
+                {% set prog = progress_map.get(sec.section_name) %}
+                {% set pct = prog.best_score_percentage if prog else 0 %}
+                {% set attempted = prog.questions_attempted if prog else 0 %}
                 <div>
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.3rem;">
                         <span style="font-size: 0.83rem; color: var(--text);">{{ sec.section_name }}</span>

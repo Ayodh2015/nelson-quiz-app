@@ -15,6 +15,27 @@ def login_required_custom(f):
     return decorated
 
 
+def _get_quiz_state():
+    quiz_session_id = session.get("quiz_session_id")
+    question_ids = session.get("quiz_question_ids")
+    current = session.get("quiz_current")
+
+    if not quiz_session_id:
+        return None
+    if not isinstance(question_ids, list) or not question_ids:
+        return None
+    if not isinstance(current, int) or current < 0:
+        return None
+
+    return quiz_session_id, question_ids, current
+
+
+def _clear_quiz_state():
+    session.pop("quiz_session_id", None)
+    session.pop("quiz_question_ids", None)
+    session.pop("quiz_current", None)
+
+
 @quiz.route("/start", methods=["GET", "POST"])
 @login_required_custom
 def start():
@@ -125,12 +146,16 @@ def start():
 @quiz.route("/question")
 @login_required_custom
 def question():
-    quiz_session_id = session.get("quiz_session_id")
-    question_ids = session.get("quiz_question_ids", [])
-    current = session.get("quiz_current", 0)
+    quiz_state = _get_quiz_state()
+    if not quiz_state:
+        return redirect(url_for("quiz.start"))
 
-    if not quiz_session_id or current >= len(question_ids):
-        return redirect(url_for("quiz.results"))
+    quiz_session_id, question_ids, current = quiz_state
+
+    if not quiz_session_id:
+        return redirect(url_for("quiz.start"))
+    if current >= len(question_ids):
+        return redirect(url_for("quiz.finish"))
 
     question_id = question_ids[current]
 
@@ -152,6 +177,24 @@ def question():
                 else:
                     cur.execute("SELECT * FROM tf_statements WHERE question_id = %s ORDER BY statement_number", (question_id,))
                     tf_statements = cur.fetchall()
+
+            # Skip malformed questions so user is not blocked on submit validation.
+            should_skip = False
+            if not question_data:
+                should_skip = True
+            elif question_data["question_type"] == "BOF" and not options:
+                should_skip = True
+            elif question_data["question_type"] == "TF" and not tf_statements:
+                should_skip = True
+
+            if should_skip:
+                cur.close()
+                session["quiz_current"] = current + 1
+                session.modified = True
+                flash("A malformed question was skipped automatically.", "warning")
+                if session["quiz_current"] >= len(question_ids):
+                    return redirect(url_for("quiz.finish"))
+                return redirect(url_for("quiz.question"))
 
             cur.execute("SELECT started_at, time_limit_seconds FROM sessions WHERE id = %s", (quiz_session_id,))
             sess_data = cur.fetchone()
@@ -183,9 +226,13 @@ def question():
 @login_required_custom
 def submit_answer():
     user_id = session["user_id"]
-    quiz_session_id = session.get("quiz_session_id")
-    question_ids = session.get("quiz_question_ids", [])
-    current = session.get("quiz_current", 0)
+    quiz_state = _get_quiz_state()
+    if not quiz_state:
+        return redirect(url_for("quiz.start"))
+
+    quiz_session_id, question_ids, current = quiz_state
+    if current >= len(question_ids):
+        return redirect(url_for("quiz.finish"))
 
     question_id = question_ids[current]
     data = request.form
@@ -262,12 +309,32 @@ def submit_answer():
 @login_required_custom
 def finish():
     user_id = session["user_id"]
-    quiz_session_id = session.get("quiz_session_id")
+    quiz_state = _get_quiz_state()
+    if not quiz_state:
+        return redirect(url_for("quiz.start"))
+
+    quiz_session_id, _, _ = quiz_state
 
     try:
         conn = get_db()
         try:
             cur = conn.cursor()
+
+            cur.execute("""
+                SELECT completed
+                FROM sessions
+                WHERE id = %s AND user_id = %s
+            """, (quiz_session_id, user_id))
+            sess = cur.fetchone()
+            if not sess:
+                cur.close()
+                _clear_quiz_state()
+                return redirect(url_for("quiz.start"))
+
+            # Idempotent finish: avoid duplicate progress updates on reload/revisit.
+            if sess["completed"]:
+                cur.close()
+                return redirect(url_for("quiz.results"))
 
             cur.execute("SELECT marks_obtained, is_correct FROM attempts WHERE session_id = %s", (quiz_session_id,))
             attempts = cur.fetchall()
@@ -279,8 +346,8 @@ def finish():
             cur.execute("""
                 UPDATE sessions
                 SET score = %s, total_score = %s, percentage = %s, completed = TRUE, completed_at = NOW()
-                WHERE id = %s
-            """, (total_marks, total_possible, percentage, quiz_session_id))
+                WHERE id = %s AND user_id = %s
+            """, (total_marks, total_possible, percentage, quiz_session_id, user_id))
 
             # Get attempts with their sections to update progress per section
             cur.execute("""
@@ -340,15 +407,25 @@ def finish():
 @quiz.route("/results")
 @login_required_custom
 def results():
+    user_id = session["user_id"]
     quiz_session_id = session.get("quiz_session_id")
+    if not quiz_session_id:
+        return redirect(url_for("quiz.start"))
 
     try:
         conn = get_db()
         try:
             cur = conn.cursor()
 
-            cur.execute("SELECT * FROM sessions WHERE id = %s", (quiz_session_id,))
+            cur.execute("SELECT * FROM sessions WHERE id = %s AND user_id = %s", (quiz_session_id, user_id))
             session_data = cur.fetchone()
+            if not session_data:
+                cur.close()
+                _clear_quiz_state()
+                return redirect(url_for("quiz.start"))
+            if not session_data["completed"]:
+                cur.close()
+                return redirect(url_for("quiz.finish"))
 
             cur.execute("""
                 SELECT a.*, q.question_text, q.question_type, q.explanation, q.section
