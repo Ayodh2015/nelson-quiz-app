@@ -35,6 +35,43 @@
 .explanation-box p { font-size: 0.87rem; color: var(--text-muted); line-height: 1.65; }
 .chevron { transition: transform 0.3s; font-size: 0.8rem; color: var(--text-muted); }
 .chevron.open { transform: rotate(180deg); }
+.results-hero-actions { display: flex; gap: 1rem; justify-content: center; margin-top: 1.5rem; }
+.results-review-actions { display: flex; gap: 0.5rem; }
+.results-bottom-actions { display: flex; gap: 1rem; justify-content: center; margin-top: 2rem; padding-bottom: 2rem; }
+@media (max-width: 768px) {
+    .section-bar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.35rem;
+    }
+    .section-bar-name,
+    .section-bar-pct {
+        min-width: 0;
+        text-align: left;
+    }
+    .q-header {
+        align-items: flex-start;
+    }
+    .tf-stmt-row {
+        flex-direction: column;
+    }
+    .tf-stmt-row > div:last-child {
+        align-items: flex-start !important;
+    }
+    .results-hero-actions,
+    .results-bottom-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .results-review-actions {
+        width: 100%;
+    }
+    .results-hero-actions .btn,
+    .results-review-actions .btn,
+    .results-bottom-actions .btn {
+        width: 100%;
+    }
+}
 </style>
 {% endblock %}
 
@@ -84,7 +121,7 @@
         {% endif %}
     </p>
 
-    <div style="display: flex; gap: 1rem; justify-content: center; margin-top: 1.5rem;">
+    <div class="results-hero-actions">
         <a href="/start" class="btn btn-success">🔄 New Quiz</a>
         <a href="/dashboard" class="btn btn-outline">← Dashboard</a>
     </div>
@@ -166,7 +203,7 @@
 <div class="card fade-up-delay-2">
     <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem;">
         <h2 style="font-family: 'Playfair Display', serif; font-size: 1.2rem;">🔍 Question Review</h2>
-        <div style="display: flex; gap: 0.5rem;">
+        <div class="results-review-actions">
             <button onclick="expandAll()" class="btn btn-outline" style="padding: 0.4rem 0.85rem; font-size: 0.8rem;">Expand All</button>
             <button onclick="collapseAll()" class="btn btn-outline" style="padding: 0.4rem 0.85rem; font-size: 0.8rem;">Collapse All</button>
         </div>
@@ -271,7 +308,7 @@
 </div>
 
 <!-- Bottom actions -->
-<div style="display: flex; gap: 1rem; justify-content: center; margin-top: 2rem; padding-bottom: 2rem;">
+<div class="results-bottom-actions">
     <a href="/start" class="btn btn-success">🔄 Start New Quiz</a>
     <a href="/dashboard" class="btn btn-outline">← Back to Dashboard</a>
 </div>

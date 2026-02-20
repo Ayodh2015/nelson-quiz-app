@@ -1,6 +1,24 @@
 {% extends "base.html" %}
 {% block title %}Dashboard — Nelson Pediatrics Quiz{% endblock %}
 
+{% block extra_css %}
+<style>
+.dashboard-stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2.5rem; }
+.dashboard-split-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 1.5rem; margin-bottom: 2.5rem; }
+.dashboard-section-list { display: flex; flex-direction: column; gap: 0.75rem; max-height: 320px; overflow-y: auto; padding-right: 0.5rem; }
+@media (max-width: 1024px) {
+    .dashboard-split-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 768px) {
+    .dashboard-stats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .dashboard-section-list { max-height: 260px; }
+}
+@media (max-width: 520px) {
+    .dashboard-stats-grid { grid-template-columns: 1fr; }
+}
+</style>
+{% endblock %}
+
 {% block content %}
 <div class="container" style="padding-top: 2.5rem;">
 
@@ -13,7 +31,7 @@
     </div>
 
     <!-- Stats Row -->
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2.5rem;" class="fade-up-delay">
+    <div class="dashboard-stats-grid fade-up-delay">
 
         <div class="card" style="text-align: center;">
             <div style="font-size: 2rem; font-weight: 700; color: var(--accent);">{{ stats.total_sessions }}</div>
@@ -88,7 +106,7 @@
     {% endif %}
 
     <!-- Start Quiz + Sections -->
-    <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 1.5rem; margin-bottom: 2.5rem;" class="fade-up-delay-2">
+    <div class="dashboard-split-grid fade-up-delay-2">
 
         <!-- Start Quiz Card -->
         <div class="card" style="display: flex; flex-direction: column; gap: 1.25rem;">
@@ -105,7 +123,7 @@
         <!-- Section Progress -->
         <div class="card">
             <h2 style="font-size: 1.3rem; margin-bottom: 1.25rem;">Section Progress</h2>
-            <div style="display: flex; flex-direction: column; gap: 0.75rem; max-height: 320px; overflow-y: auto; padding-right: 0.5rem;">
+            <div class="dashboard-section-list">
                 {% for sec in sections %}
                 {% set prog = progress_map.get(sec.section_name) %}
                 {% set pct = prog.best_score_percentage if prog else 0 %}

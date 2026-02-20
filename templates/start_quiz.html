@@ -98,6 +98,39 @@
     color: var(--accent);
     margin: 0.25rem;
 }
+.quiz-type-row {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+.slider-row {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+.section-actions {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+@media (max-width: 768px) {
+    .section-grid {
+        grid-template-columns: 1fr;
+        max-height: 240px;
+    }
+    .quiz-type-row,
+    .section-actions {
+        flex-direction: column;
+    }
+    .slider-row {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.75rem;
+    }
+    .type-btn {
+        width: 100%;
+    }
+}
 </style>
 {% endblock %}
 
@@ -114,7 +147,7 @@
         <!-- STEP 1: Question Type -->
         <div class="card fade-up" style="margin-bottom: 1.25rem;">
             <div class="step-label">Step 1 — Question Type</div>
-            <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+            <div class="quiz-type-row">
                 <button type="button" class="type-btn selected" id="type-both" onclick="setType('both')">
                     🔀 Both Types<br>
                     <span style="font-size: 0.75rem; opacity: 0.7;">30 T/F + 30 BOF</span>
@@ -134,7 +167,7 @@
         <!-- STEP 2: Number of Questions -->
         <div class="card fade-up" style="margin-bottom: 1.25rem;">
             <div class="step-label">Step 2 — Number of Questions</div>
-            <div style="display: flex; align-items: center; gap: 1.5rem;">
+            <div class="slider-row">
                 <input type="range" class="q-slider" id="q-slider"
                     min="10" max="120" step="10" value="60"
                     oninput="updateSlider(this.value)">
@@ -152,7 +185,7 @@
         <!-- STEP 3: Sections -->
         <div class="card fade-up" style="margin-bottom: 1.25rem;">
             <div class="step-label">Step 3 — Sections</div>
-            <div style="display: flex; gap: 0.75rem; margin-bottom: 1rem;">
+            <div class="section-actions">
                 <button type="button" onclick="selectAllSections()" class="btn btn-outline" style="padding: 0.35rem 0.85rem; font-size: 0.8rem;">✅ Select All</button>
                 <button type="button" onclick="clearAllSections()" class="btn btn-outline" style="padding: 0.35rem 0.85rem; font-size: 0.8rem;">❌ Clear All</button>
             </div>
@@ -171,7 +204,7 @@
         <!-- STEP 4: Time Limit -->
         <div class="card fade-up" style="margin-bottom: 1.25rem;">
             <div class="step-label">Step 4 — Time Limit</div>
-            <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+            <div class="quiz-type-row">
                 <button type="button" class="type-btn" id="time-30" onclick="setTime(1800)">⏱ 30 min</button>
                 <button type="button" class="type-btn selected" id="time-60" onclick="setTime(3600)">⏱ 60 min</button>
                 <button type="button" class="type-btn" id="time-90" onclick="setTime(5400)">⏱ 90 min</button>
