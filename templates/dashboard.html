@@ -144,12 +144,12 @@
                 <tbody>
                     {% for s in sessions %}
                     <tr style="border-bottom: 1px solid rgba(255,255,255,0.04);">
-                        <td style="padding: 0.75rem 1rem; color: var(--text-muted);">{{ s.completed_at[:10] if s.completed_at else '-' }}</td>
+                        <td style="padding: 0.75rem 1rem; color: var(--text-muted);">{{ s.completed_date }}</td>
                         <td style="padding: 0.75rem 1rem;">{{ s.section_filter }}</td>
                         <td style="padding: 0.75rem 1rem;">{{ s.total_questions }}</td>
-                        <td style="padding: 0.75rem 1rem; font-weight: 600; color: var(--accent);">{{ s.percentage }}%</td>
+                        <td style="padding: 0.75rem 1rem; font-weight: 600; color: var(--accent);">{{ s.percentage_value }}%</td>
                         <td style="padding: 0.75rem 1rem;">
-                            {% if s.percentage >= 70 %}
+                            {% if s.percentage_value >= 70 %}
                                 <span class="badge badge-green">PASS</span>
                             {% else %}
                                 <span class="badge badge-red">REVIEW</span>

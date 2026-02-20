@@ -29,7 +29,7 @@ def home():
                 WHERE user_id = %s AND completed = TRUE
                 ORDER BY completed_at DESC
             """, (user_id,))
-            sessions_data = cur.fetchall()
+            raw_sessions = cur.fetchall()
 
             # Section progress
             cur.execute("""
@@ -65,6 +65,21 @@ def home():
         finally:
             pool = init_db_pool()
             pool.putconn(conn)
+
+        sessions_data = []
+        for s in raw_sessions:
+            row = dict(s)
+            pct = float(row["percentage"] or 0)
+            completed_at = row["completed_at"]
+            if completed_at and hasattr(completed_at, "strftime"):
+                completed_date = completed_at.strftime("%Y-%m-%d")
+            elif completed_at:
+                completed_date = str(completed_at)[:10]
+            else:
+                completed_date = "-"
+            row["percentage_value"] = pct
+            row["completed_date"] = completed_date
+            sessions_data.append(row)
 
         # Build section progress from all completed attempts so dashboard stays correct
         # even if section_progress table is stale/missing older updates.
@@ -107,7 +122,7 @@ def home():
         progress_map = {p["section"]: p for p in progress}
 
         # Calculate basic stats
-        percentages = [float(s["percentage"]) for s in sessions_data if s.get("percentage") is not None]
+        percentages = [s["percentage_value"] for s in sessions_data]
         avg_score = round(sum(percentages) / len(percentages), 1) if percentages else 0
         best_score = max(percentages, default=0)
 
