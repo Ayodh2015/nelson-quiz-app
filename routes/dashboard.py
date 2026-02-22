@@ -4,18 +4,25 @@ from functools import wraps
 from collections import defaultdict
 import os
 import re
+import html as html_escape
 
 dashboard = Blueprint("dashboard", __name__)
 STUDY_DIR = "v22"
 TITLE_RE = re.compile(r"<title[^>]*>(.*?)</title>", re.IGNORECASE | re.DOTALL)
 TITLE_PREFIX_RE = re.compile(
-    r"^\s*(Nelson Pediatrics|Postgraduate Pead MSQ Exam Help Tool)\s*[—-]\s*",
+    r"^\s*(Nelson Pediatrics|Postgraduate Pead MCQ Exam Help Tool)\s*[—-]\s*",
     re.IGNORECASE
 )
 STUDY_BRAND_REPLACEMENTS = (
-    ("Nelson Pediatrics — ", "Postgraduate Pead MSQ Exam Help Tool — "),
-    ("Nelson Textbook of Pediatrics · 22nd Edition · 2024", "Postgraduate Pead MSQ Exam Help Tool"),
-    ("Nelson Textbook of Pediatrics · 22nd Ed. · 2024", "Postgraduate Pead MSQ Exam Help Tool"),
+    ("Nelson Pediatrics — ", "Postgraduate Pead MCQ Exam Help Tool — "),
+    ("Nelson Pediatrics · 22nd Ed · 2024", "Postgraduate Pead MCQ Exam Help Tool"),
+    ("Nelson Pediatrics · 22nd Ed. · 2024", "Postgraduate Pead MCQ Exam Help Tool"),
+    ("Nelson Textbook of Pediatrics · 22nd Edition · 2024", "Postgraduate Pead MCQ Exam Help Tool"),
+    ("Nelson Textbook of Pediatrics · 22nd Ed. · 2024", "Postgraduate Pead MCQ Exam Help Tool"),
+)
+STUDY_LINK_RE = re.compile(
+    r'(<a[^>]*\bclass="[^"]*\bsnav-link\b[^"]*"[^>]*\bhref=")([^"]+\.html)(")',
+    re.IGNORECASE
 )
 
 def login_required_custom(f):
@@ -72,6 +79,25 @@ def _get_study_pages():
 
 
 def _apply_study_page_overrides(html):
+    username = html_escape.escape(str(session.get("username", "User")))
+    global_nav = f"""
+<nav class="global-top-nav">
+  <a href="/dashboard" class="global-top-brand">Postgraduate <span>Pead MCQ</span> Tool</a>
+  <div class="global-top-links">
+    <a href="/dashboard">Dashboard</a>
+    <a href="/start">Start Quiz</a>
+    <a href="/bookmarks">Bookmarks</a>
+    <a href="/study">Study</a>
+    <a href="/support">Support</a>
+  </div>
+  <div class="global-top-user">
+    <span>Welcome, <strong>{username}</strong></span>
+    <form method="POST" action="/logout" style="display:inline;">
+      <button type="submit">Logout</button>
+    </form>
+  </div>
+</nav>
+"""
     favicon_link = """
 <link rel="icon" type="image/svg+xml" href="/static/favicon-go.svg">
 <link rel="shortcut icon" href="/static/favicon-go.svg">
@@ -95,9 +121,81 @@ def _apply_study_page_overrides(html):
   body {
     background: var(--bg) !important;
     color: var(--text) !important;
+    padding-top: 76px !important;
     background-image:
       radial-gradient(ellipse at 20% 20%, rgba(26,58,107,0.4) 0%, transparent 60%),
       radial-gradient(ellipse at 80% 80%, rgba(38,198,162,0.08) 0%, transparent 50%) !important;
+  }
+
+  .global-top-nav {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    z-index: 9999 !important;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0 1.25rem;
+    background: rgba(10, 22, 40, 0.96) !important;
+    border-bottom: 1px solid rgba(79, 195, 247, 0.15) !important;
+    backdrop-filter: blur(12px);
+  }
+
+  .global-top-brand {
+    color: var(--accent) !important;
+    text-decoration: none !important;
+    font-weight: 700;
+    font-size: 1rem;
+  }
+
+  .global-top-brand span {
+    color: var(--accent2) !important;
+  }
+
+  .global-top-links {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .global-top-links a {
+    color: var(--text-muted) !important;
+    text-decoration: none !important;
+    font-size: 0.88rem;
+  }
+
+  .global-top-links a:hover {
+    color: var(--accent) !important;
+  }
+
+  .global-top-user {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    color: var(--text-muted) !important;
+    font-size: 0.82rem;
+    white-space: nowrap;
+  }
+
+  .global-top-user strong {
+    color: var(--accent2) !important;
+  }
+
+  .global-top-user button {
+    background: none;
+    border: none;
+    color: var(--danger);
+    cursor: pointer;
+    font-size: 0.82rem;
+  }
+
+  /* Hide page-level internal nav; use global app nav instead. */
+  .section-nav {
+    display: none !important;
   }
 
   /* Hide search UI on all study pages */
@@ -107,8 +205,52 @@ def _apply_study_page_overrides(html):
   .chapter-count {
     display: none !important;
   }
+
+  .snav-link[data-missing-study="1"] {
+    opacity: 0.45 !important;
+    filter: grayscale(25%);
+    cursor: not-allowed !important;
+    pointer-events: none !important;
+  }
+
+  .snav-link[data-missing-study="1"] .snav-title::after {
+    content: " (Coming soon)";
+    color: var(--text-dim);
+  }
 </style>
 """
+    link_router_js = """
+<script id="study-link-router">
+document.addEventListener("click", function (event) {
+  const link = event.target.closest("a[data-study-slug]");
+  if (!link) return;
+  event.preventDefault();
+  const slug = link.getAttribute("data-study-slug");
+  if (!slug) return;
+
+  const form = document.createElement("form");
+  form.method = "POST";
+  form.action = "/study";
+  form.style.display = "none";
+
+  const slugInput = document.createElement("input");
+  slugInput.type = "hidden";
+  slugInput.name = "slug";
+  slugInput.value = slug;
+  form.appendChild(slugInput);
+
+  document.body.appendChild(form);
+  form.submit();
+});
+</script>
+"""
+    body_tag_match = re.search(r"<body[^>]*>", html, re.IGNORECASE)
+    if body_tag_match:
+        tag = body_tag_match.group(0)
+        html = html.replace(tag, f"{tag}\n{global_nav}", 1)
+    else:
+        html = f"{global_nav}\n{html}"
+
     if 'rel="icon"' not in html and "rel='icon'" not in html:
         if "</head>" in html:
             html = html.replace("</head>", f"{favicon_link}\n</head>", 1)
@@ -116,8 +258,13 @@ def _apply_study_page_overrides(html):
             html = f"{favicon_link}\n{html}"
 
     if "</head>" in html:
-        return html.replace("</head>", f"{override_css}\n</head>", 1)
-    return f"{override_css}\n{html}"
+        html = html.replace("</head>", f"{override_css}\n</head>", 1)
+    else:
+        html = f"{override_css}\n{html}"
+
+    if "</body>" in html:
+        return html.replace("</body>", f"{link_router_js}\n</body>", 1)
+    return f"{html}\n{link_router_js}"
 
 
 def _sanitize_study_branding(html):
@@ -125,6 +272,20 @@ def _sanitize_study_branding(html):
     for old, new in STUDY_BRAND_REPLACEMENTS:
         cleaned = cleaned.replace(old, new)
     return cleaned
+
+
+def _rewrite_study_internal_links(html, available_slugs):
+    def replace_link(match):
+        href = match.group(2)
+        target_slug = os.path.splitext(os.path.basename(href))[0]
+        if target_slug in available_slugs:
+            return f'{match.group(1)}/study{match.group(3)} data-study-slug="{target_slug}"'
+        return (
+            f'{match.group(1)}#{match.group(3)} data-missing-study="1" '
+            f'title="This section is not uploaded yet." aria-disabled="true"'
+        )
+
+    return STUDY_LINK_RE.sub(replace_link, html)
 
 @dashboard.route("/dashboard")
 @login_required_custom
@@ -310,6 +471,7 @@ def home():
 def study():
     pages = _get_study_pages()
     pages_by_slug = {p["slug"]: p for p in pages}
+    available_slugs = set(pages_by_slug.keys())
 
     selected_slug = None
     if request.method == "POST":
@@ -323,6 +485,7 @@ def study():
             abort(404)
         html = render_template(f"{STUDY_DIR}/{page['filename']}")
         html = _sanitize_study_branding(html)
+        html = _rewrite_study_internal_links(html, available_slugs)
         return _apply_study_page_overrides(html)
 
     return render_template("study_index.html", pages=pages)
@@ -339,3 +502,10 @@ def study_page(slug):
     # Preserve old deep links but normalize to /study URL.
     session["study_slug"] = slug
     return redirect(url_for("dashboard.study"))
+
+
+@dashboard.route("/support")
+@login_required_custom
+def support():
+    buy_me_coffee_url = os.getenv("BUY_ME_COFFEE_URL", "https://buymeacoffee.com/")
+    return render_template("support.html", buy_me_coffee_url=buy_me_coffee_url)
