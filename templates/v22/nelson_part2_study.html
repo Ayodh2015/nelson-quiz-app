@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nelson Pediatrics — Part II: Growth, Development & Behavior</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --surface2: #1c2333;
+    --border: #30363d;
+    --accent: #e8a44a;
+    --accent2: #5caaee;
+    --accent3: #63d98a;
+    --danger: #f07a7a;
+    --text: #e6edf3;
+    --text-muted: #8b949e;
+    --text-dim: #484f58;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.75;
+    min-height: 100vh;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+  }
+
+  .page-wrap {
+    position: relative;
+    z-index: 1;
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 0 24px 80px;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    padding: 72px 0 48px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 48px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::after {
+    content: 'II';
+    position: absolute;
+    right: -10px;
+    top: 10px;
+    font-family: 'Playfair Display', serif;
+    font-size: 220px;
+    font-weight: 900;
+    color: var(--border);
+    line-height: 1;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .hero-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(92,170,238,0.1);
+    border: 1px solid rgba(92,170,238,0.3);
+    color: var(--accent2);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+  }
+
+  .hero-tag::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent2);
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.8); }
+  }
+
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 5vw, 50px);
+    font-weight: 900;
+    line-height: 1.1;
+    margin-bottom: 12px;
+    color: var(--text);
+  }
+
+  .hero h1 span { color: var(--accent2); }
+
+  .hero-sub {
+    font-size: 15px;
+    color: var(--text-muted);
+    max-width: 520px;
+    margin-bottom: 28px;
+  }
+
+  .hero-meta {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  .meta-pill {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--text-muted);
+    font-family: 'DM Mono', monospace;
+  }
+
+  .meta-pill .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+  }
+
+  /* ── SEARCH ── */
+  .search-bar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(13,17,23,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 0;
+    margin-bottom: 36px;
+  }
+
+  .search-inner {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .search-input {
+    flex: 1;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 14px 8px 36px;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%238b949e' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: 10px center;
+  }
+
+  .search-input:focus { border-color: var(--accent2); }
+  .search-input::placeholder { color: var(--text-dim); }
+
+  .chapter-count {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
+
+  /* ── STATS ── */
+  .stats-strip {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    margin-bottom: 48px;
+  }
+
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 18px;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+
+  .stat-card:hover { border-color: var(--accent2); transform: translateY(-2px); }
+
+  .stat-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+  }
+
+  .stat-value {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--accent2);
+  }
+
+  .stat-desc { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+
+  /* ── HIGH YIELD ── */
+  .hiyield {
+    background: linear-gradient(135deg, rgba(92,170,238,0.08), rgba(92,170,238,0.02));
+    border: 1px solid rgba(92,170,238,0.25);
+    border-left: 3px solid var(--accent2);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin-bottom: 48px;
+  }
+
+  .hiyield-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--accent2);
+    margin-bottom: 14px;
+  }
+
+  .hiyield ul {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 8px;
+  }
+
+  .hiyield ul li {
+    font-size: 13px;
+    color: var(--text);
+    padding-left: 16px;
+    position: relative;
+    line-height: 1.5;
+  }
+
+  .hiyield ul li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: var(--accent2);
+    font-size: 11px;
+  }
+
+  strong.hl  { color: var(--accent);  font-weight: 600; }
+  strong.hl2 { color: var(--accent2); font-weight: 600; }
+  strong.hl3 { color: var(--accent3); font-weight: 600; }
+  strong.hld { color: var(--danger);  font-weight: 600; }
+
+  /* ── MILESTONE TABLE ── */
+  .milestone-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin: 14px 0;
+  }
+
+  .milestone-table th {
+    background: var(--surface2);
+    color: var(--accent2);
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 8px 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .milestone-table td {
+    padding: 7px 12px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+    vertical-align: top;
+    line-height: 1.5;
+  }
+
+  .milestone-table tr:hover td { background: rgba(255,255,255,0.02); }
+
+  .milestone-table .age-col {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    white-space: nowrap;
+    font-weight: 500;
+  }
+
+  /* ── CHAPTERS ── */
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .chapters-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 48px;
+  }
+
+  .chapter-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  .chapter-card:hover {
+    border-color: rgba(92,170,238,0.4);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  }
+
+  .chapter-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 20px;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .ch-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text-muted);
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 3px 8px;
+    white-space: nowrap;
+    min-width: 42px;
+    text-align: center;
+  }
+
+  .ch-title {
+    flex: 1;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text);
+  }
+
+  .ch-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+
+  .tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 2px 7px;
+    border-radius: 4px;
+    border: 1px solid;
+  }
+
+  .tag-hiy  { color: var(--accent);  border-color: rgba(232,164,74,0.3);  background: rgba(232,164,74,0.08);  }
+  .tag-dev  { color: var(--accent2); border-color: rgba(92,170,238,0.3);  background: rgba(92,170,238,0.08);  }
+  .tag-grw  { color: var(--accent3); border-color: rgba(99,217,138,0.3);  background: rgba(99,217,138,0.08);  }
+  .tag-crit { color: var(--danger);  border-color: rgba(240,122,122,0.3); background: rgba(240,122,122,0.08); }
+  .tag-adol { color: #c792ea;        border-color: rgba(199,146,234,0.3); background: rgba(199,146,234,0.08); }
+
+  .ch-toggle {
+    color: var(--text-muted);
+    font-size: 18px;
+    transition: transform 0.3s;
+    line-height: 1;
+  }
+
+  .chapter-card.open .ch-toggle { transform: rotate(180deg); }
+
+  .chapter-body {
+    display: none;
+    padding: 0 20px 20px;
+    border-top: 1px solid var(--border);
+    animation: slideIn 0.2s ease;
+  }
+
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateY(-6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .chapter-card.open .chapter-body { display: block; }
+
+  .chapter-body p {
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.8;
+    margin-top: 14px;
+    margin-bottom: 10px;
+  }
+
+  .key-points {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 10px;
+  }
+
+  .key-points li {
+    font-size: 13.5px;
+    color: var(--text);
+    padding: 8px 12px;
+    background: var(--surface2);
+    border-radius: 6px;
+    border-left: 2px solid var(--border);
+    line-height: 1.6;
+  }
+
+  .key-points li.imp  { border-left-color: var(--accent); }
+  .key-points li.crit { border-left-color: var(--danger); }
+  .key-points li.note { border-left-color: var(--accent2); }
+  .key-points li.grn  { border-left-color: var(--accent3); }
+
+  .mnemonic {
+    margin-top: 12px;
+    background: rgba(99,217,138,0.07);
+    border: 1px dashed rgba(99,217,138,0.25);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 13px;
+    color: var(--accent3);
+  }
+
+  .mnemonic::before { content: '💡 '; }
+
+  /* ── PROGRESS ── */
+  .progress-wrap { margin-bottom: 32px; }
+
+  .progress-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .progress-bar {
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent2), var(--accent3));
+    border-radius: 2px;
+    width: 0%;
+    transition: width 0.4s ease;
+  }
+
+  /* ── FOOTER ── */
+  .footer {
+    margin-top: 60px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+  }
+
+  .chapter-card.hidden { display: none; }
+
+  @media (max-width: 600px) {
+    .hero::after { font-size: 120px; }
+    .stats-strip { grid-template-columns: repeat(2, 1fr); }
+    .hiyield ul  { grid-template-columns: 1fr; }
+    .ch-tags     { display: none; }
+    .milestone-table { font-size: 12px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="search-bar">
+  <div class="search-inner">
+    <input class="search-input" type="text" id="searchInput" placeholder="Search chapters, milestones, topics…" oninput="filterChapters()">
+    <span class="chapter-count" id="chapterCount">13 chapters</span>
+  </div>
+</div>
+
+<div class="page-wrap">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-tag">Nelson Textbook of Pediatrics · 22nd Edition · 2024</div>
+    <h1>Part <span>II</span><br>Growth, Development<br>&amp; Behavior</h1>
+    <p class="hero-sub">Exam-oriented study notes covering Chapters 19–31. Milestones, growth charts, and developmental red flags — all in one place.</p>
+    <div class="hero-meta">
+      <div class="meta-pill"><span class="dot" style="background:var(--accent2)"></span> 13 Chapters</div>
+      <div class="meta-pill"><span class="dot" style="background:var(--accent)"></span> Milestone Focus</div>
+      <div class="meta-pill"><span class="dot" style="background:var(--accent3)"></span> Exam Ready</div>
+    </div>
+  </div>
+
+  <!-- PROGRESS -->
+  <div class="progress-wrap">
+    <div class="progress-label">
+      <span>Reading Progress</span>
+      <span id="progressText">0 / 13 opened</span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-strip">
+    <div class="stat-card">
+      <div class="stat-label">Normal birth weight</div>
+      <div class="stat-value">2.5–4 kg</div>
+      <div class="stat-desc">Low BW &lt;2.5 kg; VLBW &lt;1.5 kg</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Birth weight doubles by</div>
+      <div class="stat-value">5 months</div>
+      <div class="stat-desc">Triples by 12 months; 4× by 2 yrs</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Birth length ~50 cm</div>
+      <div class="stat-value">+25 cm/yr</div>
+      <div class="stat-desc">Height doubles by ~4 years</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Head circumference</div>
+      <div class="stat-value">34 cm</div>
+      <div class="stat-desc">At birth; +2 cm/month (0–3 mo)</div>
+    </div>
+  </div>
+
+  <!-- HIGH YIELD -->
+  <div class="hiyield">
+    <div class="hiyield-header">⚡ High-Yield Exam Points — Part II</div>
+    <ul>
+      <li><strong class="hl">Birth weight</strong>: doubles by 5 mo, triples by 12 mo, quadruples by 2 yrs</li>
+      <li><strong class="hl2">Social smile</strong> → 2 months (first social milestone)</li>
+      <li><strong class="hl2">First word (mama/dada, specific)</strong> → 12 months</li>
+      <li><strong class="hl2">2-word phrases</strong> → 24 months</li>
+      <li><strong class="hl2">Stranger anxiety</strong> → peaks 8–10 months</li>
+      <li><strong class="hl">Pincer grasp</strong> → 9–10 months</li>
+      <li><strong class="hl">Walking independently</strong> → 12–15 months</li>
+      <li><strong class="hld">No babbling by 12 mo / no words by 16 mo</strong> → red flag, refer</li>
+      <li><strong class="hld">Loss of milestones = REGRESSION</strong> → always investigate</li>
+      <li><strong class="hl3">Tanner staging</strong>: puberty in girls starts with breast bud (thelarche)</li>
+      <li><strong class="hl3">Pubarche before age 8 (girls) / 9 (boys)</strong> → precocious puberty</li>
+      <li><strong class="hl2">Object permanence</strong> → ~8–9 months (Piaget)</li>
+      <li><strong class="hl">Erikson: Trust vs Mistrust</strong> → infancy (0–1 yr)</li>
+      <li><strong class="hl">SIDS peak</strong>: 2–4 months; "Back to Sleep" campaign</li>
+    </ul>
+  </div>
+
+  <!-- CHAPTERS -->
+  <div class="section-label">Chapters 19 – 31</div>
+  <div class="chapters-grid" id="chaptersGrid">
+
+    <!-- CH 19 -->
+    <div class="chapter-card" data-keywords="developmental behavioral theories Piaget Erikson Freud Vygotsky Kohlberg cognitive psychosocial">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 19</span>
+        <span class="ch-title">Developmental and Behavioral Theories</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-dev">Theory</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <table class="milestone-table">
+          <thead>
+            <tr><th>Theorist</th><th>Theory</th><th>Key Stages (Exam Focus)</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong class="hl">Piaget</strong></td><td>Cognitive development</td><td>Sensorimotor (0–2), Preoperational (2–7), Concrete Operational (7–11), Formal Operational (12+)</td></tr>
+            <tr><td><strong class="hl2">Erikson</strong></td><td>Psychosocial</td><td>Trust vs Mistrust (0–1), Autonomy vs Shame (1–3), Initiative vs Guilt (3–6), Industry vs Inferiority (6–12), Identity vs Role Confusion (12–18)</td></tr>
+            <tr><td><strong class="hl3">Freud</strong></td><td>Psychosexual</td><td>Oral, Anal, Phallic (Oedipal), Latency, Genital</td></tr>
+            <tr><td>Kohlberg</td><td>Moral development</td><td>Pre-conventional → Conventional → Post-conventional</td></tr>
+            <tr><td>Vygotsky</td><td>Social learning</td><td>Zone of Proximal Development; scaffolding</td></tr>
+          </tbody>
+        </table>
+        <ul class="key-points">
+          <li class="imp">Piaget's <strong class="hl">Object permanence</strong> develops at ~8–9 months (sensorimotor stage)</li>
+          <li class="imp">Erikson's stage for infants: <strong class="hl">Trust vs Mistrust</strong> — secure attachment is the goal</li>
+          <li class="note">Temperament: easy, difficult, slow-to-warm — influences parenting style and outcomes</li>
+        </ul>
+        <div class="mnemonic">Piaget stages: "Silly People Can Fly" → Sensorimotor, Preoperational, Concrete, Formal</div>
+      </div>
+    </div>
+
+    <!-- CH 20 -->
+    <div class="chapter-card" data-keywords="positive parenting support attachment bonding discipline authoritative permissive">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 20</span>
+        <span class="ch-title">Positive Parenting and Support</span>
+        <div class="ch-tags"><span class="tag tag-dev">Parenting</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp"><strong class="hl2">Authoritative parenting</strong> = warm + structured = best outcomes; <em>not</em> authoritarian (harsh) or permissive (no rules)</li>
+          <li class="imp"><strong class="hl">Secure attachment</strong> → develops when caregivers are consistently responsive (Bowlby/Ainsworth)</li>
+          <li>Insecure attachment types: anxious-avoidant, anxious-ambivalent, disorganized</li>
+          <li class="note">Discipline = teaching, not punishment. Consistent, age-appropriate, non-physical techniques recommended</li>
+          <li class="crit">Physical punishment (spanking) associated with aggression, poor mental health — <strong class="hld">AAP opposes it</strong></li>
+        </ul>
+        <div class="mnemonic">Best parenting style: "Warm Rules Win" → Warmth + Structure = Authoritative</div>
+      </div>
+    </div>
+
+    <!-- CH 21 -->
+    <div class="chapter-card" data-keywords="fetal growth development gestational age SGA LGA IUGR crown rump placenta viability">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 21</span>
+        <span class="ch-title">Assessment of Fetal Growth and Development</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-grw">Growth</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp">Gestational age (GA): Naegele's rule = LMP + 9 months + 7 days</li>
+          <li class="imp"><strong class="hl">Viability</strong>: ~22–24 weeks GA (limit of viability)</li>
+          <li class="imp"><strong class="hl">SGA</strong> (Small for GA) = BW &lt;10th percentile; <strong class="hl">LGA</strong> = &gt;90th percentile</li>
+          <li>IUGR (Intrauterine Growth Restriction): symmetric (early insult, worse prognosis) vs asymmetric (late, spares brain)</li>
+          <li class="note">Crown-rump length (CRL) most accurate GA estimate in 1st trimester; femur length + BPD in 2nd/3rd</li>
+          <li>Fetal organ development: heart beats by week 6, eyes fused until week 26, lungs mature ~34–36 wks (surfactant)</li>
+        </ul>
+        <div class="mnemonic">SGA vs LGA: "Small &lt;10, Large &gt;90" (percentile)</div>
+      </div>
+    </div>
+
+    <!-- CH 22 -->
+    <div class="chapter-card" data-keywords="newborn Apgar APGAR reflexes primitive moro grasp rooting Babinski NB assessment transitional">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 22</span>
+        <span class="ch-title">The Newborn</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-crit">Critical</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp"><strong class="hl">APGAR score</strong>: <strong>A</strong>ppearance, <strong>P</strong>ulse, <strong>G</strong>rimace, <strong>A</strong>ctivity, <strong>R</strong>espiration — scored at 1 &amp; 5 min; 7–10 = good, &lt;7 = needs intervention</li>
+          <li class="imp">Normal newborn: HR 100–160, RR 30–60, temp 36.5–37.5°C</li>
+          <li class="imp">Primitive reflexes and disappearance ages:</li>
+        </ul>
+        <table class="milestone-table">
+          <thead><tr><th>Reflex</th><th>Appears</th><th>Disappears</th></tr></thead>
+          <tbody>
+            <tr><td><strong class="hl">Moro</strong></td><td>Birth</td><td>~4–6 months</td></tr>
+            <tr><td><strong class="hl">Rooting</strong></td><td>Birth</td><td>~4 months awake; 7 mo asleep</td></tr>
+            <tr><td><strong class="hl">Palmar grasp</strong></td><td>Birth</td><td>~5–6 months</td></tr>
+            <tr><td><strong class="hl">Plantar grasp</strong></td><td>Birth</td><td>~9–12 months</td></tr>
+            <tr><td><strong class="hl">Babinski</strong></td><td>Birth</td><td>~12–24 months (upgoing normal until then)</td></tr>
+            <tr><td><strong class="hl">Parachute</strong></td><td>~8–9 mo</td><td>Persists</td></tr>
+          </tbody>
+        </table>
+        <ul class="key-points">
+          <li class="crit">Persistent primitive reflex beyond expected age = <strong class="hld">neurological red flag</strong></li>
+          <li class="note">Physiologic weight loss: up to <strong class="hl2">10%</strong> in first week; regained by <strong class="hl2">day 10–14</strong></li>
+        </ul>
+        <div class="mnemonic">APGAR: Appearance Pulse Grimace Activity Respiration (0–2 each = max 10)</div>
+      </div>
+    </div>
+
+    <!-- CH 23 -->
+    <div class="chapter-card" data-keywords="first year infant milestones gross motor fine motor language social smile head control sitting walking">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 23</span>
+        <span class="ch-title">The First Year</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-dev">Milestones</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <table class="milestone-table">
+          <thead><tr><th>Age</th><th>Gross Motor</th><th>Fine Motor</th><th>Language</th><th>Social/Cognitive</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="age-col">2 mo</td>
+              <td>Head up 45° prone</td>
+              <td>Hands unfisted 50%</td>
+              <td>Cooing (vowel sounds)</td>
+              <td><strong class="hl">Social smile</strong></td>
+            </tr>
+            <tr>
+              <td class="age-col">4 mo</td>
+              <td>Head up 90°; rolls F→B</td>
+              <td>Reaches for objects</td>
+              <td>Laughs, squeals</td>
+              <td>Recognizes parents</td>
+            </tr>
+            <tr>
+              <td class="age-col">6 mo</td>
+              <td>Sits with support; rolls B→F</td>
+              <td>Transfers hand-to-hand</td>
+              <td>Babbling (consonants)</td>
+              <td>Stranger anxiety begins</td>
+            </tr>
+            <tr>
+              <td class="age-col">9 mo</td>
+              <td>Pulls to stand; cruises</td>
+              <td><strong class="hl">Pincer grasp</strong> (9–10 mo)</td>
+              <td>Mama/dada (non-specific)</td>
+              <td>Object permanence; waves bye-bye</td>
+            </tr>
+            <tr>
+              <td class="age-col">12 mo</td>
+              <td>Walks with 1 hand held</td>
+              <td>Neat pincer grasp</td>
+              <td><strong class="hl">1 word (specific)</strong></td>
+              <td>Separation anxiety peaks; uses cup</td>
+            </tr>
+          </tbody>
+        </table>
+        <ul class="key-points">
+          <li class="crit">Red flags: no social smile by 2 mo, no babbling by 6 mo, no gestures by 12 mo → refer</li>
+          <li class="imp"><strong class="hl">Stranger anxiety</strong> peaks at 8–10 months (normal)</li>
+          <li class="imp"><strong class="hl">Separation anxiety</strong> peaks at 12–18 months (normal)</li>
+        </ul>
+        <div class="mnemonic">Pincer at 9, Walking at 12, Words at 12 → "Nine Twelve Twelve"</div>
+      </div>
+    </div>
+
+    <!-- CH 24 -->
+    <div class="chapter-card" data-keywords="second year toddler milestones 18 months 24 months words phrases autonomy parallel play">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 24</span>
+        <span class="ch-title">The Second Year</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-dev">Milestones</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <table class="milestone-table">
+          <thead><tr><th>Age</th><th>Gross Motor</th><th>Fine Motor</th><th>Language</th><th>Social</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="age-col">15 mo</td>
+              <td>Walks independently</td>
+              <td>Stacks 2 blocks</td>
+              <td>4–6 words</td>
+              <td>Imitates; uses spoon</td>
+            </tr>
+            <tr>
+              <td class="age-col">18 mo</td>
+              <td>Runs; walks upstairs (2 feet/step)</td>
+              <td>Stacks 3–4 blocks</td>
+              <td><strong class="hl">10+ words</strong>; points to body parts</td>
+              <td>Parallel play; temper tantrums peak</td>
+            </tr>
+            <tr>
+              <td class="age-col">24 mo</td>
+              <td>Runs well; jumps</td>
+              <td>Stacks 6 blocks; turns pages</td>
+              <td><strong class="hl">2-word phrases (50+ words)</strong></td>
+              <td>Parallel → associative play begins; Erikson: Autonomy vs Shame</td>
+            </tr>
+          </tbody>
+        </table>
+        <ul class="key-points">
+          <li class="crit"><strong class="hld">No words by 16 months</strong> → developmental referral</li>
+          <li class="crit"><strong class="hld">No 2-word phrases by 24 months</strong> → referral + M-CHAT for autism</li>
+          <li class="imp">Toddler's diarrhea (toddler's functional diarrhea) — normal variant, resolves with age</li>
+          <li class="note">50% of speech intelligible to strangers by 24 months; 75% by 36 months; 100% by 48 months</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- CH 25 -->
+    <div class="chapter-card" data-keywords="preschool years 3 4 5 years tricycle scissors cooperative play magical thinking egocentrism">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 25</span>
+        <span class="ch-title">The Preschool Years (3–5 Years)</span>
+        <div class="ch-tags"><span class="tag tag-dev">Milestones</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <table class="milestone-table">
+          <thead><tr><th>Age</th><th>Motor</th><th>Language</th><th>Social/Cognitive</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="age-col">3 yrs</td>
+              <td>Rides tricycle; walks up stairs alternating feet</td>
+              <td>3-word sentences; 900 words; 75% intelligible</td>
+              <td>Knows first name; cooperative play begins; draws circle</td>
+            </tr>
+            <tr>
+              <td class="age-col">4 yrs</td>
+              <td>Hops on 1 foot; skips; pumps swing</td>
+              <td>Tells stories; asks "why"</td>
+              <td>Knows colors; draws cross (+); Erikson: Initiative vs Guilt</td>
+            </tr>
+            <tr>
+              <td class="age-col">5 yrs</td>
+              <td>Skips alternating feet; jumps rope</td>
+              <td>100% intelligible; 2000+ words</td>
+              <td>Draws square &amp; triangle; prints letters; knows address</td>
+            </tr>
+          </tbody>
+        </table>
+        <ul class="key-points">
+          <li class="imp">Piaget: Preoperational stage — <strong class="hl">egocentrism</strong> (can't take another's perspective), magical thinking, animism</li>
+          <li class="note">Play types: solitary → parallel → associative → <strong class="hl2">cooperative</strong> (by 4–5 yrs)</li>
+          <li class="imp">Draw circle by 3, cross by 4, square by 5, triangle by 5–6 → "3-4-5 Square Triangle"</li>
+        </ul>
+        <div class="mnemonic">Drawings: "CiCross-Square-Tri" → Circle (3), Cross (4), Square (5), Triangle (5–6)</div>
+      </div>
+    </div>
+
+    <!-- CH 26 -->
+    <div class="chapter-card" data-keywords="middle childhood 6 12 years school age concrete operations industry inferiority peer group">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 26</span>
+        <span class="ch-title">Middle Childhood (6–12 Years)</span>
+        <div class="ch-tags"><span class="tag tag-dev">School Age</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp">Piaget: <strong class="hl">Concrete Operational stage</strong> — conservation, reversibility, classification, seriation</li>
+          <li class="imp">Erikson: <strong class="hl">Industry vs Inferiority</strong> — success builds competence; failure → inferiority</li>
+          <li>Social: peer relationships become primary; same-sex friendships dominate</li>
+          <li class="note">School readiness: attention, fine motor skills, social skills, language; assessed at 5–6 yrs</li>
+          <li>Growth: ~6 cm/year height; 2–3 kg/year weight during middle childhood</li>
+          <li>Puberty starts toward end of this period (see Tanner staging in Ch. 27)</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- CH 27 -->
+    <div class="chapter-card" data-keywords="assessment growth growth chart weight height BMI Tanner puberty sexual maturity rating percentile failure to thrive">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 27</span>
+        <span class="ch-title">Assessment of Growth</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-grw">Growth</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp">Plot on <strong class="hl">WHO growth charts</strong> (0–2 yrs) and <strong class="hl">CDC charts</strong> (2–18 yrs)</li>
+          <li class="imp"><strong class="hl">Failure to Thrive (FTT)</strong>: weight &lt;3rd–5th percentile OR crossing 2 major percentile lines downward</li>
+          <li class="imp">Most FTT is <strong class="hld">non-organic</strong> (inadequate intake) — assess feeding practices first</li>
+        </ul>
+        <table class="milestone-table">
+          <thead><tr><th>Tanner Stage</th><th>Girls (Breast)</th><th>Boys (Genitalia)</th><th>Pubic Hair (Both)</th></tr></thead>
+          <tbody>
+            <tr><td class="age-col">Stage 1</td><td>Prepubertal</td><td>Prepubertal</td><td>None</td></tr>
+            <tr><td class="age-col">Stage 2</td><td><strong class="hl">Breast bud (thelarche)</strong> ~8–13 yrs</td><td>Testicular enlargement &gt;4 mL (~9–14 yrs)</td><td>Sparse, slightly pigmented</td></tr>
+            <tr><td class="age-col">Stage 3</td><td>Breast/areola enlarge</td><td>Penile length increases</td><td>Darker, curlier</td></tr>
+            <tr><td class="age-col">Stage 4</td><td>Areola secondary mound</td><td>Glans develops, skin darkens</td><td>Adult-type, limited area</td></tr>
+            <tr><td class="age-col">Stage 5</td><td>Adult contour</td><td>Adult size</td><td>Adult distribution</td></tr>
+          </tbody>
+        </table>
+        <ul class="key-points">
+          <li class="crit"><strong class="hld">Precocious puberty</strong>: breast development &lt;8 yrs (girls) or testicular enlargement &lt;9 yrs (boys)</li>
+          <li class="crit"><strong class="hld">Delayed puberty</strong>: no signs by 13 yrs (girls) or 14 yrs (boys)</li>
+          <li class="note">Girls: thelarche → pubarche → peak height velocity → menarche (~2 yrs after thelarche)</li>
+          <li class="imp">Short stature: height &lt;3rd percentile or &lt;2 SD below mean; bone age key for diagnosis</li>
+        </ul>
+        <div class="mnemonic">Puberty in girls order: "The Picky Girl Menstruates" → Thelarche, Pubarche, Growth spurt, Menarche</div>
+      </div>
+    </div>
+
+    <!-- CH 28 -->
+    <div class="chapter-card" data-keywords="developmental behavioral surveillance screening ASQ MCHAT M-CHAT Denver autism red flags referral">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 28</span>
+        <span class="ch-title">Developmental and Behavioral Surveillance and Screening</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-dev">Screening</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp"><strong class="hl">Surveillance</strong> = at every well-child visit (ongoing, flexible)</li>
+          <li class="imp"><strong class="hl">Formal screening</strong> = standardized tools at ages 9, 18, 24/30 months</li>
+          <li class="note">Tools: <strong class="hl2">ASQ</strong> (Ages and Stages Questionnaire) — general; <strong class="hl2">M-CHAT-R</strong> — autism-specific at 18 &amp; 24 months</li>
+          <li class="crit"><strong class="hld">Absolute red flags (refer immediately):</strong></li>
+          <li class="crit">No social smile by 2 months</li>
+          <li class="crit">No babbling by 12 months</li>
+          <li class="crit">No single words by 16 months</li>
+          <li class="crit">No 2-word phrases by 24 months</li>
+          <li class="crit"><strong class="hld">ANY loss of previously acquired skills at ANY age</strong></li>
+          <li class="imp">Developmental delay vs disorder: delay = below expected for age; disorder = qualitative difference (e.g., ASD)</li>
+        </ul>
+        <div class="mnemonic">Red flag ages: "2 – 12 – 16 – 24" → Smile 2mo, Babble 12mo, Word 16mo, Phrase 24mo</div>
+      </div>
+    </div>
+
+    <!-- CH 29 -->
+    <div class="chapter-card" data-keywords="child care daycare quality attachment development cognitive outcomes working parents">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 29</span>
+        <span class="ch-title">Child Care</span>
+        <div class="ch-tags"><span class="tag tag-dev">Social</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp">High-quality childcare → improved cognitive &amp; social outcomes, especially for disadvantaged children</li>
+          <li>Quality indicators: low child-to-adult ratio, trained caregivers, safe environment, language-rich setting</li>
+          <li class="note">Childcare does NOT harm attachment when quality is high</li>
+          <li>Infectious disease risk: increased in group settings (URIs, otitis media, diarrhea)</li>
+          <li>Pediatricians should advise parents on selecting quality childcare and advocate for childcare policy</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- CH 30 -->
+    <div class="chapter-card" data-keywords="loss separation bereavement grief death dying child stages Kübler-Ross sibling mourning">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 30</span>
+        <span class="ch-title">Loss, Separation, and Bereavement</span>
+        <div class="ch-tags"><span class="tag tag-dev">Behavioral</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp">Children's understanding of death by age:</li>
+          <li class="note">&lt;2 yrs: no concept | 2–5 yrs: magical thinking, reversible | 5–9 yrs: personified (death as person); understands permanence | &gt;9 yrs: adult concept (permanent, universal, inevitable)</li>
+          <li class="imp">Kübler-Ross stages of grief: <strong class="hl">DABDA</strong> — Denial, Anger, Bargaining, Depression, Acceptance (not always sequential)</li>
+          <li>Children grieve differently: may appear unaffected then re-grieve at developmental milestones</li>
+          <li class="note">Separation anxiety is normal in infancy; pathological if persistent past 3 yrs or causes significant impairment</li>
+          <li class="crit">Warning signs: prolonged functional impairment, regression, suicidal ideation after loss → refer</li>
+        </ul>
+        <div class="mnemonic">Grief stages: "DABDA" → Denial, Anger, Bargaining, Depression, Acceptance</div>
+      </div>
+    </div>
+
+    <!-- CH 31 -->
+    <div class="chapter-card" data-keywords="sleep medicine SIDS safe sleep back to sleep insomnia parasomnias night terrors sleepwalking narcolepsy obstructive sleep apnea">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 31</span>
+        <span class="ch-title">Sleep Medicine</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-crit">Critical</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="crit"><strong class="hld">SIDS (Sudden Infant Death Syndrome)</strong>: peak age <strong class="hld">2–4 months</strong>; leading cause of infant death 1–12 months</li>
+          <li class="crit">SIDS prevention (<strong class="hld">AAP "Safe Sleep" guidelines</strong>): <strong class="hld">Back to sleep</strong>, firm flat surface, no soft bedding/bumpers/sharing, room-sharing OK without bed-sharing, pacifier use protective</li>
+          <li class="imp">Normal sleep needs: Newborn 14–17 hrs; Infant 12–16 hrs; Toddler 11–14 hrs; School age 9–11 hrs; Teen 8–10 hrs</li>
+        </ul>
+        <table class="milestone-table">
+          <thead><tr><th>Disorder</th><th>Key Features</th><th>Management</th></tr></thead>
+          <tbody>
+            <tr><td><strong class="hl">Night Terrors</strong></td><td>NREM (deep sleep); screaming, inconsolable, NO memory; age 3–8 yrs</td><td>Reassure parents; scheduled awakening; self-limiting</td></tr>
+            <tr><td><strong class="hl">Nightmares</strong></td><td>REM sleep; child wakes, recalls dream, consolable</td><td>Reassurance; address stressors</td></tr>
+            <tr><td><strong class="hl2">Sleepwalking</strong></td><td>NREM; automatic behaviors; no memory; family history common</td><td>Safety measures; usually outgrown</td></tr>
+            <tr><td><strong class="hl3">OSA</strong></td><td>Adenotonsillar hypertrophy #1 cause; snoring, apneas, behavioral issues, enuresis</td><td>Adenotonsillectomy first line; PSG diagnostic</td></tr>
+            <tr><td>Narcolepsy</td><td>EDS + cataplexy + sleep paralysis + hypnagogic hallucinations</td><td>Stimulants for EDS; SSRIs for cataplexy</td></tr>
+          </tbody>
+        </table>
+        <ul class="key-points">
+          <li class="imp"><strong class="hl">Night terrors vs nightmares</strong>: terrors = NREM, no memory, inconsolable; nightmares = REM, recalled, consolable</li>
+          <li class="note">Obstructive Sleep Apnea in children: <strong class="hl2">adenotonsillectomy</strong> is first-line treatment</li>
+        </ul>
+        <div class="mnemonic">SIDS safe sleep: "Back Alone Firm Flat Room" → Back to sleep, Alone, Firm surface, Flat, Room-share only</div>
+      </div>
+    </div>
+
+  </div><!-- end chapters-grid -->
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <span>Nelson Textbook of Pediatrics · 22nd Ed. · 2024</span>
+    <span>Part II: Chapters 19–31</span>
+  </div>
+
+</div><!-- end page-wrap -->
+
+<script>
+  let openedChapters = new Set();
+  const TOTAL = 13;
+
+  function toggleCard(header) {
+    const card = header.parentElement;
+    const wasOpen = card.classList.contains('open');
+    card.classList.toggle('open');
+    const chNum = card.querySelector('.ch-num').textContent;
+    if (!wasOpen) openedChapters.add(chNum);
+    updateProgress();
+  }
+
+  function updateProgress() {
+    const pct = Math.min((openedChapters.size / TOTAL) * 100, 100);
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressText').textContent = `${openedChapters.size} / ${TOTAL} opened`;
+  }
+
+  function filterChapters() {
+    const q = document.getElementById('searchInput').value.toLowerCase().trim();
+    const cards = document.querySelectorAll('.chapter-card');
+    let visible = 0;
+    cards.forEach(card => {
+      const text = card.textContent.toLowerCase();
+      const keywords = (card.dataset.keywords || '').toLowerCase();
+      const match = !q || text.includes(q) || keywords.includes(q);
+      card.classList.toggle('hidden', !match);
+      if (match) visible++;
+    });
+    document.getElementById('chapterCount').textContent = q ? `${visible} result${visible !== 1 ? 's' : ''}` : `${TOTAL} chapters`;
+  }
+
+  // Ctrl+E = expand all
+  document.addEventListener('keydown', e => {
+    if (e.ctrlKey && e.key === 'e') {
+      e.preventDefault();
+      document.querySelectorAll('.chapter-card:not(.open)').forEach(c => {
+        c.classList.add('open');
+        openedChapters.add(c.querySelector('.ch-num').textContent);
+      });
+      updateProgress();
+    }
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nelson Pediatrics — Part VI: Fluid &amp; Electrolyte Disorders</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#0d1117; --surface:#161b22; --surface2:#1c2333; --border:#30363d;
+    --accent:#60a5fa;   /* blue */
+    --accent2:#f472b6;  /* pink */
+    --accent3:#34d399;  /* green */
+    --accent4:#fbbf24;  /* amber */
+    --danger:#f87171;
+    --purple:#a78bfa;
+    --text:#e6edf3; --text-muted:#8b949e; --text-dim:#484f58;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-weight:300;line-height:1.75;min-height:100vh}
+  body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:.4}
+  .page-wrap{position:relative;z-index:1;max-width:960px;margin:0 auto;padding:0 24px 80px}
+
+  /* HERO */
+  .hero{padding:72px 0 48px;border-bottom:1px solid var(--border);margin-bottom:48px;position:relative;overflow:hidden}
+  .hero::after{content:'VI';position:absolute;right:-8px;top:0;font-family:'Playfair Display',serif;font-size:180px;font-weight:900;color:var(--border);line-height:1;pointer-events:none;user-select:none}
+  .hero-tag{display:inline-flex;align-items:center;gap:8px;background:rgba(96,165,250,.1);border:1px solid rgba(96,165,250,.3);color:var(--accent);font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;padding:5px 12px;border-radius:4px;margin-bottom:20px}
+  .hero-tag::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--accent);animation:pulse 2s ease-in-out infinite}
+  @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.8)}}
+  .hero h1{font-family:'Playfair Display',serif;font-size:clamp(26px,4.5vw,48px);font-weight:900;line-height:1.1;margin-bottom:12px}
+  .hero h1 span{color:var(--accent)}
+  .hero-sub{font-size:15px;color:var(--text-muted);max-width:540px;margin-bottom:28px}
+  .hero-meta{display:flex;gap:24px;flex-wrap:wrap}
+  .meta-pill{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text-muted);font-family:'DM Mono',monospace}
+  .meta-pill .dot{width:8px;height:8px;border-radius:50%}
+
+  /* SEARCH */
+  .search-bar{position:sticky;top:0;z-index:100;background:rgba(13,17,23,.93);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:12px 0;margin-bottom:36px}
+  .search-inner{max-width:960px;margin:0 auto;padding:0 24px;display:flex;align-items:center;gap:12px}
+  .search-input{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px 14px 8px 36px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;outline:none;transition:border-color .2s;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%238b949e' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:10px center}
+  .search-input:focus{border-color:var(--accent)}
+  .search-input::placeholder{color:var(--text-dim)}
+  .chapter-count{font-family:'DM Mono',monospace;font-size:11px;color:var(--text-muted);white-space:nowrap}
+
+  /* STATS */
+  .stats-strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:48px}
+  .stat-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px 18px;transition:border-color .2s,transform .2s}
+  .stat-card:hover{border-color:var(--accent);transform:translateY(-2px)}
+  .stat-label{font-family:'DM Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--text-muted);margin-bottom:6px}
+  .stat-value{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--accent)}
+  .stat-desc{font-size:12px;color:var(--text-muted);margin-top:2px}
+
+  /* HIGH YIELD */
+  .hiyield{background:linear-gradient(135deg,rgba(96,165,250,.08),rgba(96,165,250,.02));border:1px solid rgba(96,165,250,.25);border-left:3px solid var(--accent);border-radius:10px;padding:20px 24px;margin-bottom:48px}
+  .hiyield-header{display:flex;align-items:center;gap:8px;font-family:'DM Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:var(--accent);margin-bottom:14px}
+  .hiyield ul{list-style:none;display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:8px}
+  .hiyield ul li{font-size:13px;color:var(--text);padding-left:16px;position:relative;line-height:1.5}
+  .hiyield ul li::before{content:'▸';position:absolute;left:0;color:var(--accent);font-size:11px}
+
+  /* INLINE STYLES */
+  strong.hl {color:var(--accent);font-weight:600}
+  strong.hl2{color:var(--accent2);font-weight:600}
+  strong.hl3{color:var(--accent3);font-weight:600}
+  strong.hl4{color:var(--accent4);font-weight:600}
+  strong.hlp{color:var(--purple);font-weight:600}
+  strong.hld{color:var(--danger);font-weight:600}
+
+  /* TABLE */
+  .t{width:100%;border-collapse:collapse;font-size:13px;margin:12px 0}
+  .t th{background:var(--surface2);color:var(--accent);font-family:'DM Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.08em;padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+  .t td{padding:7px 12px;border-bottom:1px solid var(--border);color:var(--text);vertical-align:top;line-height:1.55}
+  .t tr:hover td{background:rgba(255,255,255,.02)}
+  .t .lbl{font-family:'DM Mono',monospace;font-size:11px;color:var(--accent4);white-space:nowrap;font-weight:500}
+  .t .lbl2{font-family:'DM Mono',monospace;font-size:11px;color:var(--accent2);white-space:nowrap;font-weight:500}
+
+  /* FORMULA BOX */
+  .formula{margin:10px 0;background:var(--surface2);border:1px solid var(--border);border-left:3px solid var(--purple);border-radius:8px;padding:10px 16px;font-family:'DM Mono',monospace;font-size:13px;color:var(--purple);line-height:1.8}
+  .formula .flabel{font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--text-muted);margin-bottom:4px}
+
+  /* SECTION LABEL */
+  .section-label{font-family:'DM Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:.14em;color:var(--text-muted);margin-bottom:16px;display:flex;align-items:center;gap:10px}
+  .section-label::after{content:'';flex:1;height:1px;background:var(--border)}
+
+  /* CHAPTER CARDS */
+  .chapters-grid{display:flex;flex-direction:column;gap:12px;margin-bottom:48px}
+  .chapter-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:border-color .2s,box-shadow .2s}
+  .chapter-card:hover{border-color:rgba(96,165,250,.35);box-shadow:0 4px 20px rgba(0,0,0,.3)}
+  .chapter-header{display:flex;align-items:center;gap:14px;padding:16px 20px;cursor:pointer;user-select:none}
+  .ch-num{font-family:'DM Mono',monospace;font-size:11px;font-weight:500;color:var(--text-muted);background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:3px 8px;white-space:nowrap;min-width:42px;text-align:center}
+  .ch-title{flex:1;font-size:15px;font-weight:500;color:var(--text)}
+  .ch-tags{display:flex;gap:6px;flex-wrap:wrap}
+  .tag{font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:.08em;padding:2px 7px;border-radius:4px;border:1px solid}
+  .tag-hiy{color:var(--accent4);border-color:rgba(251,191,36,.3);background:rgba(251,191,36,.08)}
+  .tag-crit{color:var(--danger);border-color:rgba(248,113,113,.3);background:rgba(248,113,113,.08)}
+  .tag-elec{color:var(--accent);border-color:rgba(96,165,250,.3);background:rgba(96,165,250,.08)}
+  .tag-rx{color:var(--accent3);border-color:rgba(52,211,153,.3);background:rgba(52,211,153,.08)}
+  .tag-form{color:var(--purple);border-color:rgba(167,139,250,.3);background:rgba(167,139,250,.08)}
+  .ch-toggle{color:var(--text-muted);font-size:18px;transition:transform .3s;line-height:1}
+  .chapter-card.open .ch-toggle{transform:rotate(180deg)}
+  .chapter-body{display:none;padding:0 20px 20px;border-top:1px solid var(--border);animation:slideIn .2s ease}
+  @keyframes slideIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
+  .chapter-card.open .chapter-body{display:block}
+
+  /* KEY POINTS */
+  .key-points{list-style:none;display:flex;flex-direction:column;gap:6px;margin-top:12px}
+  .key-points li{font-size:13.5px;color:var(--text);padding:8px 12px;background:var(--surface2);border-radius:6px;border-left:2px solid var(--border);line-height:1.6}
+  .key-points li.imp {border-left-color:var(--accent4)}
+  .key-points li.crit{border-left-color:var(--danger)}
+  .key-points li.note{border-left-color:var(--accent)}
+  .key-points li.grn {border-left-color:var(--accent3)}
+  .key-points li.pur {border-left-color:var(--purple)}
+
+  .mnemonic{margin-top:12px;background:rgba(96,165,250,.07);border:1px dashed rgba(96,165,250,.25);border-radius:8px;padding:10px 14px;font-size:13px;color:var(--accent)}
+  .mnemonic::before{content:'💡 '}
+
+  /* PROGRESS */
+  .progress-wrap{margin-bottom:32px}
+  .progress-label{font-family:'DM Mono',monospace;font-size:11px;color:var(--text-muted);margin-bottom:6px;display:flex;justify-content:space-between}
+  .progress-bar{height:4px;background:var(--border);border-radius:2px;overflow:hidden}
+  .progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:2px;width:0%;transition:width .4s ease}
+
+  .footer{margin-top:60px;padding-top:24px;border-top:1px solid var(--border);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;font-family:'DM Mono',monospace;font-size:11px;color:var(--text-dim)}
+  .chapter-card.hidden{display:none}
+
+  @media(max-width:600px){
+    .hero::after{font-size:110px}
+    .stats-strip{grid-template-columns:repeat(2,1fr)}
+    .hiyield ul{grid-template-columns:1fr}
+    .ch-tags{display:none}
+    .t{font-size:12px}
+  }
+</style>
+</head>
+<body>
+
+<div class="search-bar">
+  <div class="search-inner">
+    <input class="search-input" type="text" id="searchInput" placeholder="Search Na, K, acid-base, dehydration, maintenance fluids…" oninput="filterChapters()">
+    <span class="chapter-count" id="chapterCount">4 chapters</span>
+  </div>
+</div>
+
+<div class="page-wrap">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-tag">Nelson Textbook of Pediatrics · 22nd Edition · 2024</div>
+    <h1>Part <span>VI</span><br>Fluid &amp; Electrolyte<br>Disorders</h1>
+    <p class="hero-sub">Exam-oriented study notes covering Chapters 73–76. The highest-yield section for clinical pediatrics — fluids, sodium, potassium, acid-base, and dehydration management.</p>
+    <div class="hero-meta">
+      <div class="meta-pill"><span class="dot" style="background:var(--accent)"></span> 4 Core Chapters</div>
+      <div class="meta-pill"><span class="dot" style="background:var(--accent2)"></span> Holliday-Segar Method</div>
+      <div class="meta-pill"><span class="dot" style="background:var(--accent3)"></span> Acid-Base Mastery</div>
+      <div class="meta-pill"><span class="dot" style="background:var(--accent4)"></span> Electrolyte Tables</div>
+    </div>
+  </div>
+
+  <!-- PROGRESS -->
+  <div class="progress-wrap">
+    <div class="progress-label">
+      <span>Reading Progress</span>
+      <span id="progressText">0 / 4 opened</span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-strip">
+    <div class="stat-card">
+      <div class="stat-label">Maintenance fluid (≤10 kg)</div>
+      <div class="stat-value">100 mL/kg</div>
+      <div class="stat-desc">Holliday-Segar: 100/50/20 rule for daily water</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Normal Na⁺</div>
+      <div class="stat-value">135–145</div>
+      <div class="stat-desc">mEq/L; &lt;135 = hyponatremia; &gt;145 = hypernatremia</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Normal K⁺</div>
+      <div class="stat-value">3.5–5.0</div>
+      <div class="stat-desc">mEq/L; &lt;3.5 = hypokalemia; &gt;5.0 = hyperkalemia</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Normal arterial pH</div>
+      <div class="stat-value">7.35–7.45</div>
+      <div class="stat-desc">&lt;7.35 = acidosis; &gt;7.45 = alkalosis</div>
+    </div>
+  </div>
+
+  <!-- HIGH YIELD -->
+  <div class="hiyield">
+    <div class="hiyield-header">⚡ High-Yield Exam Points — Part VI</div>
+    <ul>
+      <li><strong class="hl">Holliday-Segar</strong>: 100 mL/kg (first 10 kg) + 50 mL/kg (next 10 kg) + 20 mL/kg (each kg above 20 kg)</li>
+      <li><strong class="hl4">Isotonic (isonatremic) dehydration</strong>: most common type; Na 130–150; treat with NS bolus then maintenance</li>
+      <li><strong class="hld">Hypernatremic dehydration</strong>: Na &gt;150; correct SLOWLY (&lt;10–12 mEq/L/day) to prevent cerebral edema</li>
+      <li><strong class="hld">Hyponatremic dehydration</strong>: Na &lt;130; correct SLOWLY (&lt;8–12 mEq/L/day) to prevent osmotic demyelination</li>
+      <li><strong class="hl">SIADH</strong>: hyponatremia + urine osmolality &gt; plasma osmolality + inappropriately concentrated urine; treat with fluid restriction</li>
+      <li><strong class="hld">Severe symptomatic hyponatremia (seizures)</strong>: give 3% NaCl to raise Na 3–5 mEq/L rapidly, then slow correction</li>
+      <li><strong class="hl2">Hypokalemia</strong>: U waves on ECG, muscle weakness, ileus; causes = vomiting, diuretics, alkalosis</li>
+      <li><strong class="hld">Hyperkalemia</strong>: peaked T waves → wide QRS → sine wave → VF; treat with calcium gluconate (membrane stabilize) FIRST</li>
+      <li><strong class="hl3">Metabolic acidosis + high AG</strong>: MUDPILES — Methanol, Uremia, DKA, Propylene glycol, Isoniazid/Iron, Lactic acidosis, Ethylene glycol, Salicylates</li>
+      <li><strong class="hl">Normal AG metabolic acidosis</strong>: HARDUPS — Hyperalimentation, Addison's, RTA, Diarrhea, Ureteral diversion, Pancreatic fistula, Saline excess</li>
+      <li><strong class="hl4">Respiratory acidosis</strong>: ↑PaCO₂ → lungs retain CO₂; causes = hypoventilation, airway obstruction, pneumonia, sedation</li>
+      <li><strong class="hlp">Winter's formula</strong>: expected PaCO₂ = 1.5×(HCO₃) + 8 ± 2 (compensatory in metabolic acidosis)</li>
+      <li><strong class="hld">DKA</strong>: most common cause of high-AG metabolic acidosis in children; treat with IV fluids + insulin; K⁺ replacement required</li>
+    </ul>
+  </div>
+
+  <!-- CHAPTERS -->
+  <div class="section-label">Chapters 73 – 76</div>
+  <div class="chapters-grid" id="chaptersGrid">
+
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- CH 73: ELECTROLYTE AND ACID-BASE DISORDERS -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <div class="chapter-card" data-keywords="sodium hyponatremia hypernatremia SIADH DI potassium hypokalemia hyperkalemia calcium phosphorus magnesium acid base pH bicarbonate metabolic respiratory acidosis alkalosis anion gap MUDPILES">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 73</span>
+        <span class="ch-title">Electrolyte and Acid-Base Disorders</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-crit">Critical</span><span class="tag tag-elec">Electrolytes</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+
+        <!-- SECTION A: SODIUM -->
+        <p style="margin-top:16px;font-family:'DM Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--accent2)">▸ SODIUM DISORDERS</p>
+        <table class="t" style="margin-top:8px">
+          <thead><tr><th>Disorder</th><th>Definition</th><th>Causes</th><th>Symptoms</th><th>Treatment</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="lbl">Hyponatremia</td>
+              <td>Na⁺ &lt;135 mEq/L</td>
+              <td>SIADH (↑ADH → water retention), GI losses with hypotonic replacement, heart failure, cirrhosis, nephrotic syndrome, hypothyroidism, adrenal insufficiency</td>
+              <td>Nausea, headache, lethargy → confusion → seizures → coma. Symptoms worse with rapid onset</td>
+              <td><strong class="hld">Acute/symptomatic (seizures)</strong>: 3% NaCl 2–3 mL/kg IV to raise Na 3–5 mEq/L quickly. Chronic: fluid restriction (SIADH) or treat underlying cause. <strong class="hld">Max correction: &lt;10–12 mEq/L/day</strong> to avoid osmotic demyelination syndrome (ODS / central pontine myelinolysis)</td>
+            </tr>
+            <tr>
+              <td class="lbl">Hypernatremia</td>
+              <td>Na⁺ &gt;145 mEq/L</td>
+              <td>Dehydration (water loss &gt; Na loss), DI (central or nephrogenic), inadequate free water intake, hyperaldosteronism, hypertonic NaHCO₃ administration</td>
+              <td>Thirst, irritability, lethargy, high-pitched cry (infants), seizures, intracranial hemorrhage (brain shrinkage)</td>
+              <td><strong class="hld">Correct slowly: &lt;10–12 mEq/L/day</strong> — too-rapid correction → cerebral edema. Use hypotonic fluids (½NS or D5W). Calculate free water deficit. Goal: normalize over 48–72 hrs</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="formula">
+          <div class="flabel">SIADH Criteria (Schwartz-Bartter)</div>
+          Plasma Na &lt;135 + Plasma osmolality &lt;275 + Urine osmolality &gt; plasma osmolality + Urine Na &gt;20 + euvolemic + no adrenal/thyroid/renal disease
+          <div style="margin-top:6px;color:var(--text-muted);font-size:11px">Causes: CNS disorders, pulmonary disease, malignancy, pain, nausea, drugs (carbamazepine, SSRIs, cyclophosphamide, NSAIDs, opioids)</div>
+        </div>
+
+        <div class="formula">
+          <div class="flabel">Free Water Deficit Formula (Hypernatremia)</div>
+          Free Water Deficit (L) = 0.6 × Weight(kg) × [(Current Na / 140) − 1]
+          <div style="margin-top:6px;color:var(--text-muted);font-size:11px">Replace deficit over 48 hrs + add daily maintenance water; check Na every 4–6 hrs</div>
+        </div>
+
+        <!-- SECTION B: POTASSIUM -->
+        <p style="margin-top:20px;font-family:'DM Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--accent2)">▸ POTASSIUM DISORDERS</p>
+        <table class="t" style="margin-top:8px">
+          <thead><tr><th>Disorder</th><th>Causes</th><th>ECG Changes</th><th>Treatment (in order)</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="lbl">Hypokalemia (K⁺ &lt;3.5)</td>
+              <td>Vomiting, NG suction, diarrhea, loop/thiazide diuretics, alkalosis (K⁺ shifts into cells), Bartter syndrome, Gitelman syndrome, magnesium deficiency, insulin, β-agonists</td>
+              <td>Flattened/inverted T waves, <strong class="hl4">U waves</strong> (after T wave), prolonged QU interval, ST depression, PVCs → VF if severe</td>
+              <td>Mild: oral KCl. Moderate/severe: IV KCl (max 0.3–0.5 mEq/kg/hr; NEVER push). Replace Mg²⁺ too (hypomagnesemia perpetuates hypokalemia). ECG monitoring during IV replacement</td>
+            </tr>
+            <tr>
+              <td class="lbl">Hyperkalemia (K⁺ &gt;5.5)</td>
+              <td>Renal failure (↓excretion), acidosis (K⁺ shifts out of cells), Addison disease, ACE inhibitors/K-sparing diuretics, rhabdomyolysis, hemolysis, massive transfusion, iatrogenic</td>
+              <td><strong class="hld">Peaked (tall, narrow, symmetric) T waves → prolonged PR → wide QRS → sine wave → VF/asystole</strong></td>
+              <td><strong class="hld">STEP 1:</strong> Calcium gluconate 10% (1 mL/kg IV) — membrane stabilization (does NOT lower K⁺). <strong class="hld">STEP 2:</strong> Insulin + dextrose (shifts K⁺ into cells). <strong class="hld">STEP 3:</strong> Sodium bicarbonate (if acidotic). <strong class="hld">STEP 4:</strong> Kayexalate (binds K⁺ in gut). <strong class="hld">STEP 5:</strong> Dialysis (definitive)</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- SECTION C: CALCIUM -->
+        <p style="margin-top:20px;font-family:'DM Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--accent2)">▸ CALCIUM DISORDERS</p>
+        <ul class="key-points">
+          <li class="imp">Normal total Ca: 8.5–10.5 mg/dL; ionized Ca: 4.5–5.3 mg/dL (physiologically active form)</li>
+          <li class="crit"><strong class="hld">Hypocalcemia</strong> (Ca &lt;8.5 or ionized &lt;4.5): <strong class="hld">tetany</strong> (muscle cramps, carpopedal spasm), laryngospasm, seizures, <strong class="hl">Chvostek sign</strong> (tap facial nerve → facial twitch), <strong class="hl">Trousseau sign</strong> (inflate BP cuff → carpal spasm). ECG: prolonged QTc. Causes: hypoparathyroidism, Vit D deficiency, hypomagnesemia, alkalosis (↑protein binding). Treat: IV calcium gluconate (10 mL of 10% = 93 mg elemental Ca)</li>
+          <li class="crit"><strong class="hld">Hypercalcemia</strong> (Ca &gt;10.5): "Stones, Bones, Groans, Moans" — nephrolithiasis/nephrocalcinosis, bone pain/pathologic fractures, GI (constipation, nausea, vomiting, anorexia, pancreatitis), neuropsychiatric (lethargy, confusion, psychosis). ECG: shortened QTc. Causes: hyperparathyroidism, Vit D toxicity, malignancy (PTHrP), sarcoidosis, Williams syndrome (elfin facies + supravalvular AS + hypercalcemia)</li>
+          <li class="note">Alkalosis → ↑ albumin binding of Ca²⁺ → ↓ ionized Ca → hypocalcemic symptoms even with normal total Ca</li>
+        </ul>
+        <div class="mnemonic">Chvostek = Cheek tap (facial nerve); Trousseau = Tourniquet (carpal spasm) → both = hypoCa</div>
+
+        <!-- SECTION D: MAGNESIUM -->
+        <p style="margin-top:20px;font-family:'DM Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--accent2)">▸ MAGNESIUM</p>
+        <ul class="key-points">
+          <li class="imp">Normal Mg²⁺: 1.7–2.2 mg/dL. Hypomagnesemia (&lt;1.7): muscle weakness, tetany, seizures, cardiac arrhythmias, refractory hypokalemia (must correct Mg to correct K). Causes: GI losses, diuretics, PPI overuse, Gitelman syndrome</li>
+          <li class="note">Hypermagnesemia (&gt;2.2): seen in renal failure, excessive Mg supplementation (eclampsia treatment). Symptoms: flushing, ↓DTRs (first sign), hypotension, bradycardia, respiratory depression, cardiac arrest. Treat: IV calcium (antagonizes Mg); dialysis if severe</li>
+        </ul>
+
+        <!-- SECTION E: PHOSPHORUS -->
+        <p style="margin-top:20px;font-family:'DM Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--accent2)">▸ PHOSPHORUS</p>
+        <ul class="key-points">
+          <li class="imp">Hypophosphatemia (&lt;2.5 mg/dL): muscle weakness, hemolytic anemia, respiratory failure, bone pain. Causes: refeeding syndrome (most important), Vit D deficiency, malabsorption, hyperparathyroidism. Treat: IV/PO phosphate replacement</li>
+          <li class="note">Hyperphosphatemia (&gt;4.5 mg/dL): causes hypocalcemia (Ca-PO₄ precipitation); seen in renal failure, hypoparathyroidism, rhabdomyolysis. Treat: phosphate binders (calcium carbonate), dietary restriction, dialysis</li>
+        </ul>
+
+        <!-- SECTION F: ACID-BASE -->
+        <p style="margin-top:20px;font-family:'DM Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--accent2)">▸ ACID-BASE DISORDERS</p>
+        <table class="t" style="margin-top:8px">
+          <thead><tr><th>Disorder</th><th>pH</th><th>Primary Change</th><th>Compensation</th><th>Key Causes</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="lbl">Metabolic Acidosis</td>
+              <td>↓ (&lt;7.35)</td>
+              <td>↓ HCO₃⁻</td>
+              <td>Hyperventilation ↓PaCO₂ (Kussmaul breathing)</td>
+              <td>High AG: MUDPILES. Normal AG: diarrhea, RTA, saline excess</td>
+            </tr>
+            <tr>
+              <td class="lbl">Metabolic Alkalosis</td>
+              <td>↑ (&gt;7.45)</td>
+              <td>↑ HCO₃⁻</td>
+              <td>Hypoventilation ↑PaCO₂</td>
+              <td>Vomiting (loss of HCl), NG suction, loop/thiazide diuretics, hyperaldosteronism, Bartter syndrome</td>
+            </tr>
+            <tr>
+              <td class="lbl">Respiratory Acidosis</td>
+              <td>↓ (&lt;7.35)</td>
+              <td>↑ PaCO₂</td>
+              <td>Kidneys retain HCO₃⁻ (days)</td>
+              <td>Hypoventilation: CNS depression, airway obstruction, NMD, severe pneumonia, ARDS, opioids</td>
+            </tr>
+            <tr>
+              <td class="lbl">Respiratory Alkalosis</td>
+              <td>↑ (&gt;7.45)</td>
+              <td>↓ PaCO₂</td>
+              <td>Kidneys excrete HCO₃⁻ (days)</td>
+              <td>Hyperventilation: anxiety, pain, fever, mechanical ventilation, salicylate poisoning (early), hypoxia, liver failure</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="formula">
+          <div class="flabel">Anion Gap (AG)</div>
+          AG = Na⁺ − (Cl⁻ + HCO₃⁻)     Normal: 8–12 mEq/L (or 12 ± 4 if albumin normal)
+          <div style="margin-top:6px;color:var(--text-muted);font-size:11px">Correct for albumin: for each 1 g/dL ↓albumin below 4, add 2.5 to AG</div>
+        </div>
+        <div class="formula">
+          <div class="flabel">High-AG Metabolic Acidosis Causes — MUDPILES</div>
+          M = Methanol | U = Uremia | D = DKA (diabetic ketoacidosis) | P = Propylene glycol / Paraldehyde
+          I = Isoniazid / Iron | L = Lactic acidosis | E = Ethylene glycol | S = Salicylates
+        </div>
+        <div class="formula">
+          <div class="flabel">Normal-AG Metabolic Acidosis Causes — HARDUPS</div>
+          H = Hyperalimentation | A = Addison disease | R = RTA (renal tubular acidosis) | D = Diarrhea
+          U = Ureteral diversion | P = Pancreatic fistula | S = Saline (excess)
+        </div>
+        <div class="formula">
+          <div class="flabel">Winter's Formula — Expected compensation in Metabolic Acidosis</div>
+          Expected PaCO₂ = 1.5 × [HCO₃⁻] + 8 ± 2
+          <div style="margin-top:4px;color:var(--text-muted);font-size:11px">If measured PaCO₂ &gt; expected → concurrent respiratory acidosis. If &lt; expected → concurrent respiratory alkalosis.</div>
+        </div>
+        <div class="formula">
+          <div class="flabel">Metabolic Alkalosis Compensation</div>
+          Expected PaCO₂ = 0.7 × [HCO₃⁻] + 21 ± 2     (or: PaCO₂ rises ~0.7 mmHg per 1 mEq/L ↑ HCO₃⁻)
+        </div>
+        <div class="formula">
+          <div class="flabel">Respiratory Acidosis — Metabolic Compensation</div>
+          Acute: HCO₃⁻ rises ~1 mEq/L per 10 mmHg ↑ PaCO₂
+          Chronic: HCO₃⁻ rises ~3.5 mEq/L per 10 mmHg ↑ PaCO₂ (kidneys have had time to retain HCO₃)
+        </div>
+
+        <!-- RTA SUB-SECTION -->
+        <p style="margin-top:20px;font-family:'DM Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--accent2)">▸ RENAL TUBULAR ACIDOSIS (RTA)</p>
+        <table class="t" style="margin-top:8px">
+          <thead><tr><th>Type</th><th>Defect</th><th>Urine pH</th><th>Serum K⁺</th><th>Causes</th></tr></thead>
+          <tbody>
+            <tr><td class="lbl">Type 1 (Distal)</td><td>↓H⁺ secretion in distal tubule → can't acidify urine</td><td>&gt;5.5 (alkaline)</td><td><strong class="hld">↓ (Hypo)</strong></td><td>Sjogren's, lupus, amphotericin B, nephrocalcinosis, hereditary</td></tr>
+            <tr><td class="lbl">Type 2 (Proximal)</td><td>↓ HCO₃⁻ reabsorption in proximal tubule</td><td>&lt;5.5 (can acidify)</td><td><strong class="hld">↓ (Hypo)</strong></td><td>Fanconi syndrome, Wilson disease, cystinosis, acetazolamide</td></tr>
+            <tr><td class="lbl">Type 4</td><td>↓ Aldosterone effect → ↓ H⁺ and K⁺ excretion</td><td>&lt;5.5</td><td><strong class="hld">↑ (Hyper)</strong></td><td>Addison disease, ACE inhibitors, heparin, renal insufficiency (most common type)</td></tr>
+          </tbody>
+        </table>
+        <div class="mnemonic">RTA 1 = dIstal (can't lower urine pH) | RTA 2 = Proximal (bicarbonate wasted) | RTA 4 = aldosterone gone → K UP</div>
+      </div>
+    </div><!-- end ch73 -->
+
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- CH 74: MAINTENANCE AND REPLACEMENT THERAPY -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <div class="chapter-card" data-keywords="maintenance fluid Holliday Segar 4-2-1 rule D5NS half normal saline insensible losses electrolyte composition replacement losses sodium potassium chloride">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 74</span>
+        <span class="ch-title">Maintenance and Replacement Therapy</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-form">Formulas</span><span class="tag tag-elec">Fluids</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+
+        <ul class="key-points">
+          <li class="imp">Maintenance fluids replace: insensible losses (lungs, skin ~1/3 total), urine output (~2/3 total), stool (small)</li>
+          <li class="note">Insensible losses ↑ with: fever (+12% per °C above 37), sweating, tachypnea, open wounds. ↓ with: humidity, paralysis, sedation</li>
+        </ul>
+
+        <div class="formula">
+          <div class="flabel">Holliday-Segar Method — Daily Maintenance Water (mL/day)</div>
+          0–10 kg:       100 mL/kg/day
+          10–20 kg:      1000 mL + 50 mL/kg for each kg above 10 kg
+          &gt;20 kg:     1500 mL + 20 mL/kg for each kg above 20 kg
+          <div style="margin-top:6px;color:var(--text-muted);font-size:11px">Example: 25 kg child → 1500 + (5 × 20) = 1600 mL/day</div>
+        </div>
+
+        <div class="formula">
+          <div class="flabel">4-2-1 Rule — Hourly Maintenance Rate (mL/hr)</div>
+          First 10 kg:  4 mL/kg/hr
+          Next 10 kg:   2 mL/kg/hr
+          Each kg above 20 kg: 1 mL/kg/hr
+          <div style="margin-top:6px;color:var(--text-muted);font-size:11px">Example: 25 kg → 40 + 20 + 5 = 65 mL/hr</div>
+        </div>
+
+        <ul class="key-points">
+          <li class="imp"><strong class="hl">Maintenance electrolytes</strong>: Na 3 mEq/kg/day, K 2 mEq/kg/day, Cl 2 mEq/kg/day</li>
+          <li class="imp">Standard maintenance fluid: <strong class="hl2">D5 + 0.9% NaCl (isotonic saline)</strong> is now recommended (AAP 2018) — replaces previous D5+½NS to prevent hospital-acquired hyponatremia</li>
+          <li class="crit"><strong class="hld">Hospital-acquired hyponatremia</strong>: historically caused by hypotonic IV fluids + ADH release from stress/pain/illness → now use isotonic fluids for most hospitalised children</li>
+          <li class="note">Exceptions: restrict to hypotonic if child has obligate free water losses (diabetes insipidus) or renal disease requiring free water</li>
+        </ul>
+
+        <p style="margin-top:16px;font-family:'DM Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--accent2)">▸ REPLACEMENT OF ONGOING LOSSES</p>
+        <table class="t" style="margin-top:8px">
+          <thead><tr><th>Fluid Source</th><th>Na⁺ (mEq/L)</th><th>K⁺ (mEq/L)</th><th>Cl⁻</th><th>Replace With</th></tr></thead>
+          <tbody>
+            <tr><td class="lbl">Gastric (vomiting/NG)</td><td>20–80</td><td>5–20</td><td>100–150</td><td>½NS + 10–20 mEq/L KCl (after making urine)</td></tr>
+            <tr><td class="lbl">Diarrhea/small bowel</td><td>100–140</td><td>5–15</td><td>90–130</td><td>NS + KCl; or Lactated Ringer's</td></tr>
+            <tr><td class="lbl">Sweat (normal)</td><td>10–30</td><td>3–10</td><td>10–35</td><td>Free water or ¼NS</td></tr>
+            <tr><td class="lbl">Sweat (cystic fibrosis)</td><td>50–130</td><td>5–25</td><td>50–110</td><td>NS + KCl</td></tr>
+            <tr><td class="lbl">Bile/pancreatic</td><td>120–140</td><td>5–15</td><td>80–120</td><td>NS + KCl</td></tr>
+          </tbody>
+        </table>
+        <div class="mnemonic">4-2-1 hourly rule = 4 for first 10 kg, 2 for next 10 kg, 1 for each kg above 20</div>
+      </div>
+    </div><!-- end ch74 -->
+
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- CH 75: DEFICIT THERAPY (DEHYDRATION) -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <div class="chapter-card" data-keywords="dehydration deficit therapy isotonic hypertonic hypotonic isonatremic hypernatremic hyponatremic clinical assessment oral rehydration ORS bolus NS fluid deficit percent">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 75</span>
+        <span class="ch-title">Deficit Therapy (Dehydration)</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-crit">Critical</span><span class="tag tag-form">Formulas</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+
+        <!-- Clinical assessment -->
+        <p style="margin-top:16px;font-family:'DM Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--accent2)">▸ CLINICAL ASSESSMENT OF DEHYDRATION</p>
+        <table class="t" style="margin-top:8px">
+          <thead><tr><th>Feature</th><th>Mild (3–5%)</th><th>Moderate (6–9%)</th><th>Severe (≥10%)</th></tr></thead>
+          <tbody>
+            <tr><td class="lbl">General</td><td>Alert, restless</td><td>Irritable or lethargic</td><td>Lethargic, limp, unconscious</td></tr>
+            <tr><td class="lbl">Eyes</td><td>Normal</td><td>Sunken</td><td>Very sunken, no tears</td></tr>
+            <tr><td class="lbl">Thirst</td><td>Increased</td><td>Very thirsty, eager to drink</td><td>Drinks poorly or unable to drink</td></tr>
+            <tr><td class="lbl">Skin turgor</td><td>Normal</td><td>Reduced (pinch recoils slowly)</td><td>Very reduced (&gt;2 sec return)</td></tr>
+            <tr><td class="lbl">Mucous membranes</td><td>Normal/slightly dry</td><td>Dry</td><td>Very dry</td></tr>
+            <tr><td class="lbl">Fontanelle (infants)</td><td>Normal</td><td>Sunken</td><td>Markedly sunken</td></tr>
+            <tr><td class="lbl">Urine output</td><td>↓</td><td>Oliguria</td><td>Anuria</td></tr>
+            <tr><td class="lbl">Heart rate</td><td>Normal/↑</td><td>↑↑</td><td>↑↑↑ (thready, weak pulse)</td></tr>
+            <tr><td class="lbl">Blood pressure</td><td>Normal</td><td>Normal or ↓</td><td>↓↓ (hypotension, shock)</td></tr>
+          </tbody>
+        </table>
+
+        <!-- Types of dehydration -->
+        <p style="margin-top:20px;font-family:'DM Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--accent2)">▸ TYPES OF DEHYDRATION BY SODIUM</p>
+        <table class="t" style="margin-top:8px">
+          <thead><tr><th>Type</th><th>Serum Na</th><th>% Cases</th><th>Fluid Shift</th><th>Clinical Features</th><th>Treatment Key</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="lbl">Isonatremic</td>
+              <td>130–150 mEq/L</td>
+              <td>~70–80%</td>
+              <td>Proportional loss from ECF/ICF</td>
+              <td>Classic signs of dehydration; proportional</td>
+              <td>NS bolus + replace with NS over 24 hrs</td>
+            </tr>
+            <tr>
+              <td class="lbl2">Hyponatremic</td>
+              <td>&lt;130 mEq/L</td>
+              <td>~10–15%</td>
+              <td>Water shifts INTO cells → ICF expands, ECF contracts more</td>
+              <td>More severe signs for degree of dehydration; seizures; Na &lt;120 → life-threatening</td>
+              <td>NS bolus; correct slowly (&lt;10–12 mEq/L/day); 3% NaCl if seizing</td>
+            </tr>
+            <tr>
+              <td class="lbl" style="color:var(--danger)">Hypernatremic</td>
+              <td>&gt;150 mEq/L</td>
+              <td>~10–15%</td>
+              <td>Water shifts OUT of cells → ICF contracts; brain shrinks</td>
+              <td>Doughy skin, high-pitched cry, irritability paradoxically; relatively preserved pulse/BP. RISK: intracranial hemorrhage (sagittal sinus thrombosis); brain cells compensate with idiogenic osmoles</td>
+              <td>Correct slowly (&lt;10–12 mEq/L/day) — too rapid → cerebral edema; use hypotonic fluids; calculate free water deficit</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="formula">
+          <div class="flabel">Fluid Deficit Calculation</div>
+          Fluid Deficit (mL) = % dehydration × weight (kg) × 10
+          <div style="margin-top:4px;color:var(--text-muted);font-size:11px">Example: 10 kg child, 10% dehydrated → 10 × 10 × 10 = 1000 mL deficit</div>
+        </div>
+
+        <!-- Treatment approach -->
+        <p style="margin-top:20px;font-family:'DM Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--accent2)">▸ IV FLUID REPLACEMENT APPROACH (ISONATREMIC)</p>
+        <ul class="key-points">
+          <li class="imp"><strong class="hl4">Step 1 — Emergency bolus (if shocked)</strong>: 20 mL/kg of NS (isotonic saline) over 20–30 min; repeat as needed to restore perfusion</li>
+          <li class="imp"><strong class="hl4">Step 2 — Deficit replacement</strong>: calculate remaining deficit after bolus; replace over 24 hrs (for isonatremic)</li>
+          <li class="imp"><strong class="hl4">Step 3 — Add maintenance</strong>: 24-hour maintenance (Holliday-Segar) added on top of deficit replacement</li>
+          <li class="imp"><strong class="hl4">Step 4 — Replace ongoing losses</strong> as they occur (stool, vomiting, etc.)</li>
+          <li class="note">Potassium: add K⁺ to IV fluids ONLY after confirming urine output (to avoid hyperkalemia in anuric state)</li>
+        </ul>
+
+        <!-- ORS -->
+        <p style="margin-top:20px;font-family:'DM Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--accent2)">▸ ORAL REHYDRATION THERAPY (ORT)</p>
+        <ul class="key-points">
+          <li class="grn"><strong class="hl3">ORT is first-line</strong> for mild–moderate dehydration (WHO recommendation); equivalent outcomes to IV fluids in most cases</li>
+          <li class="grn">WHO ORS composition: Na 75 mEq/L, K 20 mEq/L, Cl 65 mEq/L, citrate 10 mEq/L, glucose 75 mmol/L (glucose drives Na co-transport in gut)</li>
+          <li class="imp">ORT regimen: mild = 50 mL/kg over 3–4 hrs; moderate = 100 mL/kg over 3–4 hrs + replace ongoing losses</li>
+          <li class="crit">Contraindications to ORT: severe dehydration (≥10%), shock, altered consciousness, ileus, intractable vomiting, glucose-galactose malabsorption</li>
+          <li class="note">Sports drinks and juice are NOT appropriate ORS — wrong Na:glucose ratio; too much sugar → osmotic diarrhea</li>
+        </ul>
+        <div class="mnemonic">Dehydration treatment: ORT first (mild/mod) → IV NS bolus (shock) → Replace deficit + maintenance + ongoing losses</div>
+      </div>
+    </div><!-- end ch75 -->
+
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- CH 76: FLUID & ELECTROLYTE TREATMENT OF SPECIFIC DISORDERS -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <div class="chapter-card" data-keywords="DKA diabetic ketoacidosis cerebral edema fluid pyloric stenosis hypochloremic alkalosis burns nephrotic syndrome SIADH diabetes insipidus septic shock">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 76</span>
+        <span class="ch-title">Fluid &amp; Electrolyte Treatment of Specific Disorders</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-crit">Critical</span><span class="tag tag-rx">Clinical</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+
+        <!-- DKA -->
+        <p style="margin-top:16px;font-family:'DM Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--accent2)">▸ DKA MANAGEMENT (High-yield)</p>
+        <ul class="key-points">
+          <li class="imp">DKA: glucose &gt;200 + pH &lt;7.3 or HCO₃⁻ &lt;15 + ketonemia/ketonuria; type 1 DM; high-AG metabolic acidosis</li>
+          <li class="imp">DKA fluid protocol: <strong class="hl">NS 10 mL/kg bolus</strong> if shocked; then replace deficit + maintenance over <strong class="hl">48 hrs</strong> (slower = less cerebral edema risk)</li>
+          <li class="imp">Start insulin: <strong class="hl2">after</strong> fluid resuscitation, at 0.05–0.1 units/kg/hr; do NOT give IV bolus insulin</li>
+          <li class="imp">Potassium: total body K⁺ depleted even if serum K normal (acidosis falsely elevates K). Add K to fluids once K &lt;5.5 and making urine. If K &lt;3.5 → treat hypokalemia BEFORE starting insulin</li>
+          <li class="crit"><strong class="hld">Cerebral edema</strong>: most feared complication; onset 4–12 hrs into treatment; signs: headache, ↓HR, ↑BP (Cushing), altered consciousness, blown pupil. Risk ↑ with: too-rapid correction, too much free water, bicarbonate use, young age</li>
+          <li class="crit">Treat cerebral edema: <strong class="hld">mannitol 0.5–1 g/kg IV or 3% NaCl 5–10 mL/kg</strong>; restrict fluids; call neurosurgery</li>
+          <li class="note">Do NOT give NaHCO₃ routinely in DKA — worsens hypokalemia, paradoxical CSF acidosis, increases cerebral edema risk</li>
+        </ul>
+        <div class="mnemonic">DKA danger: don't rush fluids, don't bolus insulin, don't give bicarb, replace K before insulin if K &lt;3.5</div>
+
+        <!-- PYLORIC STENOSIS -->
+        <p style="margin-top:20px;font-family:'DM Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--accent2)">▸ PYLORIC STENOSIS — CLASSIC ELECTROLYTE DISTURBANCE</p>
+        <ul class="key-points">
+          <li class="crit"><strong class="hld">Hypochloremic, hypokalemic metabolic alkalosis</strong>: projectile vomiting of gastric acid (HCl) → loss of H⁺ and Cl⁻</li>
+          <li class="imp">Mechanism: ↑HCO₃⁻ retention compensating for H⁺ loss + kidney tries to save Na over H⁺ (H⁺ excreted) + aldosterone increases K⁺ loss → paradoxical aciduria (urine acidic despite systemic alkalosis)</li>
+          <li class="imp">Correct electrolytes BEFORE surgery — pyloromyotomy is not an emergency; correct alkalosis with NS + KCl over 24–48 hrs first</li>
+          <li class="crit">Target: Cl &gt;100, pH &lt;7.5, HCO₃⁻ &lt;30 before going to OR — anesthesia risk with uncorrected alkalosis</li>
+        </ul>
+        <div class="mnemonic">Pyloric stenosis = projectile vomiting → lose HCl → hypoCl + hypoK + met alkalosis + paradoxical aciduria</div>
+
+        <!-- SIADH -->
+        <p style="margin-top:20px;font-family:'DM Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--accent2)">▸ SIADH vs DIABETES INSIPIDUS (DI)</p>
+        <table class="t" style="margin-top:8px">
+          <thead><tr><th>Feature</th><th>SIADH</th><th>Central DI</th><th>Nephrogenic DI</th></tr></thead>
+          <tbody>
+            <tr><td class="lbl">Serum Na</td><td><strong class="hld">Low</strong> (&lt;135)</td><td><strong class="hld">High</strong> (&gt;145)</td><td><strong class="hld">High</strong> (&gt;145)</td></tr>
+            <tr><td class="lbl">Serum Osmolality</td><td>Low (&lt;275)</td><td>High (&gt;295)</td><td>High (&gt;295)</td></tr>
+            <tr><td class="lbl">Urine Osmolality</td><td>HIGH (&gt;100, often &gt;300) — inappropriately concentrated</td><td>Very LOW (&lt;200) — dilute</td><td>Very LOW (&lt;200) — dilute</td></tr>
+            <tr><td class="lbl">Urine Output</td><td>Low (concentrated)</td><td>High (polyuria)</td><td>High (polyuria)</td></tr>
+            <tr><td class="lbl">Urine Na</td><td>&gt;20 mEq/L</td><td>Variable</td><td>Variable</td></tr>
+            <tr><td class="lbl">Volume status</td><td>Euvolemic</td><td>Hypovolemic (if dehydrated)</td><td>Hypovolemic</td></tr>
+            <tr><td class="lbl">ADH level</td><td>High (inappropriate)</td><td>Low (↓ADH secretion)</td><td>Normal/High (ADH insensitive)</td></tr>
+            <tr><td class="lbl">Treatment</td><td>Fluid restriction; hypertonic NaCl if seizing; treat cause; tolvaptan/demeclocycline if chronic</td><td>DDAVP (desmopressin) intranasal or IV</td><td>Low-Na + low-protein diet; thiazide diuretics (paradoxically); NSAIDs; treat cause (lithium toxicity, hypercalcemia)</td></tr>
+          </tbody>
+        </table>
+        <div class="mnemonic">SIADH = Serum low, Urine high (concentrated). DI = Serum high, Urine low (dilute). Opposites!</div>
+
+        <!-- BURNS -->
+        <p style="margin-top:20px;font-family:'DM Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--accent2)">▸ BURNS — PARKLAND FORMULA</p>
+        <ul class="key-points">
+          <li class="imp"><strong class="hl">Parkland formula</strong>: 4 mL × weight(kg) × %TBSA burned (2nd and 3rd degree only) in first 24 hrs; give ½ in first 8 hrs, ½ over next 16 hrs; use Lactated Ringer's</li>
+          <li class="note">Add pediatric maintenance fluids on top of Parkland formula in children (adults don't need this addition)</li>
+          <li class="imp">Burns cause massive third-spacing, capillary leak, hypoproteinemia; monitor urine output (target 0.5–1 mL/kg/hr)</li>
+          <li class="crit">Circumferential burns → compartment syndrome → escharotomy needed</li>
+        </ul>
+        <div class="formula">
+          <div class="flabel">Parkland Formula (Burns)</div>
+          Total fluid (mL) = 4 × weight (kg) × % TBSA burned
+          ½ in first 8 hrs from time of injury | ½ over next 16 hrs | Use Lactated Ringer's
+        </div>
+
+        <!-- SEPTIC SHOCK -->
+        <p style="margin-top:20px;font-family:'DM Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--accent2)">▸ SEPTIC SHOCK — FLUID RESUSCITATION</p>
+        <ul class="key-points">
+          <li class="imp">Initial fluid resuscitation: <strong class="hl3">NS or LR 20 mL/kg bolus over 5–10 min</strong>; repeat up to 60 mL/kg in first hour assessing for response</li>
+          <li class="crit"><strong class="hld">FEAST trial caveat</strong>: in resource-limited settings with malaria/severe anemia, aggressive bolus fluids increased mortality — be context-aware</li>
+          <li class="imp">After 40–60 mL/kg without improvement → start vasopressors (norepinephrine first-line); reassess for fluid overload (hepatomegaly, rales)</li>
+          <li class="note">Fluid overload is harmful — monitor closely; consider albumin 5% if failing crystalloids</li>
+          <li class="imp">Antibiotics within 1 hour of sepsis recognition; cultures before antibiotics if possible without delay</li>
+        </ul>
+
+        <!-- HYPOALBUMINEMIA / NEPHROTIC SYNDROME -->
+        <p style="margin-top:20px;font-family:'DM Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--accent2)">▸ EDEMA STATES — THIRD SPACING</p>
+        <ul class="key-points">
+          <li class="imp">Nephrotic syndrome, liver failure, malnutrition → ↓oncotic pressure (↓albumin) → fluid leaks into interstitium (edema, ascites) despite intravascular depletion</li>
+          <li class="note">Treatment: restrict Na and water, diuretics (furosemide), albumin infusion (25% albumin) followed immediately by furosemide to mobilize fluid; treat underlying cause</li>
+          <li class="imp">Caution with aggressive diuresis — intravascular volume may already be depleted; too much furosemide → prerenal AKI</li>
+        </ul>
+        <div class="mnemonic">Key fluid rules: DKA → slow (48hr), burns → Parkland + maintenance, sepsis → fast bolus + reassess, hyperNa → slow correction, hypoNa seizure → fast 3% NaCl then slow</div>
+      </div>
+    </div><!-- end ch76 -->
+
+  </div><!-- end chapters-grid -->
+
+  <!-- QUICK REFERENCE: NORMAL VALUES -->
+  <div class="section-label">Quick Reference — Normal Pediatric Values</div>
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:48px">
+    <table class="t" style="margin:0">
+      <thead><tr><th>Electrolyte / Parameter</th><th>Normal Range</th><th>Critical Low</th><th>Critical High</th></tr></thead>
+      <tbody>
+        <tr><td class="lbl">Sodium (Na⁺)</td><td>135–145 mEq/L</td><td>&lt;125 (seizure risk)</td><td>&gt;155 (brain shrinkage)</td></tr>
+        <tr><td class="lbl">Potassium (K⁺)</td><td>3.5–5.0 mEq/L</td><td>&lt;2.5 (arrhythmia)</td><td>&gt;6.5 (VF risk)</td></tr>
+        <tr><td class="lbl">Chloride (Cl⁻)</td><td>98–107 mEq/L</td><td>&lt;80</td><td>&gt;115</td></tr>
+        <tr><td class="lbl">Bicarbonate (HCO₃⁻)</td><td>22–26 mEq/L</td><td>&lt;15 (met acidosis)</td><td>&gt;30 (met alkalosis)</td></tr>
+        <tr><td class="lbl">Calcium (total)</td><td>8.5–10.5 mg/dL</td><td>&lt;7 (tetany/seizures)</td><td>&gt;12 (hypercalcemic crisis)</td></tr>
+        <tr><td class="lbl">Magnesium (Mg²⁺)</td><td>1.7–2.2 mg/dL</td><td>&lt;1.0 (arrhythmia)</td><td>&gt;4 (↓DTRs)</td></tr>
+        <tr><td class="lbl">Phosphorus</td><td>4–7 mg/dL (infants); 4–6 (children)</td><td>&lt;1.0 (critical)</td><td>&gt;7 (hypocalcemia risk)</td></tr>
+        <tr><td class="lbl">Glucose</td><td>60–100 mg/dL (fasting)</td><td>&lt;45 (symptomatic hypoglycemia)</td><td>&gt;200 (hyperglycemia)</td></tr>
+        <tr><td class="lbl">Arterial pH</td><td>7.35–7.45</td><td>&lt;7.20</td><td>&gt;7.55</td></tr>
+        <tr><td class="lbl">PaCO₂</td><td>35–45 mmHg</td><td>&lt;20 (severe hypervent)</td><td>&gt;60 (respiratory failure)</td></tr>
+        <tr><td class="lbl">PaO₂</td><td>80–100 mmHg</td><td>&lt;60 (hypoxia)</td><td>—</td></tr>
+        <tr><td class="lbl">BUN</td><td>7–20 mg/dL</td><td>—</td><td>&gt;100 (uremia)</td></tr>
+        <tr><td class="lbl">Creatinine</td><td>0.2–0.8 (child); 0.5–1.2 (adolescent)</td><td>—</td><td>Elevated = renal impairment</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="footer">
+    <span>Nelson Textbook of Pediatrics · 22nd Ed. · 2024</span>
+    <span>Part VI: Chapters 73–76</span>
+  </div>
+
+</div><!-- end page-wrap -->
+
+<script>
+  let openedChapters = new Set();
+  const TOTAL = 4;
+
+  function toggleCard(header) {
+    const card = header.parentElement;
+    const wasOpen = card.classList.contains('open');
+    card.classList.toggle('open');
+    const chNum = card.querySelector('.ch-num').textContent;
+    if (!wasOpen) openedChapters.add(chNum);
+    updateProgress();
+  }
+
+  function updateProgress() {
+    const pct = Math.min((openedChapters.size / TOTAL) * 100, 100);
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressText').textContent = `${openedChapters.size} / ${TOTAL} opened`;
+  }
+
+  function filterChapters() {
+    const q = document.getElementById('searchInput').value.toLowerCase().trim();
+    const cards = document.querySelectorAll('.chapter-card');
+    let visible = 0;
+    cards.forEach(card => {
+      const match = !q || card.textContent.toLowerCase().includes(q) || (card.dataset.keywords||'').toLowerCase().includes(q);
+      card.classList.toggle('hidden', !match);
+      if (match) visible++;
+    });
+    document.getElementById('chapterCount').textContent = q
+      ? `${visible} result${visible !== 1 ? 's' : ''}`
+      : `${TOTAL} chapters`;
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.ctrlKey && e.key === 'e') {
+      e.preventDefault();
+      document.querySelectorAll('.chapter-card:not(.open)').forEach(c => {
+        c.classList.add('open');
+        openedChapters.add(c.querySelector('.ch-num').textContent);
+      });
+      updateProgress();
+    }
+  });
+</script>
+</body>
+</html>

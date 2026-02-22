@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nelson Pediatrics — Part V: Nutrition</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --surface2: #1c2333;
+    --border: #30363d;
+    --accent: #4ade80;
+    --accent2: #facc15;
+    --accent3: #fb923c;
+    --accent4: #5caaee;
+    --danger: #f07a7a;
+    --purple: #c792ea;
+    --text: #e6edf3;
+    --text-muted: #8b949e;
+    --text-dim: #484f58;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.75;
+    min-height: 100vh;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+  }
+
+  .page-wrap {
+    position: relative;
+    z-index: 1;
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 0 24px 80px;
+  }
+
+  .hero {
+    padding: 72px 0 48px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 48px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::after {
+    content: 'V';
+    position: absolute;
+    right: -4px;
+    top: 10px;
+    font-family: 'Playfair Display', serif;
+    font-size: 240px;
+    font-weight: 900;
+    color: var(--border);
+    line-height: 1;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .hero-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(74,222,128,0.1);
+    border: 1px solid rgba(74,222,128,0.3);
+    color: var(--accent);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+  }
+
+  .hero-tag::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(.8)}
+  }
+
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 5vw, 52px);
+    font-weight: 900;
+    line-height: 1.1;
+    margin-bottom: 12px;
+  }
+
+  .hero h1 span { color: var(--accent); }
+
+  .hero-sub {
+    font-size: 15px;
+    color: var(--text-muted);
+    max-width: 520px;
+    margin-bottom: 28px;
+  }
+
+  .hero-meta { display: flex; gap: 24px; flex-wrap: wrap; }
+
+  .meta-pill {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--text-muted);
+    font-family: 'DM Mono', monospace;
+  }
+
+  .meta-pill .dot { width: 8px; height: 8px; border-radius: 50%; }
+
+  .search-bar {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(13,17,23,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 0;
+    margin-bottom: 36px;
+  }
+
+  .search-inner {
+    max-width: 920px; margin: 0 auto;
+    padding: 0 24px;
+    display: flex; align-items: center; gap: 12px;
+  }
+
+  .search-input {
+    flex: 1;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 14px 8px 36px;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%238b949e' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: 10px center;
+  }
+
+  .search-input:focus { border-color: var(--accent); }
+  .search-input::placeholder { color: var(--text-dim); }
+
+  .chapter-count {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px; color: var(--text-muted); white-space: nowrap;
+  }
+
+  .stats-strip {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px; margin-bottom: 48px;
+  }
+
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 18px;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+
+  .stat-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+
+  .stat-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px; text-transform: uppercase;
+    letter-spacing: 0.1em; color: var(--text-muted); margin-bottom: 6px;
+  }
+
+  .stat-value {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px; font-weight: 700; color: var(--accent);
+  }
+
+  .stat-desc { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+
+  .hiyield {
+    background: linear-gradient(135deg,rgba(74,222,128,.08),rgba(74,222,128,.02));
+    border: 1px solid rgba(74,222,128,.25);
+    border-left: 3px solid var(--accent);
+    border-radius: 10px;
+    padding: 20px 24px; margin-bottom: 48px;
+  }
+
+  .hiyield-header {
+    display: flex; align-items: center; gap: 8px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px; text-transform: uppercase;
+    letter-spacing: 0.12em; color: var(--accent); margin-bottom: 14px;
+  }
+
+  .hiyield ul {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px,1fr));
+    gap: 8px;
+  }
+
+  .hiyield ul li {
+    font-size: 13px; color: var(--text);
+    padding-left: 16px; position: relative; line-height: 1.5;
+  }
+
+  .hiyield ul li::before {
+    content:'▸'; position:absolute; left:0;
+    color: var(--accent); font-size: 11px;
+  }
+
+  strong.hl  { color: var(--accent);  font-weight: 600; }
+  strong.hl2 { color: var(--accent2); font-weight: 600; }
+  strong.hl3 { color: var(--accent3); font-weight: 600; }
+  strong.hl4 { color: var(--accent4); font-weight: 600; }
+  strong.hlp { color: var(--purple);  font-weight: 600; }
+  strong.hld { color: var(--danger);  font-weight: 600; }
+
+  .vit-table {
+    width: 100%; border-collapse: collapse;
+    font-size: 13px; margin: 12px 0;
+  }
+
+  .vit-table th {
+    background: var(--surface2);
+    color: var(--accent);
+    font-family: 'DM Mono', monospace;
+    font-size: 10px; text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 8px 12px; text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .vit-table td {
+    padding: 7px 12px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text); vertical-align: top; line-height: 1.55;
+  }
+
+  .vit-table tr:hover td { background: rgba(255,255,255,.02); }
+
+  .vit-table .lbl {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px; color: var(--accent2);
+    white-space: nowrap; font-weight: 500;
+  }
+
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px; text-transform: uppercase;
+    letter-spacing: 0.14em; color: var(--text-muted);
+    margin-bottom: 16px;
+    display: flex; align-items: center; gap: 10px;
+  }
+
+  .section-label::after {
+    content:''; flex:1; height:1px; background: var(--border);
+  }
+
+  .chapters-grid {
+    display: flex; flex-direction: column;
+    gap: 12px; margin-bottom: 48px;
+  }
+
+  .chapter-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px; overflow: hidden;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  .chapter-card:hover {
+    border-color: rgba(74,222,128,.35);
+    box-shadow: 0 4px 20px rgba(0,0,0,.3);
+  }
+
+  .chapter-header {
+    display: flex; align-items: center; gap: 14px;
+    padding: 16px 20px; cursor: pointer; user-select: none;
+  }
+
+  .ch-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px; font-weight: 500;
+    color: var(--text-muted);
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px; padding: 3px 8px;
+    white-space: nowrap; min-width: 42px; text-align: center;
+  }
+
+  .ch-title { flex: 1; font-size: 15px; font-weight: 500; color: var(--text); }
+  .ch-tags  { display: flex; gap: 6px; flex-wrap: wrap; }
+
+  .tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px; text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 2px 7px; border-radius: 4px; border: 1px solid;
+  }
+
+  .tag-hiy  { color: var(--accent3); border-color: rgba(251,146,60,.3);  background: rgba(251,146,60,.08);  }
+  .tag-vit  { color: var(--accent2); border-color: rgba(250,204,21,.3);  background: rgba(250,204,21,.08);  }
+  .tag-nut  { color: var(--accent);  border-color: rgba(74,222,128,.3);  background: rgba(74,222,128,.08);  }
+  .tag-crit { color: var(--danger);  border-color: rgba(240,122,122,.3); background: rgba(240,122,122,.08); }
+  .tag-info { color: var(--accent4); border-color: rgba(92,170,238,.3);  background: rgba(92,170,238,.08);  }
+
+  .ch-toggle {
+    color: var(--text-muted); font-size: 18px;
+    transition: transform 0.3s; line-height: 1;
+  }
+
+  .chapter-card.open .ch-toggle { transform: rotate(180deg); }
+
+  .chapter-body {
+    display: none;
+    padding: 0 20px 20px;
+    border-top: 1px solid var(--border);
+    animation: slideIn 0.2s ease;
+  }
+
+  @keyframes slideIn {
+    from{opacity:0;transform:translateY(-6px)} to{opacity:1;transform:translateY(0)}
+  }
+
+  .chapter-card.open .chapter-body { display: block; }
+
+  .key-points {
+    list-style: none;
+    display: flex; flex-direction: column;
+    gap: 6px; margin-top: 12px;
+  }
+
+  .key-points li {
+    font-size: 13.5px; color: var(--text);
+    padding: 8px 12px;
+    background: var(--surface2);
+    border-radius: 6px;
+    border-left: 2px solid var(--border);
+    line-height: 1.6;
+  }
+
+  .key-points li.imp  { border-left-color: var(--accent3); }
+  .key-points li.crit { border-left-color: var(--danger);  }
+  .key-points li.note { border-left-color: var(--accent4); }
+  .key-points li.grn  { border-left-color: var(--accent);  }
+  .key-points li.yel  { border-left-color: var(--accent2); }
+
+  .mnemonic {
+    margin-top: 12px;
+    background: rgba(74,222,128,.07);
+    border: 1px dashed rgba(74,222,128,.25);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 13px; color: var(--accent);
+  }
+
+  .mnemonic::before { content:'💡 '; }
+
+  .progress-wrap { margin-bottom: 32px; }
+
+  .progress-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px; color: var(--text-muted);
+    margin-bottom: 6px;
+    display: flex; justify-content: space-between;
+  }
+
+  .progress-bar { height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    border-radius: 2px; width: 0%;
+    transition: width 0.4s ease;
+  }
+
+  .footer {
+    margin-top: 60px; padding-top: 24px;
+    border-top: 1px solid var(--border);
+    display: flex; justify-content: space-between;
+    flex-wrap: wrap; gap: 8px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px; color: var(--text-dim);
+  }
+
+  .chapter-card.hidden { display: none; }
+
+  @media(max-width:600px){
+    .hero::after{font-size:130px}
+    .stats-strip{grid-template-columns:repeat(2,1fr)}
+    .hiyield ul{grid-template-columns:1fr}
+    .ch-tags{display:none}
+    .vit-table{font-size:12px}
+  }
+</style>
+</head>
+<body>
+
+<div class="search-bar">
+  <div class="search-inner">
+    <input class="search-input" type="text" id="searchInput" placeholder="Search vitamins, malnutrition, obesity, breastfeeding…" oninput="filterChapters()">
+    <span class="chapter-count" id="chapterCount">13 chapters</span>
+  </div>
+</div>
+
+<div class="page-wrap">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-tag">Nelson Textbook of Pediatrics · 22nd Edition · 2024</div>
+    <h1>Part <span>V</span><br>Nutrition</h1>
+    <p class="hero-sub">Exam-oriented study notes covering Chapters 60–72. Vitamins, malnutrition, obesity, breastfeeding, refeeding syndrome — all in one place.</p>
+    <div class="hero-meta">
+      <div class="meta-pill"><span class="dot" style="background:var(--accent)"></span> 13 Chapters</div>
+      <div class="meta-pill"><span class="dot" style="background:var(--accent2)"></span> Vitamin Deficiency Tables</div>
+      <div class="meta-pill"><span class="dot" style="background:var(--accent3)"></span> Exam Ready</div>
+    </div>
+  </div>
+
+  <!-- PROGRESS -->
+  <div class="progress-wrap">
+    <div class="progress-label">
+      <span>Reading Progress</span>
+      <span id="progressText">0 / 13 opened</span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-strip">
+    <div class="stat-card">
+      <div class="stat-label">Breastfeeding recommendation</div>
+      <div class="stat-value">6 months</div>
+      <div class="stat-desc">Exclusive; continue with solids until ≥12 months (AAP 2022: ideally 2 yrs)</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Childhood obesity BMI</div>
+      <div class="stat-value">≥95th %ile</div>
+      <div class="stat-desc">Overweight = 85th–94th; Obese = ≥95th percentile for age/sex</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Most common nutritional deficiency worldwide</div>
+      <div class="stat-value">Iron</div>
+      <div class="stat-desc">Iron-deficiency anemia; affects ~2 billion people globally</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">#1 preventable cause of blindness</div>
+      <div class="stat-value">Vit A</div>
+      <div class="stat-desc">Vitamin A deficiency → xerophthalmia → corneal ulceration</div>
+    </div>
+  </div>
+
+  <!-- HIGH YIELD -->
+  <div class="hiyield">
+    <div class="hiyield-header">⚡ High-Yield Exam Points — Part V</div>
+    <ul>
+      <li><strong class="hl">Exclusive breastfeeding</strong> for 6 months; continue ≥12 months with complementary foods (AAP 2022: up to 2 yrs)</li>
+      <li><strong class="hl2">Vitamin D</strong>: 400 IU/day for all breastfed infants from birth; 600 IU/day ages 1–70 yrs</li>
+      <li><strong class="hl2">Vitamin K</strong>: IM injection at birth prevents hemorrhagic disease of the newborn</li>
+      <li><strong class="hl3">Vitamin A deficiency</strong>: #1 preventable cause of blindness; Bitot's spots, night blindness, xerophthalmia</li>
+      <li><strong class="hl">Rickets</strong>: Vitamin D deficiency; craniotabes, rachitic rosary, widened wrists, bowlegs</li>
+      <li><strong class="hld">Refeeding syndrome</strong>: hypophosphatemia is the hallmark; occurs when refeeding malnourished patients</li>
+      <li><strong class="hl3">Scurvy</strong>: Vitamin C deficiency; perifollicular hemorrhage, corkscrew hair, gum bleeding, Frankel line on X-ray</li>
+      <li><strong class="hl2">Kwashiorkor</strong>: protein deficiency → edema, skin changes, fatty liver; adequate calories</li>
+      <li><strong class="hl2">Marasmus</strong>: caloric deficiency → severe wasting; no edema; muscle + fat loss</li>
+      <li><strong class="hl">Childhood obesity</strong>: BMI ≥95th percentile; first-line = intensive lifestyle intervention; no pharmacotherapy &lt;12 yrs</li>
+      <li><strong class="hl3">Iron deficiency</strong>: most common nutritional deficiency worldwide; microcytic hypochromic anemia</li>
+      <li><strong class="hlp">Niacin (B3) deficiency</strong>: Pellagra → "4 Ds" — Diarrhea, Dermatitis, Dementia, Death</li>
+      <li><strong class="hld">Zinc deficiency</strong>: acrodermatitis enteropathica, growth retardation, poor wound healing, hypogonadism</li>
+    </ul>
+  </div>
+
+  <!-- CHAPTERS -->
+  <div class="section-label">Chapters 60 – 72</div>
+  <div class="chapters-grid" id="chaptersGrid">
+
+    <!-- CH 60 -->
+    <div class="chapter-card" data-keywords="nutritional requirements macronutrients micronutrients protein fat carbohydrate calories RDA DRI energy needs children">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 60</span>
+        <span class="ch-title">Nutritional Requirements</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-nut">Nutrition</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp">Energy needs: <strong class="hl">neonates ~100 kcal/kg/day</strong>; decreases with age; adolescents ~45–55 kcal/kg/day</li>
+          <li class="imp">Macronutrient distribution (% total calories): <strong class="hl3">Protein 10–30%</strong>, <strong class="hl2">Carbohydrate 45–65%</strong>, <strong class="hl4">Fat 25–40%</strong> (higher % in infants)</li>
+          <li class="note">Protein: essential amino acids cannot be synthesized; must come from diet (histidine is essential in infancy)</li>
+          <li class="imp">Fat: <strong class="hl">essential fatty acids</strong> — linoleic acid (omega-6) and alpha-linolenic acid (omega-3); deficiency → dermatitis, poor growth, impaired immunity</li>
+          <li class="note">DRI (Dietary Reference Intake): includes RDA (recommended for ≥97.5% of population), AI, EAR, UL</li>
+          <li class="grn">Infants need higher fat % (~50% of calories) for brain development — do NOT restrict fat &lt;2 years</li>
+          <li class="yel">Water needs: ~1 mL/kcal/day; infants more vulnerable to dehydration due to higher % body water and higher surface area</li>
+        </ul>
+        <div class="mnemonic">Neonate energy = 100 kcal/kg/day → decreases as child grows older</div>
+      </div>
+    </div>
+
+    <!-- CH 61 -->
+    <div class="chapter-card" data-keywords="feeding infants breastfeeding formula complementary foods solid food introduction cow milk honey allergy iron vitamin D">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 61</span>
+        <span class="ch-title">Feeding Healthy Infants, Children, and Adolescents</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-nut">Nutrition</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp"><strong class="hl">Breastfeeding</strong>: AAP recommends <strong class="hl">exclusive breastfeeding for 6 months</strong>; continue with complementary foods until <strong class="hl">≥12 months</strong> (ideally 2 years, 2022 AAP update)</li>
+          <li class="imp">Benefits of breastfeeding: ↓ otitis media, GI infections, SIDS, obesity, diabetes, atopy; ↑ IQ; promotes maternal bonding; ↓ maternal breast/ovarian cancer</li>
+          <li class="crit">Contraindications to breastfeeding: maternal HIV (in high-income countries), active TB (untreated), galactosemia (infant), maternal use of certain drugs (chemotherapy, radioactive isotopes)</li>
+          <li class="imp"><strong class="hl2">Vitamin D supplementation</strong>: <strong class="hl2">400 IU/day from birth</strong> for all breastfed infants (breast milk is low in Vit D)</li>
+          <li class="imp"><strong class="hl2">Iron supplementation</strong>: 1 mg/kg/day from age <strong class="hl2">4 months</strong> for exclusively breastfed infants (breast milk has low iron after 4 months)</li>
+          <li class="imp">Complementary foods: introduce at <strong class="hl3">~6 months</strong>; no restriction on allergenic foods (early introduction of peanut reduces allergy risk — LEAP study)</li>
+          <li class="crit"><strong class="hld">Cow's milk</strong>: do NOT give before <strong class="hld">12 months</strong> (causes GI blood loss, insufficient iron/nutrients, renal solute load too high)</li>
+          <li class="crit"><strong class="hld">Honey</strong>: contraindicated &lt;<strong class="hld">12 months</strong> — risk of infant botulism (<em>C. botulinum</em> spores)</li>
+          <li class="note">Formula: iron-fortified standard cow's milk-based formula is equivalent to breastfeeding nutritionally; soy formula for galactosemia or if vegan family</li>
+        </ul>
+        <div class="mnemonic">No cow's milk &lt;12 months. No honey &lt;12 months. Vit D from birth. Iron from 4 months.</div>
+      </div>
+    </div>
+
+    <!-- CH 62 -->
+    <div class="chapter-card" data-keywords="nutrition food security health food insecurity poverty SNAP WIC social determinants diet quality">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 62</span>
+        <span class="ch-title">Nutrition, Food Security, and Health</span>
+        <div class="ch-tags"><span class="tag tag-nut">Nutrition</span><span class="tag tag-info">Social</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp"><strong class="hl4">Food insecurity</strong>: limited or uncertain access to adequate food; affects ~1 in 6 children in the US; associated with poor health outcomes, developmental delays, poor academic performance</li>
+          <li class="note">Key federal programs: <strong class="hl">WIC</strong> (Women, Infants, Children — nutrition support for pregnant/postpartum women and children &lt;5), <strong class="hl">SNAP</strong> (Supplemental Nutrition Assistance Program), National School Lunch Program</li>
+          <li class="imp">Pediatricians should screen for food insecurity at every well-child visit using validated tools (Hunger Vital Sign™: 2-question screen)</li>
+          <li class="grn">Diet quality: Mediterranean diet pattern associated with best outcomes in children; ultra-processed foods associated with obesity, metabolic syndrome</li>
+          <li class="note">Screen time and food marketing to children contribute to poor dietary habits; limit screens at mealtimes</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- CH 63 -->
+    <div class="chapter-card" data-keywords="refeeding syndrome hypophosphatemia hypokalemia hypomagnesemia anorexia nervosa starvation malnutrition electrolyte monitoring">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 63</span>
+        <span class="ch-title">Refeeding Syndrome</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-crit">Critical</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp"><strong class="hld">Refeeding syndrome</strong>: life-threatening electrolyte shifts that occur when reintroducing nutrition to severely malnourished patients after a period of starvation</li>
+          <li class="crit">Hallmark: <strong class="hld">hypophosphatemia</strong> (most dangerous — causes cardiac arrhythmias, respiratory failure, rhabdomyolysis, hemolysis, seizures)</li>
+          <li class="crit">Also causes: <strong class="hld">hypokalemia</strong>, <strong class="hld">hypomagnesemia</strong>, fluid retention, thiamine deficiency</li>
+          <li class="imp">Mechanism: refeeding → insulin release → cellular uptake of glucose, phosphate, K⁺, Mg²⁺ → serum levels plummet</li>
+          <li class="imp">At-risk patients: anorexia nervosa, prolonged NPO, severe malnutrition, cancer cachexia, chronic alcoholism</li>
+          <li class="imp">Prevention: <strong class="hl3">start nutrition slowly</strong> (25–50% of goal calories), correct electrolytes BEFORE starting feeds, thiamine supplementation, monitor phosphate/potassium/magnesium daily</li>
+          <li class="note">Reintroduce nutrition gradually over 5–7 days in severely malnourished patients; never "feed aggressively" at first</li>
+        </ul>
+        <div class="mnemonic">Refeeding = Phosphate drops first → "Phos feeds the engine" — watch phosphate closely</div>
+      </div>
+    </div>
+
+    <!-- CH 64 -->
+    <div class="chapter-card" data-keywords="malnutrition kwashiorkor marasmus PEM protein energy wasting stunting edema fatty liver MUAC SAM MAM">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 64</span>
+        <span class="ch-title">Malnutrition in High-Resource Settings</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-crit">Critical</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <table class="vit-table">
+          <thead><tr><th>Type</th><th>Deficiency</th><th>Clinical Features</th><th>Edema?</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong class="hl2">Kwashiorkor</strong></td>
+              <td>Protein deficiency (calories adequate)</td>
+              <td>Edema (pitting), ascites, fatty liver (hepatomegaly), "flaky paint" skin, flag sign in hair, apathy, irritability</td>
+              <td><strong class="hld">YES — hallmark</strong></td>
+            </tr>
+            <tr>
+              <td><strong class="hl3">Marasmus</strong></td>
+              <td>Caloric (energy) deficiency — total starvation</td>
+              <td>Severe muscle and fat wasting, "old man" appearance, baggy skin, bradycardia, hypothermia; alert and hungry</td>
+              <td><strong class="hl">NO edema</strong></td>
+            </tr>
+            <tr>
+              <td><strong class="hlp">Marasmic Kwashiorkor</strong></td>
+              <td>Both protein AND calorie deficiency</td>
+              <td>Features of both — wasting + edema; worst prognosis</td>
+              <td>YES</td>
+            </tr>
+          </tbody>
+        </table>
+        <ul class="key-points">
+          <li class="imp"><strong class="hl">MUAC</strong> (Mid-Upper Arm Circumference): key field screening tool; &lt;11.5 cm = Severe Acute Malnutrition (SAM); 11.5–12.5 cm = Moderate Acute Malnutrition (MAM)</li>
+          <li class="imp">Stunting = chronic malnutrition (low height-for-age); Wasting = acute malnutrition (low weight-for-height)</li>
+          <li class="crit">SAM treatment: <strong class="hl4">F-75</strong> (stabilization phase — low calorie, low protein) → <strong class="hl4">F-100</strong> (rehabilitation) → <strong class="hl4">RUTF</strong> (Ready-to-Use Therapeutic Food = Plumpy'nut) for uncomplicated cases</li>
+          <li class="crit">10 steps of SAM management: treat hypoglycemia, hypothermia, dehydration, electrolyte imbalance, infections; cautious feeding; catch-up growth; stimulation; follow-up</li>
+          <li class="note">In high-resource settings, malnutrition often secondary to chronic illness, neglect, or feeding disorders</li>
+        </ul>
+        <div class="mnemonic">Kwashiorkor = protein, Edema, fatty liver | Marasmus = calories, NO edema, wasted</div>
+      </div>
+    </div>
+
+    <!-- CH 65 -->
+    <div class="chapter-card" data-keywords="overweight obesity BMI percentile lifestyle intervention metformin bariatric surgery comorbidities metabolic syndrome hypertension">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 65</span>
+        <span class="ch-title">Overweight and Obesity</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-nut">Nutrition</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp">Definitions (2–18 yrs): <strong class="hl2">Overweight</strong> = BMI 85th–94th percentile; <strong class="hld">Obesity</strong> = BMI ≥95th percentile; <strong class="hld">Severe obesity</strong> = BMI ≥120% of 95th percentile</li>
+          <li class="imp">Prevalence: ~20% of US children and adolescents; higher in Hispanic, Black, and Native American children</li>
+          <li class="imp">Complications: <strong class="hl">metabolic syndrome</strong>, type 2 DM, hypertension, dyslipidemia, NAFLD (non-alcoholic fatty liver disease), OSA, orthopedic problems (SCFE, Blount disease), depression, PCOS</li>
+          <li class="imp">Evaluation: BMI ≥95th %ile → screen for hypertension, fasting lipids, fasting glucose/HbA1c, ALT, AST</li>
+          <li class="imp">Treatment: <strong class="hl3">Intensive Health Behavior and Lifestyle Treatment (IHBLT)</strong> = first-line (≥26 contact hours/year with family); dietary counseling + physical activity + behavioral therapy</li>
+          <li class="note">Pharmacotherapy: <strong class="hl4">metformin</strong> (adjunct for insulin resistance/T2DM ≥10 yrs); <strong class="hl4">orlistat</strong> FDA-approved ≥12 yrs; <strong class="hl4">GLP-1 agonists</strong> (semaglutide/liraglutide) FDA-approved ≥12 yrs (2023 AAP guidelines)</li>
+          <li class="note">Bariatric surgery: considered for adolescents with severe obesity + serious comorbidities who fail lifestyle treatment; Roux-en-Y gastric bypass or sleeve gastrectomy</li>
+          <li class="crit">AAP 2023 guidelines: recommend <strong class="hld">early, intensive treatment</strong> — do not "watch and wait"; obesity is a chronic disease requiring active management</li>
+        </ul>
+        <div class="mnemonic">Obesity BMI: Overweight = 85–94th, Obese = ≥95th, Severe = ≥120% of 95th</div>
+      </div>
+    </div>
+
+    <!-- VITAMINS MASTER TABLE — CH 66-72 merged intro -->
+    <div class="chapter-card" data-keywords="vitamin A B C D E K deficiency excess toxicity rickets scurvy pellagra night blindness xerophthalmia beriberi">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 66–72</span>
+        <span class="ch-title">Vitamin Deficiencies and Excesses — Master Table</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-vit">Vitamins</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <table class="vit-table">
+          <thead>
+            <tr>
+              <th>Vitamin</th>
+              <th>Type</th>
+              <th>Deficiency: Disease &amp; Features</th>
+              <th>Toxicity / Excess</th>
+              <th>Key Source / Note</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="lbl">A (Retinol)</td>
+              <td>Fat-soluble</td>
+              <td><strong class="hld">Xerophthalmia</strong>: night blindness → Bitot's spots → corneal ulceration/keratomalacia → blindness. <strong class="hld">#1 preventable cause of blindness worldwide.</strong> Also: follicular hyperkeratosis, impaired immunity, increased childhood mortality</td>
+              <td>Teratogen (isotretinoin/Accutane). Acute: pseudotumor cerebri, hepatotoxicity, peeling skin. Chronic: hepatic fibrosis, bone pain</td>
+              <td>Liver, egg yolk, dairy, yellow/orange/dark green vegetables (beta-carotene). Supplementation in measles</td>
+            </tr>
+            <tr>
+              <td class="lbl">B1 (Thiamine)</td>
+              <td>Water-soluble</td>
+              <td><strong class="hl2">Beriberi</strong>: Wet (cardiac — dilated cardiomyopathy, high-output HF) vs Dry (neurological — peripheral neuropathy, muscle weakness). <strong class="hl2">Wernicke encephalopathy</strong>: triad of confusion + ataxia + ophthalmoplegia (in alcoholism/malnutrition)</td>
+              <td>Rare (water-soluble)</td>
+              <td>Whole grains, legumes, pork. Deficiency in polished rice diets</td>
+            </tr>
+            <tr>
+              <td class="lbl">B2 (Riboflavin)</td>
+              <td>Water-soluble</td>
+              <td>Ariboflavinosis: angular cheilitis (cracking at corners of mouth), glossitis (magenta tongue), corneal vascularization, seborrheic dermatitis</td>
+              <td>Non-toxic</td>
+              <td>Milk, dairy, meat, leafy greens; photosensitive vitamin</td>
+            </tr>
+            <tr>
+              <td class="lbl">B3 (Niacin)</td>
+              <td>Water-soluble</td>
+              <td><strong class="hl2">Pellagra</strong>: <strong class="hld">"4 Ds"</strong> — <strong>D</strong>ermatitis (sun-exposed skin, Casal necklace), <strong>D</strong>iarrhea, <strong>D</strong>ementia, <strong>D</strong>eath. Associated with corn-based diets (corn lacks tryptophan)</td>
+              <td>Pharmacological doses: flushing (prostaglandin-mediated), hepatotoxicity, hyperglycemia, hyperuricemia</td>
+              <td>Meat, fish, peanuts; tryptophan → niacin in body. Deficiency also in Hartnup disease, carcinoid syndrome</td>
+            </tr>
+            <tr>
+              <td class="lbl">B6 (Pyridoxine)</td>
+              <td>Water-soluble</td>
+              <td>Seizures in neonates (pyridoxine-dependent epilepsy), peripheral neuropathy, dermatitis, glossitis, sideroblastic anemia. Seen with isoniazid use</td>
+              <td>High doses → sensory neuropathy (paradoxically)</td>
+              <td>Meat, poultry, fish, potatoes, bananas. Give B6 with isoniazid (INH)</td>
+            </tr>
+            <tr>
+              <td class="lbl">B9 (Folate)</td>
+              <td>Water-soluble</td>
+              <td>Megaloblastic anemia (macrocytic, hypersegmented neutrophils). <strong class="hld">Neural tube defects</strong> (spina bifida, anencephaly) if deficient in periconceptional period. No neurological symptoms (unlike B12)</td>
+              <td>May mask B12 deficiency if supplemented without B12</td>
+              <td>Leafy greens, legumes, fortified grains. 400–800 mcg/day periconceptional supplementation for NTD prevention</td>
+            </tr>
+            <tr>
+              <td class="lbl">B12 (Cobalamin)</td>
+              <td>Water-soluble</td>
+              <td>Megaloblastic anemia + <strong class="hld">neurological symptoms</strong> (subacute combined degeneration of spinal cord: posterior + lateral column — ataxia, paraesthesia, weakness). Seen in vegans, pernicious anemia (anti-intrinsic factor Ab)</td>
+              <td>Non-toxic</td>
+              <td>Only in animal products; intrinsic factor required for absorption; stored in liver (2–5 yr supply)</td>
+            </tr>
+            <tr>
+              <td class="lbl">C (Ascorbic acid)</td>
+              <td>Water-soluble</td>
+              <td><strong class="hl3">Scurvy</strong>: perifollicular hemorrhages, <strong class="hl3">corkscrew/swan-neck hair</strong>, bleeding gums (gingivitis), poor wound healing, <strong class="hl3">Frankel line</strong> (zone of provisional calcification on X-ray), subperiosteal hemorrhage, hyperkeratosis. Seen in infants on processed formula without supplementation</td>
+              <td>GI upset, oxalate kidney stones (high doses), rebound scurvy if stopped abruptly</td>
+              <td>Citrus fruits, bell peppers, strawberries; enhances iron absorption</td>
+            </tr>
+            <tr>
+              <td class="lbl">D (Calciferol)</td>
+              <td>Fat-soluble</td>
+              <td><strong class="hld">Rickets</strong>: craniotabes (ping-pong skull), frontal bossing, delayed fontanelle closure, <strong class="hld">rachitic rosary</strong> (rib-costochondral junction), Harrison groove, widened wrists/ankles (metaphyseal cupping/fraying on X-ray), <strong class="hld">bowlegs (genu varum)</strong>. Also: hypocalcemia → tetany, seizures. Breastfed infants at highest risk</td>
+              <td><strong class="hld">Hypercalcemia</strong>: anorexia, nausea, polyuria, nephrocalcinosis, "stones/bones/groans/moans"</td>
+              <td>Sunlight (skin synthesis), fatty fish, fortified milk/formula. 400 IU/day for infants, 600 IU/day children</td>
+            </tr>
+            <tr>
+              <td class="lbl">E (Tocopherol)</td>
+              <td>Fat-soluble</td>
+              <td>Rare. Hemolytic anemia in premature infants, spinocerebellar ataxia, peripheral neuropathy, retinopathy. Associated with fat malabsorption (cholestasis, abetalipoproteinemia)</td>
+              <td>High doses: impairs Vit K function → coagulopathy; increased hemorrhage risk</td>
+              <td>Nuts, seeds, vegetable oils, wheat germ; antioxidant</td>
+            </tr>
+            <tr>
+              <td class="lbl">K (Phylloquinone)</td>
+              <td>Fat-soluble</td>
+              <td><strong class="hld">Hemorrhagic disease of the newborn</strong> (Vitamin K Deficiency Bleeding — VKDB): bleeding into GI tract, umbilicus, skin, intracranial. Occurs in breastfed infants not given prophylaxis. Prolonged PT/INR, normal platelet count</td>
+              <td>Rare; K3 (menadione) can cause hemolysis in newborns — do NOT use</td>
+              <td><strong class="hl">IM Vitamin K at birth</strong> is mandatory prophylaxis. Gut bacteria produce K2. Warfarin antagonizes Vit K</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="mnemonic">Fat-soluble vitamins: "ADEK" — stored in fat, can accumulate and cause toxicity. Water-soluble: B-complex + C — excreted in urine, less toxic.</div>
+      </div>
+    </div>
+
+    <!-- CH 66 STANDALONE for Vit A -->
+    <div class="chapter-card" data-keywords="vitamin A retinol deficiency excess xerophthalmia night blindness Bitot spots keratomalacia measles isotretinoin teratogen">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 66</span>
+        <span class="ch-title">Vitamin A Deficiencies and Excess</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-vit">Vitamin</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="crit"><strong class="hld">Vitamin A deficiency = #1 preventable cause of blindness worldwide</strong></li>
+          <li class="imp">Progression of eye disease: Night blindness → Xerosis (dry conjunctiva) → Bitot's spots (foamy white plaques on conjunctiva) → Xerophthalmia → Corneal ulceration → Keratomalacia (corneal melting) → Blindness</li>
+          <li class="imp">Also causes: follicular hyperkeratosis, impaired immunity, increased severity of measles and diarrheal diseases, increased child mortality</li>
+          <li class="imp"><strong class="hl2">Vitamin A supplementation</strong>: given during measles (reduces mortality); given to children &lt;5 yrs in deficient areas</li>
+          <li class="crit"><strong class="hld">Toxicity</strong>: Vit A is a <strong class="hld">teratogen</strong> (causes NTDs, cardiac malformations) — women of childbearing age should avoid isotretinoin (Accutane) without iPLEDGE contraception program</li>
+          <li class="note">Acute toxicity: bulging fontanelle (pseudotumor cerebri), nausea, vomiting, hepatomegaly</li>
+        </ul>
+        <div class="mnemonic">Vit A eye stages: "Night XaBiXeKer" → Night blindness, Xerosis, Bitot's, Xerophthalmia, Keratomalacia</div>
+      </div>
+    </div>
+
+    <!-- CH 67 -->
+    <div class="chapter-card" data-keywords="vitamin B complex thiamine riboflavin niacin B6 folate B12 pellagra beriberi Wernicke scurvy megaloblastic neural tube defect">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 67</span>
+        <span class="ch-title">Vitamin B Complex Deficiencies and Excess</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-vit">Vitamin</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp"><strong class="hl2">Thiamine (B1) — Beriberi</strong>: Wet = cardiac (dilated CMP, high-output HF); Dry = neurological (peripheral neuropathy); Wernicke = confusion + ataxia + ophthalmoplegia</li>
+          <li class="imp"><strong class="hl2">Niacin (B3) — Pellagra</strong>: "4 Ds" = Dermatitis, Diarrhea, Dementia, Death; Casal necklace (hyperpigmented collar); corn-based diets; also in Hartnup disease</li>
+          <li class="imp"><strong class="hl2">B6 (Pyridoxine)</strong>: neonatal seizures (pyridoxine-dependent epilepsy — treat with B6); also depleted by isoniazid → supplement with B6 during TB therapy</li>
+          <li class="crit"><strong class="hld">Folate (B9)</strong>: periconceptional deficiency → <strong class="hld">neural tube defects</strong> (spina bifida, anencephaly); megaloblastic anemia without neurological symptoms; supplement 400–800 mcg/day before and during early pregnancy</li>
+          <li class="crit"><strong class="hld">B12 (Cobalamin)</strong>: megaloblastic anemia + <strong class="hld">subacute combined degeneration</strong> (posterior + lateral spinal cord); intrinsic factor required; deficiency in vegans, pernicious anemia</li>
+          <li class="note">Folate vs B12: both cause megaloblastic anemia; only B12 causes neurological damage; folate supplementation alone in B12 deficiency can mask/worsen neuro symptoms</li>
+        </ul>
+        <div class="mnemonic">B12 vs Folate: Both = Megaloblastic anemia. Only B12 = Neurological damage. Folate = NTDs.</div>
+      </div>
+    </div>
+
+    <!-- CH 68 -->
+    <div class="chapter-card" data-keywords="vitamin C ascorbic acid scurvy perifollicular hemorrhage corkscrew hair Frankel line gum bleeding wound healing collagen">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 68</span>
+        <span class="ch-title">Vitamin C (Ascorbic Acid) Deficiency and Excess</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-vit">Vitamin</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp"><strong class="hl3">Scurvy</strong>: Vit C deficiency → impaired collagen synthesis</li>
+          <li class="imp">Clinical features: <strong class="hl3">perifollicular hemorrhages</strong>, <strong class="hl3">corkscrew/swan-neck hairs</strong>, bleeding gums (gingivitis, gum hypertrophy), poor wound healing, subperiosteal hemorrhage, joint effusions, hyperkeratosis, fatigue</li>
+          <li class="imp">X-ray findings: <strong class="hl3">Frankel line</strong> (dense white line at metaphysis — zone of provisional calcification), Trümmerfeld zone (lucent zone below Frankel line), Pelkan spur (lateral projection of metaphysis), Wimberger ring (dense ring around epiphysis)</li>
+          <li class="note">At-risk groups: infants on processed/boiled formula, children with restrictive diets, food insecurity</li>
+          <li class="grn">Vitamin C enhances non-heme iron absorption — eat with iron-rich foods</li>
+          <li class="note">Excess Vit C: generally well-tolerated; high doses → GI upset, oxalate kidney stones, rebound scurvy if abruptly stopped</li>
+        </ul>
+        <div class="mnemonic">Scurvy = Corkscrew hair + Perifollicular hemorrhage + Frankel line on X-ray + Gum bleeding</div>
+      </div>
+    </div>
+
+    <!-- CH 69 -->
+    <div class="chapter-card" data-keywords="vitamin D deficiency rickets craniotabes rachitic rosary bowleg genu varum hypocalcemia tetany Harrison groove widened wrist breastfed">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 69</span>
+        <span class="ch-title">Vitamin D Deficiency (Rickets) and Excess</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-crit">Critical</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp"><strong class="hld">Rickets</strong>: failure of bone mineralization due to Vit D deficiency; most common metabolic bone disease in children</li>
+          <li class="imp">Most at risk: exclusively breastfed infants (breast milk low in Vit D), dark skin (↓ UV synthesis), limited sun exposure, fat malabsorption</li>
+          <li class="imp">Clinical features of rickets:</li>
+        </ul>
+        <table class="vit-table">
+          <thead><tr><th>Feature</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td class="lbl">Craniotabes</td><td>Ping-pong ball sensation when pressing on skull (occipital/parietal bones) — earliest sign in infants</td></tr>
+            <tr><td class="lbl">Frontal bossing</td><td>Prominent forehead; delayed closure of anterior fontanelle</td></tr>
+            <tr><td class="lbl">Rachitic rosary</td><td>Palpable enlargement of costochondral junctions — beads along chest wall</td></tr>
+            <tr><td class="lbl">Harrison groove</td><td>Horizontal groove along lower ribs (diaphragm attachment)</td></tr>
+            <tr><td class="lbl">Widened wrists/ankles</td><td>Metaphyseal widening — "cupping and fraying" on X-ray</td></tr>
+            <tr><td class="lbl">Genu varum / valgum</td><td>Bowlegs (varum) most common; knock-knees (valgum) possible</td></tr>
+            <tr><td class="lbl">Hypocalcemia</td><td>Tetany, muscle cramps, seizures, positive Chvostek/Trousseau signs</td></tr>
+          </tbody>
+        </table>
+        <ul class="key-points">
+          <li class="imp">Labs: ↓ Ca, ↓ PO₄, <strong class="hl2">↑ Alkaline Phosphatase</strong> (most sensitive lab marker), ↑ PTH, ↓ 25-OH Vit D</li>
+          <li class="imp">X-ray: cupping, fraying, splaying of metaphysis; loss of zone of provisional calcification; "paintbrush" metaphysis</li>
+          <li class="imp">Treatment: Vit D supplementation + calcium supplementation; sun exposure; treat underlying cause if malabsorption</li>
+          <li class="crit"><strong class="hld">Vit D toxicity</strong>: hypercalcemia → "stones (nephrolithiasis), bones (pain), groans (GI), moans (neuropsych)"; nephrocalcinosis; treat with hydration + glucocorticoids</li>
+          <li class="note">Prevention: 400 IU/day Vit D from birth for all breastfed infants; 600 IU/day children &gt;1 yr</li>
+        </ul>
+        <div class="mnemonic">Rickets labs: ↓Ca ↓PO4 ↑ALP ↑PTH ↓Vit D → "Can't Play, Always PTH Rising, Vit D Down"</div>
+      </div>
+    </div>
+
+    <!-- CH 70-71 combined -->
+    <div class="chapter-card" data-keywords="vitamin E deficiency hemolytic anemia ataxia neuropathy premature vitamin K hemorrhagic disease newborn VKDB warfarin">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 70–71</span>
+        <span class="ch-title">Vitamin E and Vitamin K Deficiency</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-vit">Vitamin</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp"><strong class="hl4">Vitamin E deficiency</strong>: rare; occurs with fat malabsorption (cholestasis, CF, abetalipoproteinemia); causes hemolytic anemia in premature infants, spinocerebellar ataxia, peripheral neuropathy, retinopathy</li>
+          <li class="note">Excess Vit E: can impair Vit K–dependent clotting → bleeding risk; also may impair immune function at very high doses</li>
+          <li class="crit"><strong class="hld">Vitamin K Deficiency Bleeding (VKDB)</strong> — formerly Hemorrhagic Disease of the Newborn:</li>
+          <li class="crit">Newborns at risk: breastfed (breast milk low in Vit K), immature gut flora, no intestinal bacteria to produce K2 yet</li>
+          <li class="crit">Timing: Early (&lt;24 hrs, maternal drugs), Classic (1–7 days, GI/umbilical bleed), <strong class="hld">Late (2–12 weeks — MOST DANGEROUS: intracranial hemorrhage)</strong></li>
+          <li class="imp">Labs: <strong class="hl2">prolonged PT/INR</strong>, normal platelet count, normal fibrinogen — isolated factor deficiency</li>
+          <li class="crit"><strong class="hld">Prevention: IM Vitamin K 1 mg at birth</strong> is mandatory — oral Vit K is LESS effective, especially for late VKDB</li>
+          <li class="note">Warfarin mechanism: antagonizes Vit K → inhibits synthesis of factors II, VII, IX, X (and proteins C and S)</li>
+        </ul>
+        <div class="mnemonic">VKDB: Prolonged PT + Normal platelets + Bleeding newborn = Give IM Vit K STAT</div>
+      </div>
+    </div>
+
+    <!-- CH 72 -->
+    <div class="chapter-card" data-keywords="micronutrient mineral iron zinc iodine selenium calcium fluoride copper manganese deficiency toxicity anemia goiter">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 72</span>
+        <span class="ch-title">Micronutrient Mineral Deficiencies</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-vit">Minerals</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <table class="vit-table">
+          <thead><tr><th>Mineral</th><th>Deficiency: Features</th><th>Excess / Toxicity</th><th>Key Notes</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="lbl">Iron</td>
+              <td><strong class="hld">Most common nutritional deficiency worldwide.</strong> Iron-deficiency anemia: microcytic hypochromic, ↓ ferritin, ↑ TIBC, ↓ serum iron, ↑ RDW. Pallor, fatigue, pica, pagophagia (ice eating), impaired cognition</td>
+              <td>Iron poisoning: GI hemorrhage, hepatotoxicity, metabolic acidosis — treat with deferoxamine</td>
+              <td>Peak risk: 6–24 months (rapid growth, weaning from breast milk). Screen at 9–12 mo in high-risk infants. Treat: elemental iron 3–6 mg/kg/day</td>
+            </tr>
+            <tr>
+              <td class="lbl">Zinc</td>
+              <td>Growth retardation, hypogonadism, <strong class="hld">acrodermatitis enteropathica</strong> (perioral + perianal + acral rash), poor wound healing, alopecia, diarrhea, impaired taste/smell, immune deficiency</td>
+              <td>GI upset, copper deficiency (zinc displaces copper)</td>
+              <td>Acrodermatitis enteropathica: autosomal recessive defect in zinc transporter (SLC39A4); presents at weaning from breast milk</td>
+            </tr>
+            <tr>
+              <td class="lbl">Iodine</td>
+              <td><strong class="hld">Hypothyroidism</strong>: goiter, cretinism (irreversible intellectual disability if deficient in pregnancy). <strong class="hld">Most common preventable cause of intellectual disability worldwide</strong></td>
+              <td>Thyroid dysfunction (Wolff-Chaikoff effect); Jod-Basedow phenomenon</td>
+              <td>Iodized salt is the primary prevention strategy globally</td>
+            </tr>
+            <tr>
+              <td class="lbl">Fluoride</td>
+              <td>Dental caries (cavities)</td>
+              <td><strong class="hl3">Fluorosis</strong>: dental mottling/pitting (from excessive fluoride during tooth development)</td>
+              <td>Supplementation if water &lt;0.6 ppm; toothpaste with fluoride from first tooth</td>
+            </tr>
+            <tr>
+              <td class="lbl">Copper</td>
+              <td>Kinky hair (<strong class="hl2">Menkes disease</strong>: X-linked, defective copper transport), hypopigmentation, neurodegeneration, low ceruloplasmin, osteoporosis</td>
+              <td><strong class="hl2">Wilson disease</strong>: AR, copper accumulation → liver disease + neuropsychiatric + Kayser-Fleischer rings in cornea</td>
+              <td>Menkes = copper deficiency (hair like steel wool); Wilson = copper excess; both affect copper metabolism</td>
+            </tr>
+            <tr>
+              <td class="lbl">Selenium</td>
+              <td>Cardiomyopathy (Keshan disease), skeletal myopathy, impaired immunity</td>
+              <td>Selenosis: hair loss, nail changes, garlic breath</td>
+              <td>Found in soil-grown foods; deficiency in total parenteral nutrition without supplementation</td>
+            </tr>
+          </tbody>
+        </table>
+        <ul class="key-points">
+          <li class="crit"><strong class="hld">Iodine deficiency</strong> = most common preventable cause of intellectual disability worldwide</li>
+          <li class="crit"><strong class="hld">Iron deficiency</strong> = most common nutritional deficiency worldwide</li>
+          <li class="imp"><strong class="hl2">Acrodermatitis enteropathica</strong>: zinc deficiency → rash at perioral, perianal, acral sites; treat with oral zinc</li>
+          <li class="imp">Iron poisoning: most common fatal poisoning in children &lt;5 yrs (accidental ingestion); 4 phases — GI, latent, systemic, chronic</li>
+        </ul>
+        <div class="mnemonic">Mineral mnemonics: Iron = most common deficiency | Iodine = #1 preventable ID cause | Zinc = Acrodermatitis + Acral rash | Copper ↓ = Menkes | Copper ↑ = Wilson</div>
+      </div>
+    </div>
+
+  </div><!-- end chapters-grid -->
+
+  <div class="footer">
+    <span>Nelson Textbook of Pediatrics · 22nd Ed. · 2024</span>
+    <span>Part V: Chapters 60–72</span>
+  </div>
+
+</div><!-- end page-wrap -->
+
+<script>
+  let openedChapters = new Set();
+  const TOTAL = 13;
+
+  function toggleCard(header) {
+    const card = header.parentElement;
+    const wasOpen = card.classList.contains('open');
+    card.classList.toggle('open');
+    const chNum = card.querySelector('.ch-num').textContent;
+    if (!wasOpen) openedChapters.add(chNum);
+    updateProgress();
+  }
+
+  function updateProgress() {
+    const pct = Math.min((openedChapters.size / TOTAL) * 100, 100);
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressText').textContent = `${openedChapters.size} / ${TOTAL} opened`;
+  }
+
+  function filterChapters() {
+    const q = document.getElementById('searchInput').value.toLowerCase().trim();
+    const cards = document.querySelectorAll('.chapter-card');
+    let visible = 0;
+    cards.forEach(card => {
+      const text = card.textContent.toLowerCase();
+      const keywords = (card.dataset.keywords || '').toLowerCase();
+      const match = !q || text.includes(q) || keywords.includes(q);
+      card.classList.toggle('hidden', !match);
+      if (match) visible++;
+    });
+    document.getElementById('chapterCount').textContent = q
+      ? `${visible} result${visible !== 1 ? 's' : ''}`
+      : `${TOTAL} chapters`;
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.ctrlKey && e.key === 'e') {
+      e.preventDefault();
+      document.querySelectorAll('.chapter-card:not(.open)').forEach(c => {
+        c.classList.add('open');
+        openedChapters.add(c.querySelector('.ch-num').textContent);
+      });
+      updateProgress();
+    }
+  });
+</script>
+
+</body>
+</html>

@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}Results — GoAziro{% endblock %}
+{% block title %}Results — Postgraduate Pead MSQ Exam Help Tool{% endblock %}
 
 {% block extra_css %}
 <style>
@@ -33,6 +33,10 @@
 .explanation-box { margin-top: 1rem; padding: 0.85rem 1rem; background: rgba(79,195,247,0.06); border-left: 3px solid var(--accent); border-radius: 0 8px 8px 0; }
 .explanation-box .key { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); font-weight: 600; margin-bottom: 0.35rem; }
 .explanation-box p { font-size: 0.87rem; color: var(--text-muted); line-height: 1.65; }
+.explanation-content p { margin-bottom: 0.45rem; }
+.explanation-content p:last-child { margin-bottom: 0; }
+.explanation-list { margin: 0.35rem 0 0.2rem 1.2rem; color: var(--text-muted); }
+.explanation-list li { margin-bottom: 0.25rem; line-height: 1.6; }
 .chevron { transition: transform 0.3s; font-size: 0.8rem; color: var(--text-muted); }
 .chevron.open { transform: rotate(180deg); }
 .results-hero-actions { display: flex; gap: 1rem; justify-content: center; margin-top: 1.5rem; }
@@ -299,7 +303,7 @@
             {% if attempt.explanation %}
             <div class="explanation-box">
                 <div class="key">💡 Key Learning Point</div>
-                <p>{{ attempt.explanation }}</p>
+                <div class="explanation-content">{{ attempt.explanation_formatted | safe }}</div>
             </div>
             {% endif %}
         </div>

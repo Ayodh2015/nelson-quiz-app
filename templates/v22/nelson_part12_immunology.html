@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nelson Pediatrics — Part XII: Immunology</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --surface2: #1c2333;
+    --border: #30363d;
+    --accent: #e8a44a;
+    --accent2: #5caaee;
+    --accent3: #63d98a;
+    --danger: #f07a7a;
+    --text: #e6edf3;
+    --text-muted: #8b949e;
+    --text-dim: #484f58;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; font-weight: 300; line-height: 1.75; min-height: 100vh; }
+  body::before { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E"); pointer-events: none; z-index: 0; opacity: 0.4; }
+  .page-wrap { position: relative; z-index: 1; max-width: 920px; margin: 0 auto; padding: 0 24px 80px; }
+  .hero { padding: 72px 0 48px; border-bottom: 1px solid var(--border); margin-bottom: 48px; position: relative; overflow: hidden; }
+  .hero::after { content: 'XII'; position: absolute; right: -10px; top: 10px; font-family: 'Playfair Display', serif; font-size: 160px; font-weight: 900; color: var(--border); line-height: 1; pointer-events: none; user-select: none; }
+  .hero-tag { display: inline-flex; align-items: center; gap: 8px; background: rgba(232,164,74,0.1); border: 1px solid rgba(232,164,74,0.3); color: var(--accent); font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; padding: 5px 12px; border-radius: 4px; margin-bottom: 20px; }
+  .hero-tag::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); animation: pulse 2s ease-in-out infinite; }
+  @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(0.8); } }
+  .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(28px, 4.5vw, 48px); font-weight: 900; line-height: 1.1; margin-bottom: 12px; color: var(--text); }
+  .hero h1 span { color: var(--accent); }
+  .hero-sub { font-size: 15px; color: var(--text-muted); max-width: 560px; margin-bottom: 28px; }
+  .hero-meta { display: flex; gap: 24px; flex-wrap: wrap; }
+  .meta-pill { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text-muted); font-family: 'DM Mono', monospace; }
+  .meta-pill .dot { width: 8px; height: 8px; border-radius: 50%; }
+  .search-bar { position: sticky; top: 0; z-index: 100; background: rgba(13,17,23,0.92); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: 12px 0; margin-bottom: 36px; }
+  .search-inner { max-width: 920px; margin: 0 auto; padding: 0 24px; display: flex; align-items: center; gap: 12px; }
+  .search-input { flex: 1; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 8px 14px 8px 36px; color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 14px; outline: none; transition: border-color 0.2s; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%238b949e' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: 10px center; }
+  .search-input:focus { border-color: var(--accent); }
+  .search-input::placeholder { color: var(--text-dim); }
+  .chapter-count { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--text-muted); white-space: nowrap; }
+  .stats-strip { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 48px; }
+  .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; transition: border-color 0.2s, transform 0.2s; }
+  .stat-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .stat-label { font-family: 'DM Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); margin-bottom: 6px; }
+  .stat-value { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: var(--accent); }
+  .stat-desc { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+  .hiyield { background: linear-gradient(135deg, rgba(232,164,74,0.08), rgba(232,164,74,0.03)); border: 1px solid rgba(232,164,74,0.25); border-left: 3px solid var(--accent); border-radius: 10px; padding: 20px 24px; margin-bottom: 48px; }
+  .hiyield-header { display: flex; align-items: center; gap: 8px; font-family: 'DM Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--accent); margin-bottom: 14px; }
+  .hiyield ul { list-style: none; display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 8px; }
+  .hiyield ul li { font-size: 13px; color: var(--text); padding-left: 16px; position: relative; line-height: 1.5; }
+  .hiyield ul li::before { content: '▸'; position: absolute; left: 0; color: var(--accent); font-size: 11px; }
+  strong.hl  { color: var(--accent);  font-weight: 600; }
+  strong.hl2 { color: var(--accent2); font-weight: 600; }
+  strong.hl3 { color: var(--accent3); font-weight: 600; }
+  strong.hld { color: var(--danger);  font-weight: 600; }
+  .section-label { font-family: 'DM Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.14em; color: var(--text-muted); margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
+  .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+  .chapters-grid { display: flex; flex-direction: column; gap: 12px; margin-bottom: 48px; }
+  .chapter-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; transition: border-color 0.2s, box-shadow 0.2s; }
+  .chapter-card:hover { border-color: rgba(92,170,238,0.4); box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
+  .chapter-header { display: flex; align-items: center; gap: 14px; padding: 16px 20px; cursor: pointer; user-select: none; }
+  .ch-num { font-family: 'DM Mono', monospace; font-size: 11px; font-weight: 500; color: var(--text-muted); background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; padding: 3px 8px; white-space: nowrap; min-width: 52px; text-align: center; }
+  .ch-title { flex: 1; font-size: 15px; font-weight: 500; color: var(--text); }
+  .ch-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+  .tag { font-family: 'DM Mono', monospace; font-size: 9px; text-transform: uppercase; letter-spacing: 0.08em; padding: 2px 7px; border-radius: 4px; border: 1px solid; }
+  .tag-hiy  { color: var(--accent);  border-color: rgba(232,164,74,0.3);  background: rgba(232,164,74,0.08); }
+  .tag-eth  { color: var(--accent2); border-color: rgba(92,170,238,0.3);  background: rgba(92,170,238,0.08); }
+  .tag-soc  { color: var(--accent3); border-color: rgba(99,217,138,0.3);  background: rgba(99,217,138,0.08); }
+  .tag-crit { color: var(--danger);  border-color: rgba(240,122,122,0.3); background: rgba(240,122,122,0.08); }
+  .ch-toggle { color: var(--text-muted); font-size: 18px; transition: transform 0.3s; line-height: 1; }
+  .chapter-card.open .ch-toggle { transform: rotate(180deg); }
+  .chapter-body { display: none; padding: 0 20px 20px 20px; border-top: 1px solid var(--border); animation: slideIn 0.2s ease; }
+  @keyframes slideIn { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
+  .chapter-card.open .chapter-body { display: block; }
+  .key-points { list-style: none; display: flex; flex-direction: column; gap: 6px; margin-top: 10px; }
+  .key-points li { font-size: 13.5px; color: var(--text); padding: 8px 12px; background: var(--surface2); border-radius: 6px; border-left: 2px solid var(--border); line-height: 1.6; }
+  .key-points li.imp  { border-left-color: var(--accent); }
+  .key-points li.crit { border-left-color: var(--danger); }
+  .key-points li.note { border-left-color: var(--accent2); }
+  .mnemonic { margin-top: 12px; background: rgba(99,217,138,0.07); border: 1px dashed rgba(99,217,138,0.25); border-radius: 8px; padding: 10px 14px; font-size: 13px; color: var(--accent3); }
+  .mnemonic::before { content: '💡 '; }
+  .progress-wrap { margin-bottom: 32px; }
+  .progress-label { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--text-muted); margin-bottom: 6px; display: flex; justify-content: space-between; }
+  .progress-bar { height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent2)); border-radius: 2px; width: 0%; transition: width 0.4s ease; }
+  .footer { margin-top: 60px; padding-top: 24px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; font-family: 'DM Mono', monospace; font-size: 11px; color: var(--text-dim); }
+  .chapter-card.hidden { display: none; }
+  @media (max-width: 600px) { .hero::after { font-size: 90px; } .stats-strip { grid-template-columns: repeat(2, 1fr); } .hiyield ul { grid-template-columns: 1fr; } .ch-tags { display: none; } }
+</style>
+</head>
+<body>
+
+<div class="search-bar">
+  <div class="search-inner">
+    <input class="search-input" type="text" id="searchInput" placeholder="Search chapters, topics, keywords…" oninput="filterChapters()">
+    <span class="chapter-count" id="chapterCount">18 chapters</span>
+  </div>
+</div>
+
+<div class="page-wrap">
+
+  <div class="hero">
+    <div class="hero-tag">Nelson Textbook of Pediatrics · 22nd Edition · 2024</div>
+    <h1>Part <span>XII</span><br>Immunology</h1>
+    <p class="hero-sub">The immune system in health and disease — primary immunodeficiencies, autoinflammatory disorders, transplantation, and allergy/hypersensitivity reactions in children.</p>
+    <div class="hero-meta">
+      <span class="meta-pill"><span class="dot" style="background:var(--accent)"></span>Chapters 164–181</span>
+      <span class="meta-pill"><span class="dot" style="background:var(--accent2)"></span>18 Chapters</span>
+      <span class="meta-pill"><span class="dot" style="background:var(--accent3)"></span>High-Yield for Boards</span>
+    </div>
+  </div>
+
+  <div class="stats-strip">
+    <div class="stat-card"><div class="stat-label">Chapters</div><div class="stat-value">18</div><div class="stat-desc">Ch. 164–181</div></div>
+    <div class="stat-card"><div class="stat-label">PID Categories</div><div class="stat-value">5</div><div class="stat-desc">B-cell · T-cell · Combined · Phagocyte · Complement</div></div>
+    <div class="stat-card"><div class="stat-label">Key Syndromes</div><div class="stat-value">20+</div><div class="stat-desc">XLA, SCID, CGD, DiGeorge, WAS, CVID…</div></div>
+    <div class="stat-card"><div class="stat-label">Board Relevance</div><div class="stat-value">★★★★★</div><div class="stat-desc">PID pattern recognition heavily tested</div></div>
+  </div>
+
+  <div class="hiyield">
+    <div class="hiyield-header">⚡ High-Yield Quick Reference — Part XII</div>
+    <ul>
+      <li>B-cell defects → <strong class="hl">recurrent bacterial infections</strong> (encapsulated organisms) after 6 months (maternal IgG wanes)</li>
+      <li>T-cell defects → <strong class="hld">opportunistic infections</strong> (PCP, CMV, Candida, viral) from birth</li>
+      <li>XLA (Bruton): absent B cells, ↓all Ig, boys; presents ~6 months; treat with IVIG</li>
+      <li>CVID: low IgG + IgA ± IgM; normal B-cell count; most common symptomatic PID in adults/older children</li>
+      <li>SCID: absent T cells ± B cells ± NK; "bubble boy"; no live vaccines; treat with HSCT ASAP</li>
+      <li>DiGeorge: 22q11.2 deletion; absent thymus → ↓T cells; hypocalcemia + conotruncal heart defects</li>
+      <li>Wiskott-Aldrich: X-linked; triad — eczema + thrombocytopenia + recurrent infections; ↓IgM, ↑IgA/IgE</li>
+      <li>Ataxia-telangiectasia: cerebellar ataxia + oculocutaneous telangiectasias + ↓IgA; ↑AFP; radiation sensitive; ↑malignancy</li>
+      <li>CGD: NADPH oxidase defect; catalase-positive organisms (Staph, Aspergillus, Serratia, Nocardia, Burkholderia); NBT test (negative); treat with prophylactic TMP-SMX + itraconazole + IFN-γ</li>
+      <li>Complement deficiencies: C3 → recurrent encapsulated bacteria; C5–C9 (MAC) → recurrent Neisseria (meningococcal, gonococcal)</li>
+      <li>Hereditary angioedema (HAE): C1-inhibitor deficiency; recurrent angioedema without urticaria; treat acute with C1-INH concentrate or icatibant</li>
+      <li>Graft-versus-host disease (GvHD): donor T cells attack host; skin (rash), liver (↑bili), gut (diarrhea)</div>
+    </ul>
+  </div>
+
+  <div class="progress-wrap">
+    <div class="progress-label"><span>Study Progress</span><span id="progressText">0 / 18 opened</span></div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+  </div>
+
+  <!-- ════════════════════════════ -->
+  <!-- SECTION A: IMMUNE SYSTEM    -->
+  <!-- ════════════════════════════ -->
+  <div class="section-label">Section A — The Immune System: Overview &amp; Development</div>
+  <div class="chapters-grid">
+
+    <div class="chapter-card" data-keywords="innate adaptive immunity B cell T cell NK cell complement phagocyte neutrophil macrophage dendritic MHC antigen presentation cytokine lymphocyte development bone marrow thymus immunoglobulin">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 164</span>
+        <span class="ch-title">The Immune System: Innate &amp; Adaptive Immunity</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp"><strong class="hl">Innate immunity</strong>: immediate, non-specific; neutrophils, macrophages, NK cells, complement, physical barriers; pattern recognition via PRRs (Toll-like receptors)</li>
+          <li class="imp"><strong class="hl">Adaptive immunity</strong>: specific, delayed (days); B cells (humoral — antibodies) and T cells (cellular); immunological memory</li>
+          <li class="imp">B-cell development: bone marrow → mature naive B cell; activation → plasma cells (antibody secretion) + memory B cells; requires T-cell help (CD4+ Th) for class switching</li>
+          <li class="imp">T-cell development: bone marrow precursors → <strong class="hl">thymus</strong> (positive + negative selection) → CD4+ helper or CD8+ cytotoxic T cells</li>
+          <li class="imp">MHC I (HLA-A, B, C): on all nucleated cells; present to <strong class="hl">CD8+ T cells</strong> (cytotoxic); endogenous antigens (viral, tumour)</li>
+          <li class="imp">MHC II (HLA-DR, DQ, DP): on APCs (B cells, macrophages, dendritic cells); present to <strong class="hl">CD4+ T cells</strong> (helper); exogenous antigens</li>
+          <li class="imp">Immunoglobulins: <strong class="hl">IgG</strong> (most abundant, crosses placenta, memory), <strong class="hl">IgA</strong> (mucosal, secretory — colostrum, saliva, tears), <strong class="hl">IgM</strong> (first responder, pentamer, complement activation), <strong class="hl">IgE</strong> (allergy, parasites), <strong class="hl">IgD</strong> (B-cell receptor)</li>
+          <li class="note">Maternal IgG crosses placenta → protects neonate for first 6 months; then infant must produce own → window of vulnerability for B-cell defects</li>
+        </ul>
+        <div class="mnemonic">MHC rule: "MHC I = CD8 kills; MHC II = CD4 helps" — one number higher each time</div>
+      </div>
+    </div>
+
+    <div class="chapter-card" data-keywords="approach immunodeficiency recurrent infections evaluation workup CBC immunoglobulin levels flow cytometry lymphocyte subsets T B NK DHR NBT complement CH50 AH50 vaccine response">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 165</span>
+        <span class="ch-title">Approach to the Child with Suspected Immunodeficiency</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-crit">Critical</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp">Warning signs of PID: ≥8 new ear infections/yr, ≥2 serious sinus infections/yr, ≥2 pneumonias/yr, failure to thrive, recurrent deep skin/organ abscesses, ≥2 deep-seated infections, persistent thrush, family history of PID, need for IV antibiotics to clear infection</li>
+          <li class="imp">Key clue: <strong class="hl">organism type</strong> identifies defect — encapsulated bacteria (B-cell); opportunistic/fungi/viral (T-cell); catalase-positive bacteria (phagocyte); Neisseria (complement C5–C9)</li>
+          <li class="imp">Age of onset: T-cell defects → from birth; B-cell defects → after 6 months (maternal IgG wanes)</li>
+          <li class="imp">Initial workup: <strong class="hl">CBC + differential</strong> (lymphopenia → T-cell defect; neutropenia; ↓platelets in WAS), serum immunoglobulins (IgG, IgA, IgM, IgE), <strong class="hl">flow cytometry</strong> (T/B/NK cell counts)</li>
+          <li class="imp">Further testing: vaccine antibody titers (functional B cells), <strong class="hl">DHR/NBT test</strong> (phagocyte oxidative burst — CGD), CH50/AH50 (complement), lymphocyte proliferation assays (T-cell function), HIV test</li>
+          <li class="note">Live vaccines (MMR, varicella, rotavirus, BCG, yellow fever) CONTRAINDICATED in most PIDs — risk of disseminated vaccine-strain infection</li>
+          <li class="note">Family history: X-linked PIDs (XLA, SCID, WAS, CGD, XLP) affect males; AR PIDs affect both sexes</li>
+        </ul>
+        <div class="mnemonic">PID organism clues: "Bacteria = B-cell; Opportunists = T-cell; Catalase+ = Phagocyte; Neisseria = Complement (C5-C9)"</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ════════════════════════════ -->
+  <!-- SECTION B: B-CELL DEFECTS   -->
+  <!-- ════════════════════════════ -->
+  <div class="section-label">Section B — Predominantly B-Cell (Antibody) Deficiencies</div>
+  <div class="chapters-grid">
+
+    <div class="chapter-card" data-keywords="XLA Bruton agammaglobulinemia X-linked BTK absent B cells panhypogammaglobulinemia recurrent sinopulmonary encapsulated bacteria Streptococcus Haemophilus IVIG enteroviral meningoencephalitis Giardia">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 166</span>
+        <span class="ch-title">X-Linked Agammaglobulinemia (XLA / Bruton Disease)</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-crit">Critical</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp">XLA: <strong class="hl">BTK (Bruton tyrosine kinase)</strong> mutation → arrest of B-cell development at pre-B stage → <strong class="hl">absent B cells + absent/markedly ↓ all Ig classes</strong>; X-linked → <strong class="hl">males only</strong></li>
+          <li class="crit">Presentation: recurrent sinopulmonary infections after <strong class="hl">6 months</strong> (maternal IgG wanes); organisms: <strong class="hl">encapsulated bacteria</strong> (S. pneumoniae, H. influenzae, Staph aureus), Giardia, Mycoplasma</li>
+          <li class="crit">Complications: <strong class="hl">enteroviral meningoencephalitis</strong> (echo/polio virus — can be chronic/fatal without Ig); live polio vaccine contraindicated (use IPV)</li>
+          <li class="imp">Lab: absent/very low B cells on flow cytometry, panhypogammaglobulinemia (IgG &lt;200 mg/dL), normal T-cell numbers and function</li>
+          <li class="crit">Treatment: <strong class="hl">IVIG every 3–4 weeks for life</strong> (target trough IgG &gt;500–800 mg/dL); SCIG (subcutaneous) alternative; prophylactic antibiotics; no live vaccines</li>
+          <li class="note">No tonsils/lymph nodes palpable (no B cells → no germinal centers)</li>
+        </ul>
+        <div class="mnemonic">XLA: "Boys, No B cells, No Ig, No tonsils → IVIG for life — Bruton's BTK mutation"</div>
+      </div>
+    </div>
+
+    <div class="chapter-card" data-keywords="CVID common variable immunodeficiency low IgG IgA IgM normal B cells autoimmunity granuloma lymphoma bronchiectasis IVIG recurrent sinopulmonary infections">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 167</span>
+        <span class="ch-title">Common Variable Immunodeficiency (CVID)</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-crit">Critical</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp">CVID: most common <strong class="hl">symptomatic</strong> PID in adults and older children; onset usually 2nd–3rd decade; equal sex distribution</li>
+          <li class="imp">Characteristics: <strong class="hl">↓IgG (most important) + ↓IgA and/or ↓IgM</strong>; normal or ↓B-cell numbers BUT poor antibody response to vaccines (dysfunctional B cells)</li>
+          <li class="crit">Infections: recurrent sinopulmonary infections (S. pneumoniae, H. influenzae, Mycoplasma), Giardia, chronic lung disease (bronchiectasis)</li>
+          <li class="imp">Non-infectious complications: <strong class="hl">autoimmune disease</strong> (ITP, AIHA, RA, IBD-like), <strong class="hl">granulomatous disease</strong> (lung, liver, spleen), <strong class="hl">↑lymphoma risk</strong> (B-cell lymphomas), GI disease (malabsorption, IBD-like enteropathy), splenomegaly</li>
+          <li class="crit">Treatment: <strong class="hl">IVIG/SCIG lifelong</strong>; monitor for complications; no live vaccines; treat autoimmune manifestations separately</li>
+          <li class="note">Key distinction from XLA: CVID has <strong class="hl">normal B-cell numbers</strong> (dysfunctional), XLA has <strong class="hl">absent B cells</strong></li>
+        </ul>
+        <div class="mnemonic">CVID: "Normal B cells that Don't Work" — low Ig despite having B cells; presents later than XLA</div>
+      </div>
+    </div>
+
+    <div class="chapter-card" data-keywords="selective IgA deficiency most common PID anaphylaxis blood transfusion recurrent sinopulmonary Giardia celiac autoimmune low IgA normal IgG IgM">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 168</span>
+        <span class="ch-title">Selective IgA Deficiency &amp; Other Antibody Deficiencies</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="crit"><strong class="hld">Selective IgA deficiency</strong>: <strong class="hld">most common PID overall</strong> (1/300–700); IgA &lt;7 mg/dL with normal IgG and IgM; most asymptomatic</li>
+          <li class="imp">Symptomatic: recurrent sinopulmonary infections (S. pneumoniae, H. influenzae), Giardia, celiac disease (↑association), autoimmune disease (↑SLE, RA, thyroid disease)</li>
+          <li class="crit"><strong class="hld">Anaphylaxis to blood products</strong>: anti-IgA antibodies in IgA-deficient patients → severe transfusion reactions; must use <strong class="hl">IgA-depleted blood products</strong> or washed RBCs</li>
+          <li class="note">IVIG contraindicated (contains IgA → anaphylaxis risk); no specific treatment; treat infections aggressively</li>
+          <li class="note"><strong class="hl">Transient hypogammaglobulinemia of infancy</strong>: physiologic nadir of IgG at 3–6 months prolonged beyond 6 months; self-resolves by 2–4 yrs; usually mild infections; watch and wait</li>
+          <li class="note"><strong class="hl">Hyper-IgM syndrome</strong>: ↑IgM, ↓IgG/A/E; defect in CD40L (X-linked) or CD40/AID → cannot class-switch; Pneumocystis jirovecii pneumonia (PCP) risk (T-cell co-signal needed); treat with IVIG + TMP-SMX prophylaxis</li>
+        </ul>
+        <div class="mnemonic">IgA deficiency: "Most Common PID, Usually Silent, Anaphylaxis to blood products — use IgA-depleted products"</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ════════════════════════════ -->
+  <!-- SECTION C: T-CELL & COMBINED DEFECTS -->
+  <!-- ════════════════════════════ -->
+  <div class="section-label">Section C — T-Cell &amp; Combined Immunodeficiencies</div>
+  <div class="chapters-grid">
+
+    <div class="chapter-card" data-keywords="SCID severe combined immunodeficiency bubble boy absent T cells B cells NK ADA RAG gamma chain IL-2 receptor PCP Candida viral infections HSCT gene therapy no live vaccines lymphopenia">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 169</span>
+        <span class="ch-title">Severe Combined Immunodeficiency (SCID)</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-crit">Critical</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="crit">SCID: <strong class="hld">medical emergency</strong>; absent T cells ± B cells ± NK cells → profound susceptibility to ALL infections; without treatment → death within 1st year</li>
+          <li class="imp">Most common form: <strong class="hl">X-linked SCID</strong> (γ-chain of IL-2 receptor mutation → ↓IL-2/4/7/9/15/21 signaling; T⁻B⁺NK⁻); males; most common overall SCID type</li>
+          <li class="imp">Other forms: <strong class="hl">ADA deficiency</strong> (adenosine deaminase; AR; T⁻B⁻NK⁻; toxic deoxyadenosine accumulates; treat with PEG-ADA enzyme replacement or gene therapy); <strong class="hl">RAG1/2 deficiency</strong> (T⁻B⁻NK⁺)</li>
+          <li class="crit">Presentation: failure to thrive, recurrent/severe infections from birth — PCP (<em>Pneumocystis</em>), CMV, RSV, parainfluenza, Candida, persistent mucocutaneous candidiasis; chronic diarrhea, absent lymph nodes/thymus</li>
+          <li class="crit"><strong class="hld">Newborn screening</strong>: TREC (T-cell receptor excision circles) assay detects SCID at birth before infections occur — now in all US states; most important advance</li>
+          <li class="crit">Treatment: <strong class="hld">HSCT (hematopoietic stem cell transplant) ASAP</strong> — curative; best outcomes if performed before 3.5 months of age; gene therapy (for ADA, X-SCID) increasingly available</li>
+          <li class="crit">ABSOLUTE contraindications: <strong class="hld">NO live vaccines</strong> (BCG, MMR, varicella, rotavirus — fatal disseminated disease); <strong class="hld">irradiate ALL blood products</strong> (prevent transfusion-associated GvHD)</li>
+          <li class="note">Maternal T-cell engraftment: maternal T cells can engraft in SCID → GvHD-like picture (erythroderma, ↑liver enzymes)</li>
+        </ul>
+        <div class="mnemonic">SCID: "No T cells → No Immunity → No Live Vaccines → HSCT Now!" — TREC screen catches it at birth</div>
+      </div>
+    </div>
+
+    <div class="chapter-card" data-keywords="DiGeorge syndrome 22q11 thymic aplasia T-cell deficiency hypocalcemia conotruncal heart defect CATCH-22 FISH microarray partial complete thymus transplant">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 170</span>
+        <span class="ch-title">DiGeorge Syndrome (22q11.2 Deletion) — Immunologic Aspects</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-crit">Critical</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp">DiGeorge: 22q11.2 microdeletion → failure of 3rd and 4th pharyngeal pouches to develop → thymic aplasia/hypoplasia → ↓T cells</li>
+          <li class="imp">Spectrum: <strong class="hl">partial DiGeorge</strong> (mild ↓T cells, most common; usually manageable) vs <strong class="hl">complete DiGeorge</strong> (absent thymus → SCID-like; requires thymus transplant)</li>
+          <li class="imp">CATCH-22 features (see Part VIII): Cardiac (conotruncal), Abnormal facies, Thymic aplasia, Cleft palate, Hypocalcemia (hypoparathyroidism), 22q11</li>
+          <li class="crit">Immunologic complications: recurrent viral/fungal infections (↓T cells), poor vaccine responses; complete DiGeorge → opportunistic infections identical to SCID</li>
+          <li class="crit">Treatment: complete DiGeorge → <strong class="hl">thymus transplant</strong> (cultured thymic tissue); calcium + calcitriol for hypocalcemia; cardiac surgery; no live vaccines in complete form</li>
+          <li class="note">Psychiatric complications: schizophrenia (25–30%), anxiety, ADHD, autism — monitor through life</li>
+        </ul>
+        <div class="mnemonic">DiGeorge: "No Thymus → No T cells → Opportunistic infections + Hypocalcemia + Heart defects = 22q11"</div>
+      </div>
+    </div>
+
+    <div class="chapter-card" data-keywords="Wiskott-Aldrich syndrome WAS X-linked WASp eczema thrombocytopenia recurrent infections small platelets IgM low IgA IgE high HSCT lymphoma EBV">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 171</span>
+        <span class="ch-title">Wiskott-Aldrich Syndrome (WAS)</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-crit">Critical</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="crit">WAS: <strong class="hl">WASp (Wiskott-Aldrich Syndrome protein)</strong> mutation; X-linked → males; WASp required for actin cytoskeleton remodeling in immune cells</li>
+          <li class="crit">Classic triad: <strong class="hld">Eczema + Thrombocytopenia + Recurrent infections</strong> (sinopulmonary, opportunistic)</li>
+          <li class="imp">Immunology: combined B + T cell defect; <strong class="hl">↓IgM, ↑IgA, ↑IgE, normal/↓IgG</strong>; poor response to polysaccharide antigens; ↓T-cell function over time</li>
+          <li class="crit">Platelets: <strong class="hld">small platelets (↓MPV)</strong> + thrombocytopenia → bleeding (petechiae, bloody diarrhea, intracranial hemorrhage); characteristic small platelet size distinguishes from ITP</li>
+          <li class="imp">Complications: autoimmunity (vasculitis, ITP, hemolytic anemia), ↑risk EBV-associated lymphoma, infections (encapsulated bacteria, herpesvirus, PCP)</li>
+          <li class="crit">Treatment: <strong class="hl">HSCT</strong> — curative; IVIG; prophylactic TMP-SMX (PCP); splenectomy ↑platelet count (but ↑infection risk); gene therapy emerging</li>
+        </ul>
+        <div class="mnemonic">WAS triad: "WET" → (W)iskott = Welt/Eczema, (E)czema, (T)hrombocytopenia + infections — small platelets key!</div>
+      </div>
+    </div>
+
+    <div class="chapter-card" data-keywords="ataxia telangiectasia AT cerebellar ataxia oculocutaneous telangiectasia ATM kinase low IgA IgG AFP elevated malignancy radiation sensitivity sinopulmonary infections DNA repair">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 172</span>
+        <span class="ch-title">Ataxia-Telangiectasia (AT)</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-crit">Critical</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp">AT: <strong class="hl">ATM gene</strong> (DNA damage repair kinase) mutation; AR; defective DNA double-strand break repair → genome instability</li>
+          <li class="crit">Classic features: <strong class="hld">progressive cerebellar ataxia</strong> (onset 1–4 yrs, wheelchair by 10–12 yrs) + <strong class="hld">oculocutaneous telangiectasias</strong> (conjunctiva, ears, skin — appear 3–6 yrs) + recurrent sinopulmonary infections</li>
+          <li class="imp">Immunology: combined defect — <strong class="hl">↓IgA (most common Ig deficiency)</strong>, ↓IgG subclasses, ↓T-cell function; lymphopenia</li>
+          <li class="crit"><strong class="hld">↑AFP (alpha-fetoprotein)</strong>: hallmark lab finding; elevated due to defective DNA repair in hepatocytes; useful diagnostic marker</li>
+          <li class="crit"><strong class="hld">Radiation sensitivity</strong>: ATM needed to repair radiation-induced DNA breaks; avoid X-rays/CT when possible; <strong class="hld">↑malignancy risk</strong> (lymphoma, leukemia, breast cancer in carriers)</li>
+          <li class="note">No curative treatment; supportive care, IVIG if recurrent infections, physical/occupational therapy; avoid radiation</li>
+        </ul>
+        <div class="mnemonic">AT: "ATA" → Ataxia, Telangiectasia, ↑AFP — plus radiation sensitivity and ↑cancer risk</div>
+      </div>
+    </div>
+
+    <div class="chapter-card" data-keywords="hyper IgE syndrome Job syndrome STAT3 DOCK8 eczema recurrent Staph abscess pneumonia pneumatocele coarse facies retained primary teeth eosinophilia high IgE cold abscess">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 173</span>
+        <span class="ch-title">Hyper-IgE Syndrome (Job Syndrome) &amp; Other Combined Defects</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp">Hyper-IgE syndrome (HIES / Job syndrome): <strong class="hl">STAT3 mutation</strong> (AD) most common; very high serum IgE (&gt;2000 IU/mL), eosinophilia</li>
+          <li class="crit">Classic triad: <strong class="hld">"FATED"</strong> — <strong class="hl">F</strong>acies (coarse), <strong class="hl">A</strong>bscesses (recurrent "cold" — Staph aureus — lack warmth/redness due to deficient neutrophil recruitment), <strong class="hl">T</strong>eeth (retained primary teeth), <strong class="hl">E</strong>czema, <strong class="hl">D</strong>ermatitis</li>
+          <li class="imp">Pulmonary: recurrent Staph pneumonia → <strong class="hl">pneumatoceles</strong> (lung cysts); Aspergillus superinfection of pneumatoceles</li>
+          <li class="imp">Skeletal: scoliosis, hyperextensible joints, minimal trauma fractures, characteristic face (broad nasal bridge, deep-set eyes)</li>
+          <li class="note">DOCK8 deficiency (AR HIES): severe eczema, viral skin infections (molluscum, HPV, HSV), Candida, T-cell lymphopenia; treat with HSCT</li>
+          <li class="note">Treatment: TMP-SMX prophylaxis (Staph); antifungal prophylaxis; IVIG; no curative therapy for STAT3-HIES</li>
+        </ul>
+        <div class="mnemonic">Job syndrome: "FATED" → Facies, cold Abscesses, Teeth (retained), Eczema, Dermatitis + pneumatoceles</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ════════════════════════════ -->
+  <!-- SECTION D: PHAGOCYTE DEFECTS -->
+  <!-- ════════════════════════════ -->
+  <div class="section-label">Section D — Phagocyte Defects</div>
+  <div class="chapters-grid">
+
+    <div class="chapter-card" data-keywords="chronic granulomatous disease CGD NADPH oxidase gp91phox catalase positive organisms Staph Aspergillus Serratia Nocardia Burkholderia NBT DHR dihydrorhodamine nitroblue tetrazolium TMP-SMX itraconazole interferon gamma IFN granuloma">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 174</span>
+        <span class="ch-title">Chronic Granulomatous Disease (CGD)</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-crit">Critical</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp">CGD: defective <strong class="hl">NADPH oxidase</strong> → phagocytes cannot produce reactive oxygen species (oxidative burst) → failure to kill catalase-positive organisms</li>
+          <li class="imp">Most common form: X-linked (gp91phox subunit, 70%); also AR forms</li>
+          <li class="crit">Susceptible organisms: <strong class="hld">catalase-positive</strong> (destroy their own H₂O₂, so CGD phagocytes get no oxidative help): <strong class="hl">Staphylococcus aureus, Aspergillus (most common fungal), Serratia marcescens, Nocardia, Burkholderia cepacia, Candida</strong></li>
+          <li class="crit">Presentations: recurrent skin/lymph node/liver/lung abscesses, osteomyelitis, pneumonia; granuloma formation (GI/GU obstruction from granulomas)</li>
+          <li class="crit">Diagnosis: <strong class="hld">DHR (dihydrorhodamine) flow cytometry</strong> — gold standard; or <strong class="hl">NBT (nitroblue tetrazolium) test</strong> — normal neutrophils turn blue (reduce NBT); CGD = no color change (no oxidative burst)</li>
+          <li class="crit">Treatment: prophylaxis — <strong class="hl">TMP-SMX (bacterial) + itraconazole (fungal) + IFN-γ (↑oxidative activity)</strong>; HSCT curative; gene therapy trials</li>
+          <li class="note">Female carriers of X-linked CGD: mosaic DHR result (some normal, some abnormal neutrophils); usually asymptomatic but ↑risk discoid lupus</li>
+        </ul>
+        <div class="mnemonic">CGD organisms: "NASSB" → Nocardia, Aspergillus, Staph aureus, Serratia, Burkholderia — all catalase-positive</div>
+      </div>
+    </div>
+
+    <div class="chapter-card" data-keywords="leukocyte adhesion deficiency LAD CD18 CD11 integrins delayed umbilical cord separation omphalitis recurrent bacterial infections no pus neutrophilia elevated WBC leukocytosis">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 175</span>
+        <span class="ch-title">Leukocyte Adhesion Deficiency (LAD) &amp; Other Phagocyte Defects</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="crit"><strong class="hld">LAD type I</strong>: CD18 (β₂ integrin) deficiency → neutrophils cannot adhere to endothelium → cannot migrate to sites of infection; AR</li>
+          <li class="crit">Classic hallmarks: <strong class="hld">delayed separation of umbilical cord (&gt;3 weeks)</strong>, recurrent omphalitis/skin infections, severe periodontitis, recurrent bacterial infections WITHOUT pus formation (no neutrophil extravasation)</li>
+          <li class="crit">Labs: <strong class="hld">markedly elevated WBC/neutrophils</strong> during infections (neutrophils cannot leave bloodstream); absent CD18 on flow cytometry</li>
+          <li class="imp">Treatment: HSCT (curative); prophylactic antibiotics; aggressive treatment of infections</li>
+          <li class="note"><strong class="hl">Chediak-Higashi syndrome</strong>: AR; LYST gene; giant lysosomes in all granule-containing cells → partial albinism, recurrent Staph/Strep infections, neutropenia, NK cell dysfunction, progressive neurologic deterioration; peripheral smear: giant granules in neutrophils; treat with HSCT</li>
+          <li class="note"><strong class="hl">Cyclic neutropenia</strong>: ELANE mutation; neutropenia cycling every ~21 days; fever, oral ulcers, infections at nadir; treat with G-CSF</li>
+        </ul>
+        <div class="mnemonic">LAD: "Delayed cord separation + No pus + High WBC = can't migrate out of blood" — CD18 missing</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ════════════════════════════ -->
+  <!-- SECTION E: COMPLEMENT       -->
+  <!-- ════════════════════════════ -->
+  <div class="section-label">Section E — Complement Deficiencies</div>
+  <div class="chapters-grid">
+
+    <div class="chapter-card" data-keywords="complement deficiency C1q C2 C3 C4 C5 C6 C7 C8 C9 MAC Neisseria meningococcal gonococcal recurrent SLE lupus CH50 AH50 hereditary angioedema HAE C1 inhibitor bradykinin">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 176</span>
+        <span class="ch-title">Complement Deficiencies &amp; Hereditary Angioedema</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-crit">Critical</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp">Complement pathways: <strong class="hl">Classical</strong> (C1q, C4, C2, C3 → C3b opsonization → C5-C9 MAC) activated by Ab-Ag complexes; <strong class="hl">Alternative</strong> (Factor B, D, Properdin) — spontaneous; <strong class="hl">Lectin</strong> (MBL)</li>
+          <li class="imp"><strong class="hl">C3 deficiency</strong>: most severe complement deficiency; recurrent infections with <strong class="hl">encapsulated bacteria</strong> (S. pneumoniae, H. influenzae, Neisseria) from all pathways disrupted; ↑autoimmune disease (SLE-like)</li>
+          <li class="crit"><strong class="hld">C5–C9 (MAC/terminal complement) deficiency</strong>: specific susceptibility to <strong class="hld">Neisseria</strong> (N. meningitidis, N. gonorrhoeae) — recurrent meningococcal/gonococcal disease; MAC needed to lyse Gram-negative organisms with thin peptidoglycan</li>
+          <li class="imp"><strong class="hl">C1q, C2, C4 deficiency</strong>: ↑SLE risk (complement needed to clear immune complexes); C2 deficiency is most common complement deficiency in whites</li>
+          <li class="crit"><strong class="hld">Hereditary Angioedema (HAE)</strong>: <strong class="hl">C1-inhibitor (C1-INH) deficiency</strong> (AD) → uncontrolled bradykinin generation → episodic angioedema of skin, GI tract, larynx (life-threatening)</li>
+          <li class="crit">HAE characteristics: <strong class="hld">NO urticaria</strong> (distinguishes from allergic angioedema); attacks triggered by stress/trauma/estrogen/ACE inhibitors; lab: ↓C4 (always low between attacks), ↓C1-INH level or function</li>
+          <li class="crit">HAE acute treatment: <strong class="hld">C1-INH concentrate</strong> (Berinert/Cinryze), <strong class="hl">icatibant</strong> (bradykinin B2 receptor antagonist), or kallikrein inhibitor (ecallantide); epinephrine and antihistamines are NOT effective</li>
+          <li class="imp">HAE prophylaxis: danazol (↑C1-INH synthesis), tranexamic acid, lanadelumab (anti-kallikrein monoclonal Ab)</li>
+          <li class="note">Screen: CH50 (classical pathway) — low if any classical pathway complement missing; AH50 (alternative pathway)</li>
+        </ul>
+        <div class="mnemonic">Complement deficiency key: "C3 = all bugs; C5-C9 = Neisseria only; C1/C2/C4 = SLE risk; C1-INH deficiency = HAE (no urticaria!)"</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ════════════════════════════ -->
+  <!-- SECTION F: AUTOINFLAMMATORY -->
+  <!-- ════════════════════════════ -->
+  <div class="section-label">Section F — Autoinflammatory &amp; Autoimmune Disorders</div>
+  <div class="chapters-grid">
+
+    <div class="chapter-card" data-keywords="autoinflammatory periodic fever PFAPA FMF familial Mediterranean fever CAPS TRAPS HIDS inflammasome IL-1 colchicine anakinra canakinumab rilonacept">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 177</span>
+        <span class="ch-title">Autoinflammatory Diseases &amp; Periodic Fever Syndromes</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-crit">Critical</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp">Autoinflammatory diseases: innate immune dysregulation → recurrent fever + inflammation without autoantibodies or antigen-specific T cells; most involve inflammasome/IL-1β pathway</li>
+          <li class="crit"><strong class="hld">PFAPA</strong> (Periodic Fever, Aphthous stomatitis, Pharyngitis, Adenitis): most common periodic fever syndrome in children; regular cycles every 3–5 wks; responds dramatically to <strong class="hl">single dose corticosteroid</strong>; tonsillectomy often curative; no genetic cause identified</li>
+          <li class="crit"><strong class="hld">FMF (Familial Mediterranean Fever)</strong>: <strong class="hl">MEFV (pyrin)</strong> gene mutation; AR; Mediterranean/Middle Eastern populations; episodic fever + serositis (peritonitis, pleuritis, arthritis) lasting 12–72h; <strong class="hld">amyloidosis</strong> (AA type — most serious complication → renal failure); treat with <strong class="hl">colchicine (daily, lifelong)</strong> — prevents attacks and amyloidosis</li>
+          <li class="imp"><strong class="hl">CAPS</strong> (Cryopyrin-Associated Periodic Syndromes): NLRP3/cryopyrin mutations → ↑IL-1β; spectrum from FCAS (cold urticaria) → MWS (urticaria + deafness) → NOMID (most severe — neonatal onset, chronic meningitis, joint deformity); treat with <strong class="hl">IL-1 inhibitors</strong> (anakinra, canakinumab, rilonacept)</li>
+          <li class="imp"><strong class="hl">TRAPS</strong> (TNF Receptor-Associated Periodic Syndrome): TNFRSF1A mutation; AD; prolonged fevers (&gt;1 wk); migratory rash, periorbital edema, myalgia; treat with etanercept or IL-1 inhibitors</li>
+          <li class="note"><strong class="hl">HIDS</strong> (Hyper-IgD Syndrome): MVK (mevalonate kinase) mutation; AR; very ↑IgD; periodic fever + LAD + abdominal pain + rash; treat with IL-1 inhibitors</li>
+        </ul>
+        <div class="mnemonic">FMF: "Mediterranean Fever → Peritonitis + Colchicine daily → prevents Amyloidosis" — MEFV gene</div>
+      </div>
+    </div>
+
+    <div class="chapter-card" data-keywords="immune dysregulation IPEX syndrome APECED APS1 regulatory T cell FOXP3 autoimmune polyendocrinopathy enteropathy HLH hemophagocytic lymphohistiocytosis macrophage activation syndrome MAS ferritin cytokine storm">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 178</span>
+        <span class="ch-title">Immune Dysregulation: IPEX, HLH &amp; Related Disorders</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-crit">Critical</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="crit"><strong class="hld">HLH (Hemophagocytic Lymphohistiocytosis)</strong>: life-threatening cytokine storm from uncontrolled macrophage/T-cell activation; primary (genetic — perforin/UNC13D/RAB27A mutations) or secondary (infection — EBV most common, MAS in rheumatic disease, malignancy)</li>
+          <li class="crit">HLH diagnostic criteria (≥5 of 8): fever, <strong class="hl">splenomegaly</strong>, ↓2 cell lines (cytopenia), <strong class="hld">↑ferritin (&gt;500, often &gt;10,000)</strong>, ↑triglycerides/↓fibrinogen, hemophagocytosis on BM biopsy, ↓NK cell activity, ↑sCD25 (soluble IL-2R)</li>
+          <li class="crit">Treatment: <strong class="hl">HLH-94/2004 protocol</strong> — dexamethasone + etoposide ± cyclosporine; HSCT for primary/refractory HLH; treat underlying trigger</li>
+          <li class="crit"><strong class="hld">IPEX syndrome</strong>: <strong class="hl">FOXP3</strong> mutation → absent regulatory T cells (Tregs) → uncontrolled autoimmunity; X-linked; neonatal onset triad: <strong class="hl">I</strong>mmune dysregulation (autoimmune enteropathy, diabetes, thyroiditis, hemolytic anemia), <strong class="hl">P</strong>olyendocrinopathy, <strong class="hl">E</strong>nteropathy, <strong class="hl">X</strong>-linked</li>
+          <li class="imp">IPEX features: intractable diarrhea (enteropathy), type 1 diabetes (neonatal), eczema, severe failure to thrive; fatal without HSCT</li>
+          <li class="note"><strong class="hl">APECED/APS-1</strong>: AIRE gene mutation (AR) → failure of central tolerance → autoimmune polyendocrinopathy (hypoparathyroidism + adrenal insufficiency + mucocutaneous candidiasis) — classic triad</li>
+        </ul>
+        <div class="mnemonic">HLH: "Fever + Big Spleen + Cytopenias + VERY HIGH ferritin = HLH" — ferritin &gt;10,000 is highly suggestive</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ════════════════════════════ -->
+  <!-- SECTION G: TRANSPLANTATION & ALLERGY -->
+  <!-- ════════════════════════════ -->
+  <div class="section-label">Section G — Transplantation Immunology &amp; Allergy</div>
+  <div class="chapters-grid">
+
+    <div class="chapter-card" data-keywords="HSCT hematopoietic stem cell transplant bone marrow transplant GvHD graft versus host disease rejection engraftment conditioning myeloablative immunosuppression tacrolimus cyclosporine solid organ transplant HLA matching">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 179</span>
+        <span class="ch-title">Hematopoietic Stem Cell &amp; Solid Organ Transplantation</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-crit">Critical</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp">HSCT indications: SCID, WAS, CGD, thalassemia, sickle cell disease, leukemia, MPS I, aplastic anemia; conditioning (chemo ± radiation) → destroy host immune system → donor stem cells engraft</li>
+          <li class="crit"><strong class="hld">GvHD (Graft-versus-Host Disease)</strong>: donor T cells recognize host alloantigens as foreign → attack host tissues</li>
+          <li class="crit">Acute GvHD (&lt;100 days): <strong class="hl">skin</strong> (maculopapular rash — often first sign), <strong class="hl">liver</strong> (↑bilirubin, ↑LFTs), <strong class="hl">GI tract</strong> (secretory diarrhea, cramping, bleeding); graded I–IV; treat with steroids</li>
+          <li class="imp">Chronic GvHD (&gt;100 days): resembles autoimmune disease — scleroderma-like skin changes, sicca syndrome, bronchiolitis obliterans, cytopenias; treat with steroids + immunosuppression</li>
+          <li class="imp">GvL (Graft-versus-Leukemia) effect: donor T cells also kill residual leukemia cells — beneficial; balance against GvHD</li>
+          <li class="imp">Rejection (solid organ): host immune system attacks donor organ; hyperacute (&lt;24h — Ab-mediated, preformed), acute (days–weeks — T-cell mediated), chronic (months–years — fibrosis)</li>
+          <li class="note">Immunosuppression post-transplant: calcineurin inhibitors (tacrolimus, cyclosporine), mycophenolate, steroids; ↑infection risk (PCP prophylaxis, CMV monitoring, annual flu vaccine)</li>
+        </ul>
+        <div class="mnemonic">Acute GvHD targets: "Skin, Liver, Gut" — donor T cells attack these three organs first</div>
+      </div>
+    </div>
+
+    <div class="chapter-card" data-keywords="allergic rhinitis asthma atopic dermatitis eczema food allergy IgE mast cell histamine Th2 sensitization allergen immunotherapy pollen dust mite skin prick test RAST allergy testing antihistamine LTRA">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 180</span>
+        <span class="ch-title">Allergic Diseases: Rhinitis, Atopic Dermatitis &amp; Food Allergy</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-crit">Critical</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp">Atopic triad: <strong class="hl">atopic dermatitis (eczema) → allergic rhinitis → asthma</strong> ("atopic march"); IgE-mediated Th2 responses; strong genetic component</li>
+          <li class="imp"><strong class="hl">Allergic rhinitis</strong>: seasonal (tree/grass/weed pollen) or perennial (dust mite, pet dander, mold); sneezing, rhinorrhea, nasal congestion, pruritus; "allergic salute," "allergic shiners," nasal crease; treat with intranasal corticosteroids (first-line), antihistamines, LTRA (montelukast); allergen immunotherapy for persistent/severe</li>
+          <li class="imp"><strong class="hl">Atopic dermatitis (eczema)</strong>: chronic pruritic inflammatory skin disease; filaggrin (FLG) gene mutations → defective skin barrier; flexural distribution (antecubital/popliteal fossa) in children; treat: moisturizers + topical corticosteroids (first-line), tacrolimus/pimecrolimus (steroid-sparing), dupilumab (anti-IL-4Rα, moderate-severe)</li>
+          <li class="crit"><strong class="hl">Food allergy</strong>: IgE-mediated (immediate — anaphylaxis) or non-IgE (delayed — FPIES, eosinophilic esophagitis); top 9 allergens: milk, egg, peanut, tree nuts, fish, shellfish, wheat, soy, sesame</li>
+          <li class="imp">Food allergy diagnosis: skin prick test + specific IgE (RAST); <strong class="hl">oral food challenge</strong> is gold standard; component testing (peanut Ara h 2 = ↑anaphylaxis risk)</li>
+          <li class="imp">LEAP trial: early introduction of peanut (4–11 months) in high-risk infants (severe eczema/egg allergy) → <strong class="hl">↓peanut allergy 80%</strong>; current AAP guidance: introduce peanut-containing foods early</li>
+          <li class="note">Oral immunotherapy (OIT): increasing doses of allergen → desensitization; FDA-approved for peanut (Palforzia); improves threshold but does not cure</li>
+        </ul>
+        <div class="mnemonic">Atopic March: "Eczema → Rhinitis → Asthma" — each step builds on the last in atopic individuals</div>
+      </div>
+    </div>
+
+    <div class="chapter-card" data-keywords="hypersensitivity reactions Gell Coombs type I IgE immediate type II cytotoxic type III immune complex serum sickness type IV delayed DTH contact dermatitis drug allergy penicillin Stevens Johnson TEN">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 181</span>
+        <span class="ch-title">Hypersensitivity Reactions &amp; Drug Allergy</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-crit">Critical</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp"><strong class="hl">Gell &amp; Coombs classification</strong>:</li>
+          <li class="imp"><strong class="hl">Type I (Immediate/IgE-mediated)</strong>: mast cell degranulation → histamine; urticaria, angioedema, anaphylaxis; onset minutes; examples: food allergy, penicillin anaphylaxis, latex allergy, insect sting</li>
+          <li class="imp"><strong class="hl">Type II (Cytotoxic/Ab-mediated)</strong>: IgG/IgM against cell surface → complement activation/ADCC; examples: hemolytic transfusion reaction, autoimmune hemolytic anemia, Goodpasture, ITP, neonatal HDN</li>
+          <li class="imp"><strong class="hl">Type III (Immune complex)</strong>: antigen-antibody complexes deposit in tissues → complement activation → inflammation; examples: serum sickness (urticaria + arthritis + fever + LAD 7–21 days after exposure), SLE, post-strep GN, Arthus reaction</li>
+          <li class="imp"><strong class="hl">Type IV (Delayed/T-cell mediated)</strong>: sensitized T cells → cytokines; onset 48–72h; examples: contact dermatitis (poison ivy, nickel), TB tuberculin test (PPD), transplant rejection, granulomatous disease</li>
+          <li class="crit"><strong class="hld">Serum sickness</strong>: type III; classic after cefaclor (most common antibiotic cause in children), anti-thymocyte globulin, rituximab; fever + arthralgia + urticaria 7–21 days post-exposure; treat with antihistamines + NSAIDs ± corticosteroids</li>
+          <li class="crit"><strong class="hld">Stevens-Johnson Syndrome (SJS) / TEN</strong>: severe mucocutaneous drug reaction; T-cell mediated (type IV variant); SJS &lt;10% BSA, TEN &gt;30%; mucous membrane involvement; most common drugs: sulfonamides, anticonvulsants (phenytoin, carbamazepine, lamotrigine), allopurinol, NSAIDs; treat: stop offending drug, supportive care (burn unit), IVIG/cyclosporine debated</li>
+          <li class="note">Penicillin allergy: true IgE-mediated allergy &lt;1% of those reporting allergy; skin testing can confirm; cross-reactivity with cephalosporins ~2% (not ~10% as historically stated)</li>
+        </ul>
+        <div class="mnemonic">4 Hypersensitivity Types: "ACID" → Anaphylaxis (I/IgE), Cytotoxic (II/IgG), Immune complex (III/complement), Delayed (IV/T-cells)</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    <span>Nelson Textbook of Pediatrics · 22nd Ed. · 2024</span>
+    <span>Part XII: Chapters 164–181 · Immunology</span>
+  </div>
+
+</div>
+
+<script>
+  let openedChapters = new Set();
+  const TOTAL_CHAPTERS = 18;
+
+  function toggleCard(header) {
+    const card = header.parentElement;
+    const wasOpen = card.classList.contains('open');
+    card.classList.toggle('open');
+    const chNum = card.querySelector('.ch-num').textContent;
+    if (!wasOpen) openedChapters.add(chNum);
+    updateProgress();
+  }
+
+  function updateProgress() {
+    const opened = openedChapters.size;
+    const pct = Math.min((opened / TOTAL_CHAPTERS) * 100, 100);
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressText').textContent = `${opened} / ${TOTAL_CHAPTERS} opened`;
+  }
+
+  function filterChapters() {
+    const q = document.getElementById('searchInput').value.toLowerCase().trim();
+    const cards = document.querySelectorAll('.chapter-card');
+    let visible = 0;
+    cards.forEach(card => {
+      const title    = card.querySelector('.ch-title').textContent.toLowerCase();
+      const body     = card.querySelector('.chapter-body') ? card.querySelector('.chapter-body').textContent.toLowerCase() : '';
+      const keywords = (card.dataset.keywords || '').toLowerCase();
+      if (!q || title.includes(q) || body.includes(q) || keywords.includes(q)) {
+        card.classList.remove('hidden'); visible++;
+      } else { card.classList.add('hidden'); }
+    });
+    document.getElementById('chapterCount').textContent = q ? `${visible} result${visible !== 1 ? 's' : ''}` : `${TOTAL_CHAPTERS} chapters`;
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.ctrlKey && e.key === 'e') {
+      e.preventDefault();
+      document.querySelectorAll('.chapter-card:not(.open)').forEach(c => {
+        c.classList.add('open');
+        openedChapters.add(c.querySelector('.ch-num').textContent);
+      });
+      updateProgress();
+    }
+  });
+</script>
+</body>
+</html>

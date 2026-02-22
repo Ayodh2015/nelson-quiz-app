@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nelson Pediatrics — Part XIV: Rheumatic Diseases of Childhood</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#0d1117; --surface:#161b22; --surface2:#1c2333; --border:#30363d;
+    --accent:#f472b6;   /* pink/rose — connective tissue/rheum feel */
+    --accent2:#fb923c;  /* orange */
+    --accent3:#34d399;  /* green */
+    --accent4:#fbbf24;  /* amber */
+    --danger:#f87171;   /* red */
+    --purple:#a78bfa;   /* purple */
+    --sky:#60a5fa;      /* blue */
+    --text:#e6edf3; --text-muted:#8b949e; --text-dim:#484f58;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-weight:300;line-height:1.75;min-height:100vh}
+  body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:.4}
+  .pw{position:relative;z-index:1;max-width:960px;margin:0 auto;padding:0 24px 80px}
+
+  /* HERO */
+  .hero{padding:72px 0 48px;border-bottom:1px solid var(--border);margin-bottom:48px;position:relative;overflow:hidden}
+  .hero::after{content:'XIV';position:absolute;right:-8px;top:0;font-family:'Playfair Display',serif;font-size:140px;font-weight:900;color:var(--border);line-height:1;pointer-events:none;user-select:none}
+  .hero-tag{display:inline-flex;align-items:center;gap:8px;background:rgba(244,114,182,.1);border:1px solid rgba(244,114,182,.3);color:var(--accent);font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;padding:5px 12px;border-radius:4px;margin-bottom:20px}
+  .hero-tag::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--accent);animation:pulse 2s ease-in-out infinite}
+  @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.8)}}
+  .hero h1{font-family:'Playfair Display',serif;font-size:clamp(24px,4vw,46px);font-weight:900;line-height:1.1;margin-bottom:12px}
+  .hero h1 span{color:var(--accent)}
+  .hero-sub{font-size:15px;color:var(--text-muted);max-width:560px;margin-bottom:28px}
+  .hero-meta{display:flex;gap:24px;flex-wrap:wrap}
+  .meta-pill{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text-muted);font-family:'DM Mono',monospace}
+  .meta-pill .dot{width:8px;height:8px;border-radius:50%}
+
+  /* SEARCH */
+  .search-bar{position:sticky;top:0;z-index:100;background:rgba(13,17,23,.93);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:12px 0;margin-bottom:36px}
+  .search-inner{max-width:960px;margin:0 auto;padding:0 24px;display:flex;align-items:center;gap:12px}
+  .search-input{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px 14px 8px 36px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;outline:none;transition:border-color .2s;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%238b949e' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:10px center}
+  .search-input:focus{border-color:var(--accent)}
+  .search-input::placeholder{color:var(--text-dim)}
+  .chapter-count{font-family:'DM Mono',monospace;font-size:11px;color:var(--text-muted);white-space:nowrap}
+
+  /* STATS */
+  .stats-strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:12px;margin-bottom:48px}
+  .stat-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px 18px;transition:border-color .2s,transform .2s}
+  .stat-card:hover{border-color:var(--accent);transform:translateY(-2px)}
+  .stat-label{font-family:'DM Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--text-muted);margin-bottom:6px}
+  .stat-value{font-family:'Playfair Display',serif;font-size:19px;font-weight:700;color:var(--accent)}
+  .stat-desc{font-size:12px;color:var(--text-muted);margin-top:2px}
+
+  /* HI-YIELD */
+  .hiyield{background:linear-gradient(135deg,rgba(244,114,182,.08),rgba(244,114,182,.02));border:1px solid rgba(244,114,182,.25);border-left:3px solid var(--accent);border-radius:10px;padding:20px 24px;margin-bottom:48px}
+  .hiyield-header{display:flex;align-items:center;gap:8px;font-family:'DM Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:var(--accent);margin-bottom:14px}
+  .hiyield ul{list-style:none;display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:8px}
+  .hiyield ul li{font-size:13px;color:var(--text);padding-left:16px;position:relative;line-height:1.5}
+  .hiyield ul li::before{content:'▸';position:absolute;left:0;color:var(--accent);font-size:11px}
+
+  strong.hl {color:var(--accent);font-weight:600}
+  strong.hl2{color:var(--accent2);font-weight:600}
+  strong.hl3{color:var(--accent3);font-weight:600}
+  strong.hl4{color:var(--accent4);font-weight:600}
+  strong.hlp{color:var(--purple);font-weight:600}
+  strong.hld{color:var(--danger);font-weight:600}
+  strong.hls{color:var(--sky);font-weight:600}
+
+  /* TABLE */
+  .t{width:100%;border-collapse:collapse;font-size:13px;margin:10px 0}
+  .t th{background:var(--surface2);color:var(--accent);font-family:'DM Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.08em;padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+  .t td{padding:7px 12px;border-bottom:1px solid var(--border);color:var(--text);vertical-align:top;line-height:1.55}
+  .t tr:hover td{background:rgba(255,255,255,.02)}
+  .t .lbl{font-family:'DM Mono',monospace;font-size:11px;color:var(--accent4);white-space:nowrap;font-weight:500}
+  .t .lbl2{font-family:'DM Mono',monospace;font-size:11px;color:var(--accent2);white-space:nowrap;font-weight:500}
+  .t .lbl3{font-family:'DM Mono',monospace;font-size:11px;color:var(--accent);white-space:nowrap;font-weight:500}
+
+  /* SUB-HEADER inside card */
+  .sub-hdr{margin-top:18px;font-family:'DM Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--accent2)}
+
+  /* SECTION LABEL */
+  .section-label{font-family:'DM Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:.14em;color:var(--text-muted);margin-bottom:16px;display:flex;align-items:center;gap:10px}
+  .section-label::after{content:'';flex:1;height:1px;background:var(--border)}
+
+  /* CARDS */
+  .chapters-grid{display:flex;flex-direction:column;gap:12px;margin-bottom:48px}
+  .chapter-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:border-color .2s,box-shadow .2s}
+  .chapter-card:hover{border-color:rgba(244,114,182,.35);box-shadow:0 4px 20px rgba(0,0,0,.3)}
+  .chapter-header{display:flex;align-items:center;gap:14px;padding:16px 20px;cursor:pointer;user-select:none}
+  .ch-num{font-family:'DM Mono',monospace;font-size:11px;font-weight:500;color:var(--text-muted);background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:3px 8px;white-space:nowrap;min-width:48px;text-align:center}
+  .ch-title{flex:1;font-size:15px;font-weight:500;color:var(--text)}
+  .ch-tags{display:flex;gap:6px;flex-wrap:wrap}
+  .tag{font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:.08em;padding:2px 7px;border-radius:4px;border:1px solid}
+  .tag-hiy {color:var(--accent4);border-color:rgba(251,191,36,.3);background:rgba(251,191,36,.08)}
+  .tag-crit{color:var(--danger);border-color:rgba(248,113,113,.3);background:rgba(248,113,113,.08)}
+  .tag-auto{color:var(--accent);border-color:rgba(244,114,182,.3);background:rgba(244,114,182,.08)}
+  .tag-rx  {color:var(--accent3);border-color:rgba(52,211,153,.3);background:rgba(52,211,153,.08)}
+  .tag-vasc{color:var(--purple);border-color:rgba(167,139,250,.3);background:rgba(167,139,250,.08)}
+  .tag-inf {color:var(--sky);border-color:rgba(96,165,250,.3);background:rgba(96,165,250,.08)}
+  .ch-toggle{color:var(--text-muted);font-size:18px;transition:transform .3s;line-height:1}
+  .chapter-card.open .ch-toggle{transform:rotate(180deg)}
+  .chapter-body{display:none;padding:0 20px 20px;border-top:1px solid var(--border);animation:slideIn .2s ease}
+  @keyframes slideIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
+  .chapter-card.open .chapter-body{display:block}
+
+  .key-points{list-style:none;display:flex;flex-direction:column;gap:6px;margin-top:10px}
+  .key-points li{font-size:13.5px;color:var(--text);padding:8px 12px;background:var(--surface2);border-radius:6px;border-left:2px solid var(--border);line-height:1.6}
+  .key-points li.imp {border-left-color:var(--accent4)}
+  .key-points li.crit{border-left-color:var(--danger)}
+  .key-points li.note{border-left-color:var(--sky)}
+  .key-points li.grn {border-left-color:var(--accent3)}
+  .key-points li.pur {border-left-color:var(--purple)}
+  .key-points li.pnk{border-left-color:var(--accent)}
+
+  .mnemonic{margin-top:12px;background:rgba(244,114,182,.07);border:1px dashed rgba(244,114,182,.25);border-radius:8px;padding:10px 14px;font-size:13px;color:var(--accent)}
+  .mnemonic::before{content:'💡 '}
+
+  /* PROGRESS */
+  .progress-wrap{margin-bottom:32px}
+  .progress-label{font-family:'DM Mono',monospace;font-size:11px;color:var(--text-muted);margin-bottom:6px;display:flex;justify-content:space-between}
+  .progress-bar{height:4px;background:var(--border);border-radius:2px;overflow:hidden}
+  .progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--purple));border-radius:2px;width:0%;transition:width .4s ease}
+
+  .footer{margin-top:60px;padding-top:24px;border-top:1px solid var(--border);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;font-family:'DM Mono',monospace;font-size:11px;color:var(--text-dim)}
+  .chapter-card.hidden{display:none}
+
+  @media(max-width:600px){
+    .hero::after{font-size:80px}
+    .stats-strip{grid-template-columns:repeat(2,1fr)}
+    .hiyield ul{grid-template-columns:1fr}
+    .ch-tags{display:none}
+    .t{font-size:12px}
+  }
+</style>
+</head>
+<body>
+
+<div class="search-bar">
+  <div class="search-inner">
+    <input class="search-input" type="text" id="searchInput" placeholder="Search JIA, lupus, Kawasaki, vasculitis, dermatomyositis…" oninput="filterChapters()">
+    <span class="chapter-count" id="chapterCount">20 chapters</span>
+  </div>
+</div>
+
+<div class="pw">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-tag">Nelson Textbook of Pediatrics · 22nd Edition · 2024</div>
+    <h1>Part <span>XIV</span><br>Rheumatic Diseases<br>of Childhood</h1>
+    <p class="hero-sub">Exam-oriented study notes covering Chapters 194–213. JIA, SLE, Kawasaki disease, vasculitis, dermatomyositis, scleroderma, autoinflammatory syndromes, and more.</p>
+    <div class="hero-meta">
+      <div class="meta-pill"><span class="dot" style="background:var(--accent)"></span> 20 Chapters</div>
+      <div class="meta-pill"><span class="dot" style="background:var(--accent2)"></span> Autoantibody Tables</div>
+      <div class="meta-pill"><span class="dot" style="background:var(--purple)"></span> Vasculitis Classification</div>
+      <div class="meta-pill"><span class="dot" style="background:var(--danger)"></span> Diagnostic Criteria</div>
+    </div>
+  </div>
+
+  <!-- PROGRESS -->
+  <div class="progress-wrap">
+    <div class="progress-label">
+      <span>Reading Progress</span>
+      <span id="progressText">0 / 20 opened</span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-strip">
+    <div class="stat-card">
+      <div class="stat-label">Most common arthritis in kids</div>
+      <div class="stat-value">JIA</div>
+      <div class="stat-desc">Juvenile Idiopathic Arthritis; 6 subtypes; most common = oligoarticular</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Kawasaki fever duration</div>
+      <div class="stat-value">≥5 days</div>
+      <div class="stat-desc">Plus ≥4 of 5 criteria; treat with IVIG + aspirin</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Lupus diagnostic criteria</div>
+      <div class="stat-value">SLICC / ACR</div>
+      <div class="stat-desc">≥4 of 11 ACR criteria; ANA positive in &gt;95% of SLE</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Most specific SLE antibody</div>
+      <div class="stat-value">Anti-dsDNA</div>
+      <div class="stat-desc">Also anti-Sm; ANA sensitive but not specific</div>
+    </div>
+  </div>
+
+  <!-- HIGH YIELD -->
+  <div class="hiyield">
+    <div class="hiyield-header">⚡ High-Yield Exam Points — Part XIV</div>
+    <ul>
+      <li><strong class="hl">JIA</strong>: arthritis &gt;6 weeks, &lt;16 years old, no other cause; oligoarticular most common (4 joints); uveitis #1 complication</li>
+      <li><strong class="hld">Oligoarticular JIA</strong>: ANA+ → high uveitis risk → screen every 3–4 months with slit-lamp</li>
+      <li><strong class="hld">Systemic JIA (sJIA)</strong>: quotidian salmon-pink rash + fever spikes + arthritis; risk of MAS (macrophage activation syndrome)</li>
+      <li><strong class="hl">SLE</strong>: malar rash (spares nasolabial folds), discoid rash, photosensitivity, oral ulcers, arthritis, serositis, renal disease, neuropsych, hematologic, ANA</li>
+      <li><strong class="hlp">Anti-dsDNA</strong>: most specific for SLE + correlates with disease activity/lupus nephritis</li>
+      <li><strong class="hl2">Kawasaki disease</strong>: fever ≥5 days + 4/5 criteria; IVIG 2 g/kg single dose + aspirin; coronary artery aneurysm = #1 complication</li>
+      <li><strong class="hld">Kawasaki incomplete</strong>: &lt;4 criteria but suspicious → echo + labs (CRP, ESR, albumin, ALT, platelets, WBC); treat if coronary changes</li>
+      <li><strong class="hl">IgA vasculitis (HSP)</strong>: palpable purpura (non-thrombocytopenic) on buttocks/legs + arthritis + abdominal pain + renal disease; IgA deposits</li>
+      <li><strong class="hl2">Juvenile dermatomyositis</strong>: Gottron papules + heliotrope rash + proximal muscle weakness + ↑CPK/aldolase; no malignancy association in children (unlike adults)</li>
+      <li><strong class="hl3">MAS (Macrophage Activation Syndrome)</strong>: life-threatening complication of sJIA; ↑ferritin (&gt;500, often &gt;10,000) + cytopenias + ↑LFTs + fibrinogen drops; treat with high-dose steroids ± cyclosporine</li>
+      <li><strong class="hlp">Reactive arthritis</strong>: triad = urethritis + conjunctivitis + arthritis; post-infectious (Chlamydia, Salmonella, Shigella, Yersinia, Campylobacter)</li>
+      <li><strong class="hls">FMF (Familial Mediterranean Fever)</strong>: MEFV gene; recurrent fever + serositis + arthritis; treat with colchicine</li>
+      <li><strong class="hl4">ANCA-associated vasculitis</strong>: GPA (formerly Wegener) = c-ANCA/PR3; MPA = p-ANCA/MPO; treat with steroids + cyclophosphamide or rituximab</li>
+    </ul>
+  </div>
+
+  <!-- CHAPTERS -->
+  <div class="section-label">Chapters 194 – 213</div>
+  <div class="chapters-grid" id="chaptersGrid">
+
+    <!-- CH 194 -->
+    <div class="chapter-card" data-keywords="evaluation suspected rheumatic disease history examination ANA ESR CRP RF laboratory arthritis approach">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 194</span>
+        <span class="ch-title">Evaluation of Suspected Rheumatic Disease</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-auto">Rheum</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp">Approach: duration of symptoms (arthritis must be &gt;6 weeks for JIA), pattern (oligoarticular vs polyarticular), morning stiffness, systemic features (fever, rash, weight loss)</li>
+          <li class="imp">Key lab workup: CBC, ESR, CRP, ANA, RF, anti-CCP, complement (C3, C4, CH50), urinalysis, LFTs, CK</li>
+        </ul>
+        <div class="sub-hdr">▸ Autoantibody Quick Reference</div>
+        <table class="t">
+          <thead><tr><th>Antibody</th><th>Associated Disease</th><th>Notes</th></tr></thead>
+          <tbody>
+            <tr><td class="lbl">ANA</td><td>SLE, scleroderma, JIA (oligo), Sjögren, dermatomyositis, drug-induced lupus</td><td>Sensitive but NOT specific; positive in 5–15% of healthy people</td></tr>
+            <tr><td class="lbl">Anti-dsDNA</td><td><strong class="hld">SLE (most specific)</strong></td><td>Correlates with disease activity &amp; lupus nephritis; ↑during flare</td></tr>
+            <tr><td class="lbl">Anti-Sm</td><td>SLE</td><td>Highly specific for SLE (~25% sensitive)</td></tr>
+            <tr><td class="lbl">Anti-Ro (SS-A)</td><td>SLE, Sjögren, neonatal lupus</td><td>Neonatal lupus → congenital heart block; photosensitivity</td></tr>
+            <tr><td class="lbl">Anti-La (SS-B)</td><td>Sjögren, neonatal lupus</td><td>Usually seen with anti-Ro</td></tr>
+            <tr><td class="lbl">Anti-Scl-70 (anti-topoisomerase I)</td><td>Diffuse systemic sclerosis</td><td>Pulmonary fibrosis risk</td></tr>
+            <tr><td class="lbl">Anti-centromere</td><td>Limited scleroderma (CREST)</td><td>Better prognosis; PAH risk</td></tr>
+            <tr><td class="lbl">Anti-Jo-1</td><td>Polymyositis / dermatomyositis</td><td>Anti-synthetase syndrome: myositis + ILD + mechanic's hands</td></tr>
+            <tr><td class="lbl">RF (Rheumatoid Factor)</td><td>Polyarticular JIA (RF+), RA</td><td>IgM anti-IgG; poor specificity</td></tr>
+            <tr><td class="lbl">Anti-CCP</td><td>RF+ JIA, RA</td><td>More specific than RF; predicts erosive disease</td></tr>
+            <tr><td class="lbl">c-ANCA (PR3)</td><td>Granulomatosis with polyangiitis (GPA)</td><td>Upper + lower airway + renal involvement</td></tr>
+            <tr><td class="lbl">p-ANCA (MPO)</td><td>MPA, eosinophilic GPA, IBD</td><td>More renal involvement</td></tr>
+            <tr><td class="lbl">Antiphospholipid Ab (anti-cardiolipin, lupus anticoagulant, anti-β2GPI)</td><td>Antiphospholipid syndrome (APS), SLE</td><td>Thrombosis + recurrent pregnancy loss; paradoxically ↑PTT but pro-thrombotic</td></tr>
+          </tbody>
+        </table>
+        <div class="mnemonic">ANA = sensitive (screens) | anti-dsDNA = specific + active disease | anti-Sm = specific | anti-Ro = neonatal lupus risk</div>
+      </div>
+    </div>
+
+    <!-- CH 195 -->
+    <div class="chapter-card" data-keywords="treatment rheumatic diseases NSAIDs DMARDs methotrexate hydroxychloroquine biologics TNF inhibitors steroids corticosteroids JAK inhibitors">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 195</span>
+        <span class="ch-title">Treatment of Rheumatic Diseases</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-rx">Drugs</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <table class="t">
+          <thead><tr><th>Drug Class</th><th>Examples</th><th>Mechanism</th><th>Key Side Effects / Notes</th></tr></thead>
+          <tbody>
+            <tr><td class="lbl">NSAIDs</td><td>Naproxen, ibuprofen, indomethacin, meloxicam</td><td>COX-1/2 inhibition → ↓prostaglandins</td><td>GI ulceration, renal impairment, pseudoporphyria (naproxen); first-line for mild JIA</td></tr>
+            <tr><td class="lbl">Corticosteroids</td><td>Prednisone, methylprednisolone</td><td>Broad anti-inflammatory + immunosuppressive</td><td>Cushing, osteoporosis, growth suppression, hyperglycemia, cataracts, avascular necrosis, infection risk; use lowest dose shortest time</td></tr>
+            <tr><td class="lbl">Methotrexate (MTX)</td><td>—</td><td>Folate antagonist → ↓inflammation; DMARD</td><td><strong class="hld">Hepatotoxicity</strong>, mucositis, myelosuppression, teratogen (folic acid supplement with use); monitor LFTs; first-line DMARD for JIA</td></tr>
+            <tr><td class="lbl">Hydroxychloroquine (HCQ)</td><td>Plaquenil</td><td>Lysosomal alkalinization → ↓antigen presentation</td><td><strong class="hld">Retinal toxicity</strong> (baseline eye exam, annual screening); safe in pregnancy; used in SLE, Sjögren</td></tr>
+            <tr><td class="lbl">Sulfasalazine</td><td>—</td><td>DMARD; anti-inflammatory</td><td>GI side effects, sulfa allergy; used in SpA/enthesitis-related arthritis</td></tr>
+            <tr><td class="lbl">TNF-α Inhibitors</td><td>Etanercept, adalimumab, infliximab</td><td>Block TNF-α</td><td><strong class="hld">TB reactivation</strong> — screen with TST/IGRA before starting; infection risk; demyelination (avoid in MS); etanercept most used in JIA</td></tr>
+            <tr><td class="lbl">IL-1 Inhibitors</td><td>Anakinra, canakinumab</td><td>Block IL-1β</td><td>Used for systemic JIA, FMF, CAPS; injection site reactions</td></tr>
+            <tr><td class="lbl">IL-6 Inhibitors</td><td>Tocilizumab</td><td>Block IL-6 receptor</td><td>Systemic JIA, polyarticular JIA; ↑LFTs, neutropenia, infection; masks fever (diagnostic challenge)</td></tr>
+            <tr><td class="lbl">Abatacept</td><td>—</td><td>CTLA-4-Ig; blocks T-cell co-stimulation (CD80/86–CD28)</td><td>Used in RF+ polyarticular JIA</td></tr>
+            <tr><td class="lbl">Rituximab</td><td>—</td><td>Anti-CD20 → B-cell depletion</td><td>Used in SLE, vasculitis (GPA), refractory JIA; PML risk (rare)</td></tr>
+            <tr><td class="lbl">Mycophenolate mofetil (MMF)</td><td>CellCept</td><td>Inhibits purine synthesis → ↓lymphocyte proliferation</td><td>Lupus nephritis; teratogen; GI side effects</td></tr>
+            <tr><td class="lbl">Cyclophosphamide</td><td>—</td><td>Alkylating agent → cytotoxic</td><td>Hemorrhagic cystitis (give mesna), gonadotoxicity, malignancy; severe lupus nephritis, GPA</td></tr>
+            <tr><td class="lbl">Colchicine</td><td>—</td><td>Inhibits microtubule polymerization → ↓neutrophil migration</td><td>FMF, gout, pericarditis; diarrhea; safe in pregnancy at standard doses</td></tr>
+            <tr><td class="lbl">JAK inhibitors</td><td>Tofacitinib, baricitinib, upadacitinib</td><td>Inhibit JAK-STAT signaling</td><td>Oral; infection risk (VZV reactivation — check varicella immunity); ↑lipids, thrombosis; used in polyarticular JIA</td></tr>
+          </tbody>
+        </table>
+        <div class="mnemonic">TNF-i: screen for TB first! | MTX: folate supplement, watch LFTs | HCQ: eye exams | Cyclophosphamide: mesna for bladder</div>
+      </div>
+    </div>
+
+    <!-- CH 196 -->
+    <div class="chapter-card" data-keywords="juvenile idiopathic arthritis JIA oligoarticular polyarticular systemic enthesitis psoriatic uveitis ANA RF methotrexate etanercept">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 196</span>
+        <span class="ch-title">Juvenile Idiopathic Arthritis (JIA)</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-crit">Critical</span><span class="tag tag-auto">Rheum</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp">Definition: arthritis (swelling OR 2 of: pain, limited motion, tenderness, warmth) in ≥1 joint for &gt;6 weeks, onset &lt;16 years, no other cause identifiable</li>
+          <li class="crit"><strong class="hld">Uveitis (iridocyclitis)</strong>: most common extra-articular complication; anterior, non-granulomatous, typically ASYMPTOMATIC — must screen with slit-lamp examination; risk highest in ANA+ oligoarticular JIA in young girls</li>
+        </ul>
+        <table class="t">
+          <thead><tr><th>Subtype</th><th>% of JIA</th><th>Joints</th><th>Labs</th><th>Uveitis Risk</th><th>Prognosis / Notes</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="lbl">Oligoarticular<br>(persistent)</td>
+              <td>~50%</td>
+              <td>≤4 joints in first 6 mo; large joints (knee, ankle); asymmetric</td>
+              <td>ANA+ (~75%); RF–; ESR variable</td>
+              <td><strong class="hld">HIGHEST — 20–30%</strong>; silent; must screen</td>
+              <td>Best prognosis; 50% remit; leg length discrepancy if knee involved</td>
+            </tr>
+            <tr>
+              <td class="lbl">Oligoarticular<br>(extended)</td>
+              <td>—</td>
+              <td>≤4 joints first 6 mo → &gt;4 joints after 6 mo</td>
+              <td>ANA+ variable</td>
+              <td>High</td>
+              <td>Worse prognosis than persistent; treat like polyarticular</td>
+            </tr>
+            <tr>
+              <td class="lbl">Polyarticular<br>RF–</td>
+              <td>~20%</td>
+              <td>≥5 joints; large + small; symmetric</td>
+              <td>ANA+ variable; RF–</td>
+              <td>Moderate (15%)</td>
+              <td>Variable; MTX first-line DMARD</td>
+            </tr>
+            <tr>
+              <td class="lbl">Polyarticular<br>RF+</td>
+              <td>~5%</td>
+              <td>≥5 joints; symmetric; small joints of hands/feet; adolescent girls</td>
+              <td><strong class="hl">RF+, anti-CCP+</strong></td>
+              <td>Low</td>
+              <td>Worst articular prognosis; erosive disease; resembles adult RA; aggressive DMARD therapy</td>
+            </tr>
+            <tr>
+              <td class="lbl">Systemic JIA<br>(sJIA / Still's)</td>
+              <td>~10%</td>
+              <td>Any number of joints; arthritis may lag behind systemic features</td>
+              <td>↑↑ferritin, ↑WBC, ↑CRP; RF–; ANA–</td>
+              <td>Rare</td>
+              <td><strong class="hld">Quotidian fever</strong> (spikes once or twice daily, returns to normal); <strong class="hld">salmon-pink evanescent rash</strong> (appears with fever); serositis (pericarditis, pleuritis); risk of MAS (most feared)</td>
+            </tr>
+            <tr>
+              <td class="lbl">Enthesitis-related<br>arthritis (ERA)</td>
+              <td>~10%</td>
+              <td>Peripheral arthritis + enthesitis (insertion points); sacroiliac joints; lower extremity predominance</td>
+              <td><strong class="hl">HLA-B27+</strong> (~90%); RF–; ANA–</td>
+              <td>Acute anterior uveitis (symptomatic, unilateral, red eye — unlike other JIA)</td>
+              <td>Adolescent males; will develop ankylosing spondylitis in many; use NSAIDs + TNF-i</td>
+            </tr>
+            <tr>
+              <td class="lbl">Psoriatic JIA</td>
+              <td>~5%</td>
+              <td>Oligoarticular; DIP involvement; asymmetric; dactylitis ("sausage digits")</td>
+              <td>ANA variable; RF–</td>
+              <td>Moderate</td>
+              <td>Psoriasis rash (may come after arthritis); nail pitting; family history of psoriasis counts</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="sub-hdr">▸ Uveitis Screening Frequency (ACR Guidelines)</div>
+        <ul class="key-points">
+          <li class="crit">Highest risk (every 3 months): oligoarticular OR polyarticular JIA + ANA+ + age &lt;7 at onset + disease duration &lt;4 yrs</li>
+          <li class="imp">Lower risk: ANA– or older onset → every 6–12 months</li>
+          <li class="crit">ERA uveitis is SYMPTOMATIC (red, painful eye) — unlike oligoarticular (silent)</li>
+        </ul>
+        <div class="sub-hdr">▸ MAS (Macrophage Activation Syndrome)</div>
+        <ul class="key-points">
+          <li class="crit">Life-threatening complication of sJIA (also SLE, infections); hemophagocytic lymphohistiocytosis (HLH) spectrum</li>
+          <li class="crit">Features: persistent high fever, ↓↓WBC + ↓PLT + ↓Hgb (pancytopenia), <strong class="hld">↑↑ferritin (&gt;500 ng/mL, often &gt;10,000)</strong>, ↑LFTs, ↑D-dimer, ↓fibrinogen, hepatosplenomegaly, encephalopathy</li>
+          <li class="crit">Paradox: ESR falls (fibrinogen consumed); CRP remains high</li>
+          <li class="imp">Treatment: high-dose IV steroids (methylprednisolone) ± cyclosporine ± anakinra (IL-1 blockade); etoposide in refractory</li>
+        </ul>
+        <div class="mnemonic">sJIA = Salmon rash + Spiky fever + Serositis + Still's + MAS risk | Oligo JIA = ANA+ → Silent uveitis → Slit-lamp screening</div>
+      </div>
+    </div>
+
+    <!-- CH 197 -->
+    <div class="chapter-card" data-keywords="ankylosing spondylitis spondyloarthritis HLA-B27 sacroiliitis enthesitis inflammatory back pain IBD arthritis uveitis psoriasis">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 197</span>
+        <span class="ch-title">Ankylosing Spondylitis and Other Spondyloarthritides</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-auto">Rheum</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp"><strong class="hl">Spondyloarthropathies (SpA)</strong>: group of inflammatory disorders sharing HLA-B27 association, sacroiliitis, enthesitis, and extra-articular features</li>
+          <li class="imp">Includes: Ankylosing spondylitis (AS), Psoriatic arthritis, IBD-associated arthritis, Reactive arthritis, Undifferentiated SpA</li>
+          <li class="imp"><strong class="hl">HLA-B27</strong>: present in ~90% of AS patients; 5–10% of HLA-B27+ individuals develop AS; NOT a diagnostic test alone</li>
+          <li class="imp">AS clinical features: insidious inflammatory low back pain (worse with rest, better with activity; morning stiffness &gt;30 min), sacroiliitis, progressive spinal fusion ("bamboo spine" on X-ray), chest wall restriction (↓chest expansion)</li>
+          <li class="imp">Extra-articular: <strong class="hld">anterior uveitis</strong> (acute, painful, unilateral, recurrent), aortic regurgitation, apical lung fibrosis, IgA nephropathy</li>
+          <li class="imp">X-ray: squaring of vertebral bodies → syndesmophytes → bamboo spine. Sacroiliac joint sclerosis/fusion. MRI more sensitive in early disease</li>
+          <li class="note">Treatment: NSAIDs first-line; physiotherapy essential; <strong class="hl3">TNF-α inhibitors</strong> (etanercept, adalimumab) if NSAID-refractory; IL-17 inhibitors (secukinumab) alternative; no role for conventional DMARDs (MTX) for axial disease</li>
+        </ul>
+        <div class="mnemonic">SpA: "PAIR" → Psoriasis, Ankylosing spondylitis, IBD arthritis, Reactive arthritis; all HLA-B27 associated</div>
+      </div>
+    </div>
+
+    <!-- CH 198 -->
+    <div class="chapter-card" data-keywords="reactive arthritis postinfectious Reiter syndrome urethritis conjunctivitis Chlamydia Salmonella Shigella Yersinia Campylobacter streptococcal">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 198</span>
+        <span class="ch-title">Reactive and Postinfectious Arthritis</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-inf">Infection</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp"><strong class="hl">Reactive arthritis</strong>: sterile inflammatory arthritis triggered by a remote infection (1–4 weeks prior); joints NOT infected</li>
+          <li class="imp">Classic triad (Reiter syndrome): <strong class="hl2">Urethritis + Conjunctivitis + Arthritis</strong> ("Can't see, can't pee, can't climb a tree"); not all 3 required for diagnosis</li>
+          <li class="imp">Causative organisms: <strong class="hl4">Chlamydia trachomatis</strong> (STI-associated, adolescents), <strong class="hl4">Salmonella, Shigella, Yersinia, Campylobacter</strong> (enteric), group A Streptococcus (post-strep arthritis)</li>
+          <li class="note">HLA-B27+ → more severe and prolonged course; asymmetric oligoarthritis; large joints of lower extremity</li>
+          <li class="note">Other features: keratoderma blennorrhagica (psoriasis-like skin lesions), circinate balanitis, painless oral ulcers, dactylitis, plantar fasciitis, Achilles tendinitis</li>
+          <li class="imp">Post-streptococcal arthritis: occurs after GAS pharyngitis; does NOT fully meet Jones criteria for rheumatic fever; may not respond to aspirin; treat GAS</li>
+          <li class="note">Treatment: NSAIDs for arthritis; antibiotics for active infection (Chlamydia); course usually self-limited (3–6 months); some develop chronic SpA</li>
+        </ul>
+        <div class="mnemonic">Reactive arthritis organisms: "Can't SSYCt" → Chlamydia, Salmonella, Shigella, Yersinia, Campylobacter</div>
+      </div>
+    </div>
+
+    <!-- CH 199 -->
+    <div class="chapter-card" data-keywords="systemic lupus erythematosus SLE malar rash butterfly discoid photosensitivity oral ulcer arthritis serositis renal nephritis ANA anti-dsDNA anti-Sm complement neonatal lupus drug-induced">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 199</span>
+        <span class="ch-title">Systemic Lupus Erythematosus (SLE)</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-crit">Critical</span><span class="tag tag-auto">Rheum</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp">Pediatric SLE: peak onset in adolescence; females predominate (9:1 after puberty); African American, Hispanic, Asian populations at higher risk</li>
+          <li class="imp">Pediatric SLE more severe than adult: more renal involvement, CNS disease, hematologic abnormalities at presentation</li>
+        </ul>
+        <div class="sub-hdr">▸ ACR/EULAR Diagnostic Criteria (≥4 of 11 ACR, or SLICC ≥4 of 17)</div>
+        <table class="t">
+          <thead><tr><th>Domain</th><th>Feature</th><th>Notes</th></tr></thead>
+          <tbody>
+            <tr><td class="lbl3">Skin</td><td><strong class="hl">Malar (butterfly) rash</strong> — erythema over cheeks and nose, <strong class="hl">spares nasolabial folds</strong>; discoid rash (scarring); photosensitivity; oral ulcers (painless)</td><td>Malar rash in ~50%; photosensitivity; subacute cutaneous lupus</td></tr>
+            <tr><td class="lbl3">MSK</td><td>Non-erosive arthritis (≥2 joints); arthralgia</td><td>Jaccoud arthropathy — deforming but non-erosive</td></tr>
+            <tr><td class="lbl3">Serositis</td><td>Pleuritis, pericarditis</td><td>Chest pain + friction rub; pleural effusion</td></tr>
+            <tr><td class="lbl3">Renal</td><td>Proteinuria &gt;500 mg/24h; red cell casts; nephritic/nephrotic syndrome</td><td><strong class="hld">WHO Class III/IV (diffuse proliferative) = worst prognosis</strong>; need biopsy to classify; treat with steroids + MMF or cyclophosphamide</td></tr>
+            <tr><td class="lbl3">Neuropsych</td><td>Seizures, psychosis, CNS vasculitis, cognitive impairment, headache, chorea</td><td>"Lupus cerebritis"; chorea in SLE (anti-phospholipid)</td></tr>
+            <tr><td class="lbl3">Hematologic</td><td>Hemolytic anemia (Coombs+), leukopenia (&lt;4000), lymphopenia (&lt;1000), thrombocytopenia (&lt;100,000)</td><td>Any one counts; all can be presenting manifestation</td></tr>
+            <tr><td class="lbl3">Immunologic</td><td>Anti-dsDNA, anti-Sm, antiphospholipid antibodies, low complement (C3, C4)</td><td>↑anti-dsDNA + ↓complement = disease flare marker</td></tr>
+            <tr><td class="lbl3">ANA</td><td>ANA positive (≥1:80)</td><td>&gt;95% sensitive; if ANA negative, SLE very unlikely</td></tr>
+          </tbody>
+        </table>
+        <ul class="key-points">
+          <li class="crit">Drug-induced lupus: procainamide, hydralazine, isoniazid, minocycline, anti-TNF; anti-histone Ab+ ; NO renal/CNS involvement; resolves with drug discontinuation</li>
+          <li class="imp">Neonatal lupus: maternal anti-Ro/La antibodies cross placenta → transient rash, cytopenias, <strong class="hld">congenital complete heart block</strong> (permanent — may need pacemaker)</li>
+          <li class="imp">Antiphospholipid syndrome in SLE: venous/arterial thrombosis + recurrent pregnancy loss + persistent antiphospholipid antibodies; treat with anticoagulation</li>
+        </ul>
+        <div class="sub-hdr">▸ Treatment</div>
+        <ul class="key-points">
+          <li class="grn">All SLE patients: <strong class="hl3">hydroxychloroquine</strong> (reduces flares, organ damage, mortality, thrombosis; safe in pregnancy)</li>
+          <li class="imp">Mild: NSAIDs + HCQ. Moderate: add low-dose steroids. Severe (nephritis, CNS, hematologic): high-dose steroids + MMF or cyclophosphamide</li>
+          <li class="note">Belimumab (anti-BLyS): FDA-approved for pediatric SLE ≥5 yrs; reduces flares, lowers steroids</li>
+          <li class="note">Sun protection critical (photosensitivity); monitor anti-dsDNA + C3/C4 to track activity</li>
+        </ul>
+        <div class="mnemonic">SLE = "MD SOAP RAN" → Malar rash, Discoid rash, Serositis, Oral ulcers, Arthritis, Photosensitivity, Renal, ANA, Neurologic, hematologic (Blood)</div>
+      </div>
+    </div>
+
+    <!-- CH 200 -->
+    <div class="chapter-card" data-keywords="juvenile dermatomyositis Gottron papules heliotrope rash proximal muscle weakness CPK aldolase calcinosis interstitial lung anti-Jo-1">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 200</span>
+        <span class="ch-title">Juvenile Dermatomyositis (JDM)</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-auto">Rheum</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp">Most common idiopathic inflammatory myopathy in children; peak onset 5–14 yrs; girls &gt; boys (2:1)</li>
+          <li class="crit">Pathognomonic skin features:
+            <ul style="margin-top:6px;padding-left:16px">
+              <li><strong class="hld">Gottron papules</strong>: scaly, erythematous papules over dorsal MCP and PIP joints ("knuckle pads") — most specific finding</li>
+              <li><strong class="hld">Heliotrope rash</strong>: violaceous/lilac discoloration of upper eyelids with periorbital edema (heliotrope = purple flower)</li>
+            </ul>
+          </li>
+          <li class="imp">Other skin: V-sign (anterior neck/chest), shawl sign (posterior neck/shoulders), mechanic's hands (fissured palms), periungual telangiectasias, nailfold capillary changes</li>
+          <li class="imp">Muscle: <strong class="hl">symmetric proximal muscle weakness</strong> (hip flexors, shoulder girdle); difficulty rising from floor, climbing stairs; Gowers sign; dysphagia (pharyngeal muscles)</li>
+          <li class="imp">Labs: <strong class="hl2">↑CK, ↑aldolase, ↑LDH, ↑AST/ALT</strong>; anti-Jo-1 (antisynthetase — ILD + myositis + mechanic's hands); ANA variable; normal RF</li>
+          <li class="crit">Unlike adult dermatomyositis: <strong class="hld">NO increased malignancy risk in children</strong></li>
+          <li class="imp">Complications: <strong class="hld">calcinosis</strong> (calcium deposits in skin/muscle — most common complication, may be disfiguring); interstitial lung disease (with anti-Jo-1); vasculopathy → GI ulceration/perforation (dangerous)</li>
+          <li class="note">Diagnosis: clinical + muscle enzymes + MRI (muscle edema) + EMG + muscle biopsy (perifascicular atrophy — pathognomonic on biopsy)</li>
+          <li class="imp">Treatment: high-dose steroids (prednisone 1–2 mg/kg/day) → taper; MTX or azathioprine as steroid-sparing; IVIG for refractory; HCQ for skin; avoid sun</li>
+        </ul>
+        <div class="mnemonic">JDM: Gottron papules + Heliotrope + proximal muscle Weakness + ↑CK = classic triad; NO malignancy risk in kids</div>
+      </div>
+    </div>
+
+    <!-- CH 201 -->
+    <div class="chapter-card" data-keywords="scleroderma systemic sclerosis diffuse limited CREST Raynaud anti-Scl-70 anti-centromere interstitial lung pulmonary hypertension morphea">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 201</span>
+        <span class="ch-title">Scleroderma and Raynaud Phenomenon</span>
+        <div class="ch-tags"><span class="tag tag-auto">Rheum</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp"><strong class="hl">Raynaud phenomenon</strong>: episodic vasospasm of digits triggered by cold or stress; color change: <strong class="hl2">white (ischemia) → blue (cyanosis) → red (reperfusion)</strong>; primary (idiopathic, benign) vs secondary (to scleroderma, SLE, other CTD)</li>
+          <li class="imp"><strong class="hl">Localized scleroderma (morphea)</strong>: most common form in children; circumscribed plaques or linear bands of dermal fibrosis; no internal organ involvement; "en coup de sabre" (linear morphea on face/scalp)</li>
+          <li class="imp"><strong class="hl">Systemic sclerosis (rare in children)</strong>: fibrosis of skin + internal organs; CREST syndrome (limited): Calcinosis, Raynaud, Esophageal dysmotility, Sclerodactyly, Telangiectasias; anti-centromere Ab+</li>
+          <li class="imp">Diffuse systemic sclerosis: anti-Scl-70 (anti-topoisomerase I) Ab+; rapid skin thickening; ILD (most common cause of death), renal crisis (hypertension + AKI — treat with ACE inhibitor), PAH, cardiac fibrosis</li>
+          <li class="note">Treatment: Raynaud → calcium channel blockers (nifedipine), avoid cold; ILD → MMF; PAH → endothelin receptor antagonists, PDE-5 inhibitors; no curative therapy; skin may soften over time in morphea</li>
+        </ul>
+        <div class="mnemonic">CREST = Calcinosis, Raynaud, Esophageal dysmotility, Sclerodactyly, Telangiectasia = limited scleroderma = anti-centromere Ab</div>
+      </div>
+    </div>
+
+    <!-- CH 202 -->
+    <div class="chapter-card" data-keywords="Behçet disease oral ulcers genital ulcers uveitis pathergy HLA-B51 Turkey Mediterranean silk road">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 202</span>
+        <span class="ch-title">Behçet Disease</span>
+        <div class="ch-tags"><span class="tag tag-auto">Rheum</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp"><strong class="hl">Behçet disease</strong>: systemic vasculitis of unclear etiology; "Silk Road disease" — prevalent in Turkey, Middle East, East Asia; HLA-B51 association</li>
+          <li class="imp">Diagnostic criteria (International Study Group): <strong class="hld">recurrent oral ulcers ≥3×/year</strong> PLUS ≥2 of: recurrent genital ulcers, eye lesions (anterior/posterior uveitis, retinal vasculitis), skin lesions (erythema nodosum, pseudofolliculitis, acneiform lesions), positive pathergy test</li>
+          <li class="imp"><strong class="hl2">Pathergy test</strong>: positive when a skin prick with a sterile needle results in an erythematous papule/pustule &gt;2 mm at 48 hrs; specific for Behçet (rarely positive elsewhere)</li>
+          <li class="note">Other features: arthritis (non-erosive, large joints), GI ulceration, CNS involvement (neuro-Behçet — parenchymal or dural sinus thrombosis), vascular (aneurysms, deep vein thrombosis)</li>
+          <li class="note">Treatment: colchicine (oral ulcers, skin, arthritis); steroids for eyes; azathioprine, cyclosporine for severe eye/CNS; TNF-i for refractory</li>
+        </ul>
+        <div class="mnemonic">Behçet: "Oral + Genital + Ocular + Pathergy" = classic triad + test; HLA-B51; Silk Road</div>
+      </div>
+    </div>
+
+    <!-- CH 203 -->
+    <div class="chapter-card" data-keywords="Sjogren syndrome dry eyes dry mouth keratoconjunctivitis sicca xerostomia anti-Ro anti-La parotid">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 203</span>
+        <span class="ch-title">Sjögren Syndrome</span>
+        <div class="ch-tags"><span class="tag tag-auto">Rheum</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp"><strong class="hl">Sjögren syndrome</strong>: autoimmune exocrinopathy causing lymphocytic infiltration of exocrine glands → sicca symptoms; rare in children; F &gt; M (9:1)</li>
+          <li class="imp">Cardinal features: <strong class="hl2">keratoconjunctivitis sicca</strong> (dry eyes — gritty, burning, photophobia; Schirmer's test: filter paper placed under eyelid, &lt;5 mm wetting in 5 min = abnormal) + <strong class="hl2">xerostomia</strong> (dry mouth — dental caries, dysphagia, altered taste)</li>
+          <li class="imp">Parotid gland enlargement (bilateral); parotitis episodes in children</li>
+          <li class="imp">Autoantibodies: <strong class="hl">anti-Ro (SS-A) and anti-La (SS-B)</strong>; ANA+; RF+ (~75%)</li>
+          <li class="note">Extraglandular: interstitial nephritis (RTA type 1), peripheral neuropathy, Raynaud, arthritis, vasculitis, lymphoma risk (25× increased — most important complication)</li>
+          <li class="note">Neonatal: maternal anti-Ro → neonatal lupus → congenital heart block (shared with SLE)</li>
+          <li class="note">Treatment: artificial tears/saliva, pilocarpine (stimulates secretion), HCQ, steroids for systemic disease; rituximab for severe</li>
+        </ul>
+        <div class="mnemonic">Sjögren: anti-Ro + anti-La + Sicca symptoms (dry eyes + dry mouth) → lymphoma risk (important!)</div>
+      </div>
+    </div>
+
+    <!-- CH 204 -->
+    <div class="chapter-card" data-keywords="hereditary periodic fever FMF familial Mediterranean fever TRAPS HIDS CAPS PFAPA MEFV pyrin colchicine autoinflammatory">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 204</span>
+        <span class="ch-title">Hereditary Periodic Fever Syndromes and Autoinflammatory Diseases</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-auto">Rheum</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp"><strong class="hl">Autoinflammatory diseases</strong>: innate immune system dysregulation → recurrent inflammation WITHOUT autoantibodies or antigen-specific T cells (distinct from autoimmune diseases)</li>
+        </ul>
+        <table class="t">
+          <thead><tr><th>Disease</th><th>Gene / Protein</th><th>Fever Duration</th><th>Key Features</th><th>Treatment</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="lbl">FMF (Familial Mediterranean Fever)</td>
+              <td><strong class="hl">MEFV / Pyrin</strong>; AR</td>
+              <td>1–3 days</td>
+              <td>Recurrent fever + serositis (peritonitis, pleuritis, pericarditis) + arthritis + erysipelas-like rash on legs; Mediterranean (Turkish, Jewish, Arab, Armenian); amyloidosis risk (AA amyloid → renal failure)</td>
+              <td><strong class="hl3">Colchicine</strong> (prevents attacks + prevents amyloidosis); IL-1 inhibitors if colchicine fails</td>
+            </tr>
+            <tr>
+              <td class="lbl">TRAPS (TNF Receptor-Associated Periodic Syndrome)</td>
+              <td>TNFRSF1A / TNFR1; AD</td>
+              <td>Weeks to months</td>
+              <td>Longer fever episodes; migratory myalgia with overlying skin erythema; periorbital edema; serositis; Northern European; amyloidosis risk</td>
+              <td>NSAIDs; etanercept (TNF-i); IL-1 inhibitors (canakinumab)</td>
+            </tr>
+            <tr>
+              <td class="lbl">HIDS (Hyper-IgD Syndrome / MKD)</td>
+              <td>MVK / Mevalonate kinase; AR</td>
+              <td>3–7 days; every 4–8 wks</td>
+              <td>↑↑IgD (&gt;100 U/mL), ↑IgA; cervical lymphadenopathy; abdominal pain/vomiting/diarrhea; Dutch origin; aphthous ulcers, arthralgia</td>
+              <td>NSAIDs; IL-1 inhibitors; simvastatin (mevalonate pathway)</td>
+            </tr>
+            <tr>
+              <td class="lbl">CAPS (Cryopyrin-Associated Periodic Syndrome)</td>
+              <td>NLRP3 / Cryopyrin; AD</td>
+              <td>Variable (urticaria-like rash)</td>
+              <td>Spectrum: FCAS (cold-induced urticaria) → MWS (deafness, amyloidosis) → NOMID (neonatal onset, chronic meningitis, bone overgrowth, most severe)</td>
+              <td><strong class="hl3">IL-1 inhibitors</strong> (anakinra, rilonacept, canakinumab) — highly effective</td>
+            </tr>
+            <tr>
+              <td class="lbl">PFAPA (Periodic Fever, Aphthous stomatitis, Pharyngitis, Adenitis)</td>
+              <td>Unknown; most common PFS in children</td>
+              <td>3–6 days; every 3–8 wks</td>
+              <td>Regular predictable cycles; aphthous ulcers, pharyngitis, cervical adenitis; no genetic test; resolves spontaneously by adolescence; normal growth</td>
+              <td>Single dose of prednisone aborts attack (diagnostic); colchicine for prevention; tonsillectomy effective</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="mnemonic">FMF: MEFV gene → Febrile episodes + peritonitis + arthritis + erysipelas; treat with Colchicine → prevents Amyloidosis</div>
+      </div>
+    </div>
+
+    <!-- CH 205 -->
+    <div class="chapter-card" data-keywords="interferonopathies Aicardi-Goutieres type 1 interferonopathy STING AGS JAK inhibitor lupus-like">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 205</span>
+        <span class="ch-title">Interferonopathies</span>
+        <div class="ch-tags"><span class="tag tag-auto">Rheum</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp"><strong class="hl">Interferonopathies</strong>: monogenic disorders characterized by constitutive type I interferon (IFN-α/β) production, leading to systemic inflammation resembling viral infection or SLE</li>
+          <li class="imp"><strong class="hl2">Aicardi-Goutières syndrome (AGS)</strong>: most common; recessive mutations in TREX1, RNASEH2, SAMHD1, ADAR, IFIH1; presents in infancy with calcifications (basal ganglia, white matter), progressive encephalopathy, CSF lymphocytosis, chilblain-like skin lesions; mimics congenital infection</li>
+          <li class="note"><strong class="hl">STING-associated vasculopathy with onset in infancy (SAVI)</strong>: gain-of-function TMEM173 mutation; interstitial lung disease + cutaneous vasculopathy (chilblains, nasal septum perforation) + systemic inflammation from birth</li>
+          <li class="note">Treatment: JAK inhibitors (baricitinib, ruxolitinib) block IFN signaling → symptom improvement; investigational</li>
+          <li class="grn">Measurement: elevated IFN signature score (ISG — IFN-stimulated gene expression) in blood is a biomarker for diagnosis</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- CH 206 -->
+    <div class="chapter-card" data-keywords="amyloidosis AA amyloid SAA serum amyloid kidney nephrotic FMF JIA secondary">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 206</span>
+        <span class="ch-title">Amyloidosis</span>
+        <div class="ch-tags"><span class="tag tag-auto">Rheum</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp"><strong class="hl">AA amyloidosis</strong>: most common type in pediatric rheumatology; deposition of serum amyloid A (SAA) protein in organs during chronic inflammation</li>
+          <li class="imp">Causes: FMF (most common), TRAPS, JIA, Crohn disease, chronic osteomyelitis, tuberculosis</li>
+          <li class="imp">Main target organ: <strong class="hld">kidneys</strong> → nephrotic syndrome → renal failure; also liver, spleen, adrenal glands</li>
+          <li class="note">Diagnosis: Congo red stain on biopsy → apple-green birefringence under polarized light (classic); rectal or abdominal fat pad biopsy preferred over kidney</li>
+          <li class="note">Treatment: colchicine (FMF — prevents amyloid); control underlying inflammation; anakinra/canakinumab (sJIA); ESRD → dialysis/transplant</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- CH 207 -->
+    <div class="chapter-card" data-keywords="macrophage activation syndrome MAS HLH hemophagocytic lymphohistiocytosis ferritin sJIA SLE cytokine storm">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 207</span>
+        <span class="ch-title">Macrophage Activation Syndrome (MAS) / Secondary HLH</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-crit">Critical</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="crit">MAS = secondary HLH; life-threatening uncontrolled macrophage and T-cell activation with hyperinflammation ("cytokine storm")</li>
+          <li class="crit">Most common triggers in pediatric rheumatology: <strong class="hld">systemic JIA (sJIA)</strong>, SLE, Kawasaki disease, infections (EBV most common infectious trigger)</li>
+          <li class="crit">Diagnostic features (HScore or 2016 MAS criteria for sJIA):
+            fever + splenomegaly + <strong class="hld">↑↑ferritin (often &gt;684 ng/mL, frequently &gt;10,000)</strong> + cytopenias (↓WBC + ↓PLT + ↓Hgb — paradoxical given inflammation) + ↑LFTs + ↓fibrinogen + ↑D-dimer + bone marrow showing hemophagocytosis</li>
+          <li class="crit">Key paradox: <strong class="hld">ESR falls</strong> (fibrinogen is consumed → clotting cascade activated → ESR falsely low); CRP remains elevated — falling ESR in active sJIA = red flag for MAS</li>
+          <li class="imp">Treatment: high-dose IV methylprednisolone; cyclosporine A (calcineurin inhibitor — first add-on); anakinra (IL-1i) increasingly used; etoposide in refractory; IVIG; treat underlying trigger (antiviral if EBV)</li>
+        </ul>
+        <div class="mnemonic">MAS = Massive Ferritin + falling ESR + Falling counts = EMERGENCY → High-dose steroids STAT</div>
+      </div>
+    </div>
+
+    <!-- CH 208 -->
+    <div class="chapter-card" data-keywords="Kawasaki disease fever conjunctivitis lip changes strawberry tongue rash cervical lymphadenopathy coronary artery aneurysm IVIG aspirin echocardiogram incomplete">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 208</span>
+        <span class="ch-title">Kawasaki Disease</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-crit">Critical</span><span class="tag tag-vasc">Vasculitis</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp">Most common cause of <strong class="hld">acquired heart disease</strong> in children in developed countries; medium-vessel vasculitis; unknown etiology; peak age 6 months–5 years; boys &gt; girls; Asian children highest incidence</li>
+        </ul>
+        <div class="sub-hdr">▸ Classic Diagnostic Criteria (Fever ≥5 days + ≥4 of 5):</div>
+        <table class="t">
+          <thead><tr><th>Criterion</th><th>Details</th><th>Notes</th></tr></thead>
+          <tbody>
+            <tr><td class="lbl3">Bilateral non-exudative conjunctival injection</td><td>Bilateral, painless, limbic sparing (spares area around iris)</td><td>Most common feature; usually bulbar conjunctivitis</td></tr>
+            <tr><td class="lbl3">Oral changes</td><td>Erythematous/cracked lips, strawberry tongue, diffuse erythema of oropharyngeal mucosa</td><td>Cannot have pharyngeal exudate (then consider GAS)</td></tr>
+            <tr><td class="lbl3">Rash</td><td>Polymorphous, non-vesicular; maculopapular, diffuse, or erythema multiforme-like; NOT bullous; often perineal accentuation</td><td>Perineal desquamation early; finger/toe desquamation late (periungual, 2–3 weeks)</td></tr>
+            <tr><td class="lbl3">Cervical lymphadenopathy</td><td>Unilateral, ≥1 node &gt;1.5 cm; least common criterion (~50%)</td><td>Often tender; firm; unilateral</td></tr>
+            <tr><td class="lbl3">Extremity changes</td><td>Erythema of palms/soles, indurative edema of hands/feet (acute); periungual desquamation (subacute, weeks 2–3)</td><td>Desquamation is retrospective clue to diagnosis</td></tr>
+          </tbody>
+        </table>
+        <ul class="key-points">
+          <li class="crit"><strong class="hld">Incomplete Kawasaki</strong>: fever ≥5 days + fewer than 4 criteria; especially in infants &lt;6 months (highest coronary risk, fewest clinical criteria); diagnose by echo and labs (ESR/CRP elevated + ≥3 of: albumin ≤3, anemia, ALT elevated, platelets ≥450k after day 7, WBC ≥15k, urine WBCs ≥10/hpf)</li>
+          <li class="crit"><strong class="hld">Coronary artery aneurysm (CAA)</strong>: main complication; develops in 15–25% without treatment, &lt;5% with IVIG; screen with echo at diagnosis, 1–2 wks, 4–6 wks after illness onset; giant aneurysm = &gt;8 mm → thrombosis risk → myocardial infarction</li>
+        </ul>
+        <div class="sub-hdr">▸ Treatment</div>
+        <ul class="key-points">
+          <li class="crit"><strong class="hld">IVIG 2 g/kg single infusion + Aspirin</strong> → reduces coronary aneurysm from ~25% to &lt;5%</li>
+          <li class="imp">Aspirin: high dose (80–100 mg/kg/day in 4 doses) during febrile phase → switch to low dose (3–5 mg/kg/day) once afebrile; continue for 6–8 weeks if no CAA (or indefinitely if CAA present)</li>
+          <li class="crit">IVIG resistance (~10–15%): consider second IVIG dose, infliximab (TNF-i), steroids (controversial), cyclosporine; high-risk: young age, high inflammatory markers, Asian ethnicity, Kobayashi score</li>
+          <li class="note">Reye syndrome concern: aspirin use in viral illnesses; Kawasaki = exception to avoid-aspirin-in-children rule</li>
+        </ul>
+        <div class="mnemonic">Kawasaki: "CRASH + Fever 5 days" → Conjunctivitis, Rash, Adenopathy (cervical), Strawberry tongue/lip changes, Hand/foot changes → IVIG + Aspirin</div>
+      </div>
+    </div>
+
+    <!-- CH 209 -->
+    <div class="chapter-card" data-keywords="sarcoidosis Blau syndrome granuloma uveitis lymphadenopathy lupus pernio ACE serum angiotensin">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 209</span>
+        <span class="ch-title">Sarcoidosis</span>
+        <div class="ch-tags"><span class="tag tag-auto">Rheum</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp"><strong class="hl">Sarcoidosis</strong>: multisystem granulomatous disease of unknown etiology; non-caseating granulomas; peak onset in adolescents and young adults in pediatrics</li>
+          <li class="imp">Clinical: bilateral hilar lymphadenopathy (most common X-ray finding), pulmonary infiltrates, uveitis (25%), skin (erythema nodosum, lupus pernio), arthritis, peripheral lymphadenopathy, hepatosplenomegaly, hypercalcemia (granulomas produce 1,25-OH Vit D)</li>
+          <li class="imp">Labs: ↑serum ACE (angiotensin-converting enzyme) — neither sensitive nor specific; hypercalciuria/hypercalcemia; lymphopenia; ↑γ-globulins</li>
+          <li class="note">Early-onset sarcoidosis in young children (&lt;5 yrs): triad of skin rash + arthritis + uveitis (resembles Blau syndrome — NOD2 mutation, familial form)</li>
+          <li class="note">Diagnosis: biopsy showing non-caseating epithelioid granulomas + exclusion of other causes (especially TB — also causes granulomas but caseating)</li>
+          <li class="note">Treatment: corticosteroids (systemic); MTX/azathioprine for steroid-sparing; hydroxychloroquine for skin; spontaneous remission in many</li>
+        </ul>
+        <div class="mnemonic">Sarcoidosis: non-caseating granulomas + Bilateral hilar adenopathy + elevated ACE + hypercalcemia</div>
+      </div>
+    </div>
+
+    <!-- CH 210 -->
+    <div class="chapter-card" data-keywords="vasculitis syndromes large medium small vessel GPA Wegener ANCA MPA polyarteritis nodosa Takayasu giant cell IgA HSP Henoch-Schönlein PAN EGPA">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 210</span>
+        <span class="ch-title">Vasculitis Syndromes</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-crit">Critical</span><span class="tag tag-vasc">Vasculitis</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <table class="t">
+          <thead><tr><th>Classification</th><th>Disease</th><th>Key Features</th><th>Lab/Pathology</th><th>Treatment</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="lbl" rowspan="2">Large Vessel</td>
+              <td><strong class="hl">Takayasu Arteritis</strong></td>
+              <td>Young females; aorta + major branches; arm claudication, blood pressure discrepancy between arms, absent pulses, hypertension (renal artery), carotidynia, stroke; constitutional symptoms</td>
+              <td>↑ESR/CRP; CT/MR angiography (wall thickening → stenosis); PET scan (active inflammation)</td>
+              <td>High-dose steroids; MTX/MMF; TNF-i (infliximab); revascularization for critical ischemia</td>
+            </tr>
+            <tr>
+              <td><strong class="hl">Giant Cell Arteritis (GCA)</strong></td>
+              <td>Rare in children; temporal artery involved; jaw claudication; visual loss (ischemic optic neuropathy — EMERGENCY); headache; polymyalgia rheumatica</td>
+              <td>↑ESR (&gt;50); temporal artery biopsy (skip lesions; must biopsy adequately)</td>
+              <td>High-dose steroids immediately to prevent blindness; tocilizumab (FDA-approved)</td>
+            </tr>
+            <tr>
+              <td class="lbl2" rowspan="2">Medium Vessel</td>
+              <td><strong class="hl2">Kawasaki Disease</strong></td>
+              <td>See Ch. 208</td>
+              <td>See Ch. 208</td>
+              <td>IVIG + aspirin</td>
+            </tr>
+            <tr>
+              <td><strong class="hl2">Polyarteritis Nodosa (PAN)</strong></td>
+              <td>Rare in children; necrotizing arteritis of medium vessels; renal, GI, skin, nerve involvement; livedo reticularis, mononeuritis multiplex, aneurysms on angiography; skin PAN (cutaneous only — benign)</td>
+              <td>ANCA negative; angiography shows microaneurysms; biopsy; HBsAg (hepatitis B-associated PAN)</td>
+              <td>Steroids + cyclophosphamide; antiviral if HBV-associated</td>
+            </tr>
+            <tr>
+              <td class="lbl3" rowspan="3">Small Vessel (ANCA+)</td>
+              <td><strong class="hlp">GPA (Granulomatosis with Polyangiitis) — formerly Wegener's</strong></td>
+              <td>Upper airway (sinusitis, epistaxis, saddle-nose deformity, subglottic stenosis) + lower airway (pulmonary hemorrhage/nodules) + renal (rapidly progressive GN)</td>
+              <td><strong class="hl">c-ANCA (anti-PR3)</strong> in ~90%; biopsies show granulomatous inflammation</td>
+              <td>Steroids + cyclophosphamide (induction) or rituximab; maintenance MTX or azathioprine</td>
+            </tr>
+            <tr>
+              <td><strong class="hlp">MPA (Microscopic Polyangiitis)</strong></td>
+              <td>Renal (RPGN) + pulmonary hemorrhage; no upper airway involvement; no granulomas</td>
+              <td><strong class="hl">p-ANCA (anti-MPO)</strong> in ~70%</td>
+              <td>Same as GPA</td>
+            </tr>
+            <tr>
+              <td><strong class="hlp">EGPA (Eosinophilic GPA) — Churg-Strauss</strong></td>
+              <td>Asthma + eosinophilia + vasculitis; neuropathy, cardiac involvement</td>
+              <td>p-ANCA (anti-MPO) in ~40%; eosinophilia</td>
+              <td>Steroids ± cyclophosphamide; mepolizumab (anti-IL-5)</td>
+            </tr>
+            <tr>
+              <td class="lbl" rowspan="2">Small Vessel (ANCA–)</td>
+              <td><strong class="hl">IgA Vasculitis (Henoch-Schönlein Purpura)</strong></td>
+              <td><strong class="hld">Most common vasculitis in children</strong>; usually post-infectious (GAS, viral); IgA deposits in vessel walls; 4 features: palpable purpura (buttocks/legs, non-thrombocytopenic) + arthritis/arthralgia + abdominal pain (intussusception, GI bleeding) + renal (hematuria, proteinuria)</td>
+              <td>Normal platelets (distinguishes from thrombocytopenic purpura); IgA ↑; skin biopsy: IgA deposits; urinalysis for renal involvement</td>
+              <td>Usually self-limited; NSAIDs for arthritis; steroids for severe GI/orchitis; ACE inhibitor if persistent nephritis; IVIG/rituximab for severe renal</td>
+            </tr>
+            <tr>
+              <td>Hypersensitivity Vasculitis</td>
+              <td>Small vessel; often drug-induced or post-infection; leukocytoclastic vasculitis on biopsy; purpuric rash</td>
+              <td>Leukocytoclastic vasculitis on skin biopsy</td>
+              <td>Remove offending drug; supportive care</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="mnemonic">GPA = c-ANCA (PR3) = saddle nose + sinuses + lungs + kidneys | MPA = p-ANCA (MPO) = lungs + kidneys only (no upper airway, no granulomas)</div>
+      </div>
+    </div>
+
+    <!-- CH 211 -->
+    <div class="chapter-card" data-keywords="musculoskeletal pain fibromyalgia growing pains reflex sympathetic dystrophy CRPS amplified pain">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 211</span>
+        <span class="ch-title">Musculoskeletal Pain Syndromes</span>
+        <div class="ch-tags"><span class="tag tag-auto">Rheum</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp"><strong class="hl">Growing pains</strong>: most common musculoskeletal pain in children (10–20%); bilateral, lower extremity (calf/thighs), occurs late evening/night, resolves by morning, NO joint swelling; normal exam and labs; reassurance + massage + ibuprofen at night</li>
+          <li class="imp"><strong class="hl">Juvenile fibromyalgia</strong>: widespread musculoskeletal pain + fatigue + sleep disturbance + multiple tender points; no inflammation; girls &gt; boys; associated with anxiety, depression, school absenteeism; labs normal</li>
+          <li class="note">Treatment of fibromyalgia: aerobic exercise (most important), cognitive behavioral therapy (CBT), sleep hygiene, amitriptyline; avoid opioids and excessive medications</li>
+          <li class="imp"><strong class="hl2">Amplified Musculoskeletal Pain Syndrome (AMPS)</strong> / Complex Regional Pain Syndrome (CRPS): disproportionate pain + autonomic dysfunction (allodynia, skin color/temperature/hair changes, sweating); young females; often after minor injury; no organic cause; normal labs and imaging</li>
+          <li class="note">AMPS/CRPS treatment: intensive physiotherapy (desensitization), CBT, interdisciplinary pain program; NOT rest or immobilization (worsens condition)</li>
+        </ul>
+        <div class="mnemonic">Growing pains: Bilateral + Lower leg + Night only + Normal exam = Benign; reassure parents</div>
+      </div>
+    </div>
+
+    <!-- CH 212 -->
+    <div class="chapter-card" data-keywords="chronic overlapping pain conditions POIC central sensitization headache IBS functional abdominal pain dysmenorrhea">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 212</span>
+        <span class="ch-title">Chronic Overlapping Pain Conditions</span>
+        <div class="ch-tags"><span class="tag tag-auto">Rheum</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp"><strong class="hl">Chronic overlapping pain conditions (COPCs)</strong>: cluster of chronic pain disorders that co-occur and share pathophysiology (central sensitization); includes fibromyalgia, IBS, chronic daily headache, pelvic pain, TMJ disorder, interstitial cystitis</li>
+          <li class="note">Pathophysiology: central sensitization — abnormal pain processing by CNS, not peripheral nociceptor activation; amplified pain signal, allodynia (pain from non-painful stimuli), hyperalgesia</li>
+          <li class="note">Often co-occur with anxiety, depression, PTSD, ACEs (adverse childhood experiences); biopsychosocial model essential</li>
+          <li class="note">Management: interdisciplinary pain team, CBT, graded aerobic exercise, sleep hygiene; minimize unnecessary investigations/procedures that reinforce sick role; school reintegration goal</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- CH 213 -->
+    <div class="chapter-card" data-keywords="miscellaneous arthritis sarcoid arthropathy leukemia arthritis transient synovitis Lyme disease pigmented villonodular synovitis hemophiliac arthropathy">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 213</span>
+        <span class="ch-title">Miscellaneous Conditions Associated with Arthritis</span>
+        <div class="ch-tags"><span class="tag tag-auto">Rheum</span><span class="tag tag-inf">Infection</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="crit"><strong class="hld">Leukemia mimicking JIA</strong>: childhood ALL can present with bone pain, arthralgia, arthritis BEFORE the diagnosis of leukemia is established; red flags that suggest leukemia rather than JIA: bone pain out of proportion to joint findings, night pain, lymphadenopathy, hepatosplenomegaly, ↓CBC (cytopenias), LDH elevated, uric acid elevated, pain that wakes from sleep → check CBC, LDH, uric acid BEFORE diagnosing JIA</li>
+          <li class="imp"><strong class="hl">Transient synovitis of the hip</strong>: most common cause of acute hip pain in children 3–8 yrs; self-limited; distinguishing from septic arthritis (Kocher criteria): fever + non-weight-bearing + ESR &gt;40 + WBC &gt;12,000 → if all 4 present, high probability septic arthritis → surgical drainage</li>
+          <li class="imp"><strong class="hl2">Lyme arthritis</strong>: caused by Borrelia burgdorferi; most common late manifestation; oligoarticular (knee most common), large joint; intermittent; after tick bite in endemic area; diagnose with Lyme ELISA + Western blot; treat oral doxycycline (children ≥8 yrs) or amoxicillin (&lt;8 yrs); 4 weeks</li>
+          <li class="note"><strong class="hl">Hemophilic arthropathy</strong>: recurrent hemarthrosis in hemophilia A/B → chronic synovitis → cartilage destruction; knee, ankle, elbow most common; prevent with factor replacement; treat acute hemarthrosis with factor infusion + rest</li>
+          <li class="note">Pigmented villonodular synovitis (PVNS): benign synovial proliferation; monoarticular (knee); bloody synovial fluid; treat with synovectomy ± imatinib (CSF1R inhibitor)</li>
+        </ul>
+        <div class="mnemonic">Leukemia masking as JIA: Bone pain + Night pain + ↑LDH + Cytopenias → Check CBC before calling it JIA!</div>
+      </div>
+    </div>
+
+  </div><!-- end chapters-grid -->
+
+  <div class="footer">
+    <span>Nelson Textbook of Pediatrics · 22nd Ed. · 2024</span>
+    <span>Part XIV: Chapters 194–213</span>
+  </div>
+
+</div><!-- end pw -->
+
+<script>
+  let openedChapters = new Set();
+  const TOTAL = 20;
+
+  function toggleCard(header) {
+    const card = header.parentElement;
+    const wasOpen = card.classList.contains('open');
+    card.classList.toggle('open');
+    const chNum = card.querySelector('.ch-num').textContent;
+    if (!wasOpen) openedChapters.add(chNum);
+    updateProgress();
+  }
+
+  function updateProgress() {
+    const pct = Math.min((openedChapters.size / TOTAL) * 100, 100);
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressText').textContent = `${openedChapters.size} / ${TOTAL} opened`;
+  }
+
+  function filterChapters() {
+    const q = document.getElementById('searchInput').value.toLowerCase().trim();
+    const cards = document.querySelectorAll('.chapter-card');
+    let visible = 0;
+    cards.forEach(card => {
+      const match = !q || card.textContent.toLowerCase().includes(q) || (card.dataset.keywords||'').toLowerCase().includes(q);
+      card.classList.toggle('hidden', !match);
+      if (match) visible++;
+    });
+    document.getElementById('chapterCount').textContent = q
+      ? `${visible} result${visible !== 1 ? 's' : ''}`
+      : `${TOTAL} chapters`;
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.ctrlKey && e.key === 'e') {
+      e.preventDefault();
+      document.querySelectorAll('.chapter-card:not(.open)').forEach(c => {
+        c.classList.add('open');
+        openedChapters.add(c.querySelector('.ch-num').textContent);
+      });
+      updateProgress();
+    }
+  });
+</script>
+</body>
+</html>

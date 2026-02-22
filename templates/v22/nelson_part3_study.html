@@ -1,0 +1,1095 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nelson Pediatrics — Part III: Behavioral &amp; Psychiatric Disorders</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --surface2: #1c2333;
+    --border: #30363d;
+    --accent: #c792ea;
+    --accent2: #f07a7a;
+    --accent3: #63d98a;
+    --accent4: #e8a44a;
+    --info: #5caaee;
+    --text: #e6edf3;
+    --text-muted: #8b949e;
+    --text-dim: #484f58;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.75;
+    min-height: 100vh;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+  }
+
+  .page-wrap {
+    position: relative;
+    z-index: 1;
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 0 24px 80px;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    padding: 72px 0 48px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 48px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::after {
+    content: 'III';
+    position: absolute;
+    right: -14px;
+    top: 10px;
+    font-family: 'Playfair Display', serif;
+    font-size: 200px;
+    font-weight: 900;
+    color: var(--border);
+    line-height: 1;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .hero-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(199,146,234,0.1);
+    border: 1px solid rgba(199,146,234,0.3);
+    color: var(--accent);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+  }
+
+  .hero-tag::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.8); }
+  }
+
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(26px, 4.5vw, 48px);
+    font-weight: 900;
+    line-height: 1.1;
+    margin-bottom: 12px;
+    color: var(--text);
+  }
+
+  .hero h1 span { color: var(--accent); }
+
+  .hero-sub {
+    font-size: 15px;
+    color: var(--text-muted);
+    max-width: 520px;
+    margin-bottom: 28px;
+  }
+
+  .hero-meta { display: flex; gap: 24px; flex-wrap: wrap; }
+
+  .meta-pill {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--text-muted);
+    font-family: 'DM Mono', monospace;
+  }
+
+  .meta-pill .dot { width: 8px; height: 8px; border-radius: 50%; }
+
+  /* ── SEARCH ── */
+  .search-bar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(13,17,23,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 0;
+    margin-bottom: 36px;
+  }
+
+  .search-inner {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .search-input {
+    flex: 1;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 14px 8px 36px;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%238b949e' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: 10px center;
+  }
+
+  .search-input:focus { border-color: var(--accent); }
+  .search-input::placeholder { color: var(--text-dim); }
+
+  .chapter-count {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
+
+  /* ── STATS ── */
+  .stats-strip {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    margin-bottom: 48px;
+  }
+
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 18px;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+
+  .stat-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+
+  .stat-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+  }
+
+  .stat-value {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  .stat-desc { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+
+  /* ── HIGH YIELD ── */
+  .hiyield {
+    background: linear-gradient(135deg, rgba(199,146,234,0.08), rgba(199,146,234,0.02));
+    border: 1px solid rgba(199,146,234,0.25);
+    border-left: 3px solid var(--accent);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin-bottom: 48px;
+  }
+
+  .hiyield-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--accent);
+    margin-bottom: 14px;
+  }
+
+  .hiyield ul {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 8px;
+  }
+
+  .hiyield ul li {
+    font-size: 13px;
+    color: var(--text);
+    padding-left: 16px;
+    position: relative;
+    line-height: 1.5;
+  }
+
+  .hiyield ul li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-size: 11px;
+  }
+
+  strong.hl  { color: var(--accent);  font-weight: 600; }
+  strong.hl2 { color: var(--accent2); font-weight: 600; }
+  strong.hl3 { color: var(--accent3); font-weight: 600; }
+  strong.hl4 { color: var(--accent4); font-weight: 600; }
+  strong.hli { color: var(--info);    font-weight: 600; }
+
+  /* ── DRUG TABLE ── */
+  .drug-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin: 12px 0;
+  }
+
+  .drug-table th {
+    background: var(--surface2);
+    color: var(--accent);
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 8px 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .drug-table td {
+    padding: 7px 12px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+    vertical-align: top;
+    line-height: 1.5;
+  }
+
+  .drug-table tr:hover td { background: rgba(255,255,255,0.02); }
+
+  .drug-table .cat-col {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--accent4);
+    white-space: nowrap;
+    font-weight: 500;
+  }
+
+  /* ── CHAPTERS ── */
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .chapters-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 48px;
+  }
+
+  .chapter-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  .chapter-card:hover {
+    border-color: rgba(199,146,234,0.35);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  }
+
+  .chapter-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 20px;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .ch-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text-muted);
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 3px 8px;
+    white-space: nowrap;
+    min-width: 42px;
+    text-align: center;
+  }
+
+  .ch-title {
+    flex: 1;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text);
+  }
+
+  .ch-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+
+  .tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 2px 7px;
+    border-radius: 4px;
+    border: 1px solid;
+  }
+
+  .tag-hiy  { color: var(--accent4); border-color: rgba(232,164,74,0.3);  background: rgba(232,164,74,0.08); }
+  .tag-psy  { color: var(--accent);  border-color: rgba(199,146,234,0.3); background: rgba(199,146,234,0.08); }
+  .tag-crit { color: var(--accent2); border-color: rgba(240,122,122,0.3); background: rgba(240,122,122,0.08); }
+  .tag-rx   { color: var(--info);    border-color: rgba(92,170,238,0.3);  background: rgba(92,170,238,0.08); }
+  .tag-beh  { color: var(--accent3); border-color: rgba(99,217,138,0.3);  background: rgba(99,217,138,0.08); }
+
+  .ch-toggle {
+    color: var(--text-muted);
+    font-size: 18px;
+    transition: transform 0.3s;
+    line-height: 1;
+  }
+
+  .chapter-card.open .ch-toggle { transform: rotate(180deg); }
+
+  .chapter-body {
+    display: none;
+    padding: 0 20px 20px;
+    border-top: 1px solid var(--border);
+    animation: slideIn 0.2s ease;
+  }
+
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateY(-6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .chapter-card.open .chapter-body { display: block; }
+
+  .key-points {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 12px;
+  }
+
+  .key-points li {
+    font-size: 13.5px;
+    color: var(--text);
+    padding: 8px 12px;
+    background: var(--surface2);
+    border-radius: 6px;
+    border-left: 2px solid var(--border);
+    line-height: 1.6;
+  }
+
+  .key-points li.imp  { border-left-color: var(--accent4); }
+  .key-points li.crit { border-left-color: var(--accent2); }
+  .key-points li.note { border-left-color: var(--info); }
+  .key-points li.grn  { border-left-color: var(--accent3); }
+  .key-points li.psy  { border-left-color: var(--accent); }
+
+  .mnemonic {
+    margin-top: 12px;
+    background: rgba(99,217,138,0.07);
+    border: 1px dashed rgba(99,217,138,0.25);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 13px;
+    color: var(--accent3);
+  }
+
+  .mnemonic::before { content: '💡 '; }
+
+  /* ── PROGRESS ── */
+  .progress-wrap { margin-bottom: 32px; }
+
+  .progress-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .progress-bar {
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    border-radius: 2px;
+    width: 0%;
+    transition: width 0.4s ease;
+  }
+
+  /* ── FOOTER ── */
+  .footer {
+    margin-top: 60px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+  }
+
+  .chapter-card.hidden { display: none; }
+
+  @media (max-width: 600px) {
+    .hero::after { font-size: 100px; }
+    .stats-strip { grid-template-columns: repeat(2, 1fr); }
+    .hiyield ul  { grid-template-columns: 1fr; }
+    .ch-tags     { display: none; }
+    .drug-table  { font-size: 12px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="search-bar">
+  <div class="search-inner">
+    <input class="search-input" type="text" id="searchInput" placeholder="Search disorders, drugs, criteria…" oninput="filterChapters()">
+    <span class="chapter-count" id="chapterCount">17 chapters</span>
+  </div>
+</div>
+
+<div class="page-wrap">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-tag">Nelson Textbook of Pediatrics · 22nd Edition · 2024</div>
+    <h1>Part <span>III</span><br>Behavioral &amp;<br>Psychiatric Disorders</h1>
+    <p class="hero-sub">Exam-oriented study notes covering Chapters 32–48. DSM-5 criteria, first-line drugs, and clinical red flags — exam-ready format.</p>
+    <div class="hero-meta">
+      <div class="meta-pill"><span class="dot" style="background:var(--accent)"></span> 17 Chapters</div>
+      <div class="meta-pill"><span class="dot" style="background:var(--accent4)"></span> DSM-5 Focus</div>
+      <div class="meta-pill"><span class="dot" style="background:var(--accent2)"></span> Drug Tables</div>
+    </div>
+  </div>
+
+  <!-- PROGRESS -->
+  <div class="progress-wrap">
+    <div class="progress-label">
+      <span>Reading Progress</span>
+      <span id="progressText">0 / 17 opened</span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-strip">
+    <div class="stat-card">
+      <div class="stat-label">Most common child psych disorder</div>
+      <div class="stat-value">Anxiety</div>
+      <div class="stat-desc">~1 in 3 children affected at some point</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">ADHD prevalence</div>
+      <div class="stat-value">~9–10%</div>
+      <div class="stat-desc">Boys > Girls (3:1); stimulants = first-line</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Suicide: #_cause of death</div>
+      <div class="stat-value">2nd cause</div>
+      <div class="stat-desc">Ages 10–34 in the US</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Anorexia mortality</div>
+      <div class="stat-value">~5–10%</div>
+      <div class="stat-desc">Highest mortality of any psychiatric disorder</div>
+    </div>
+  </div>
+
+  <!-- HIGH YIELD -->
+  <div class="hiyield">
+    <div class="hiyield-header">⚡ High-Yield Exam Points — Part III</div>
+    <ul>
+      <li><strong class="hl">SSRI</strong> = first-line pharmacotherapy for anxiety &amp; depression in children</li>
+      <li><strong class="hl2">Suicide</strong> = 2nd leading cause of death age 10–34; always screen at-risk youth</li>
+      <li><strong class="hl4">Pica</strong> = eating non-food items &gt;1 month; associated with iron deficiency &amp; intellectual disability</li>
+      <li><strong class="hl4">Rumination</strong> = effortless regurgitation and re-chewing; not vomiting</li>
+      <li><strong class="hli">Breath-holding spells</strong>: cyanotic (most common) vs pallid; always benign; no treatment needed</li>
+      <li><strong class="hl">OCD</strong>: ego-dystonic; CBT + SSRI first-line</li>
+      <li><strong class="hl2">Anorexia nervosa</strong> = highest mortality of any psychiatric disorder</li>
+      <li><strong class="hl3">Conduct disorder</strong> → precursor to antisocial personality disorder in adults</li>
+      <li><strong class="hl">Delirium</strong>: acute, fluctuating, attention disturbance; find &amp; treat underlying cause</li>
+      <li><strong class="hl4">Childhood schizophrenia</strong>: rare before puberty; hallucinations + delusions + negative symptoms</li>
+      <li><strong class="hli">Somatic symptom disorder</strong>: excessive distress about physical symptoms (not feigning)</li>
+      <li><strong class="hl">CBT</strong> = evidence-based psychotherapy for most pediatric psychiatric disorders</li>
+      <li><strong class="hl2">Self-injurious behavior</strong>: usually non-suicidal; assess intent; safety plan</li>
+      <li><strong class="hl3">Tourette disorder</strong>: motor + vocal tics &gt;1 year; onset before 18</li>
+    </ul>
+  </div>
+
+  <!-- CHAPTERS -->
+  <div class="section-label">Chapters 32 – 48</div>
+  <div class="chapters-grid" id="chaptersGrid">
+
+    <!-- CH 32 -->
+    <div class="chapter-card" data-keywords="psychosocial assessment interviewing HEADSS CRAFFT mental status child psychiatric evaluation history">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 32</span>
+        <span class="ch-title">Psychosocial Assessment and Interviewing</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-psy">Psych</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp"><strong class="hl4">HEADSS</strong> screening for adolescents: <strong>H</strong>ome, <strong>E</strong>ducation/Employment, <strong>A</strong>ctivities, <strong>D</strong>rugs, <strong>S</strong>exuality, <strong>S</strong>uicide/Safety</li>
+          <li class="imp"><strong class="hli">CRAFFT</strong> tool: screens for substance use in adolescents (Car, Relax, Alone, Forget, Friends, Trouble) — score ≥2 = positive screen</li>
+          <li class="note">Interview child alone (without parents) — especially adolescents; ensures confidentiality</li>
+          <li>Mental status exam: appearance, behavior, speech, mood, affect, thought process/content, cognition, insight, judgment</li>
+          <li class="imp">Confidentiality in adolescents: physicians can and should maintain confidentiality EXCEPT for imminent safety concerns (suicidal/homicidal ideation, abuse)</li>
+        </ul>
+        <div class="mnemonic">HEADSS: Home, Education, Activities, Drugs, Sexuality, Suicide/Safety</div>
+      </div>
+    </div>
+
+    <!-- CH 33 -->
+    <div class="chapter-card" data-keywords="psychopharmacology SSRI stimulant methylphenidate antipsychotic mood stabilizer antidepressant black box warning">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 33</span>
+        <span class="ch-title">Psychopharmacology</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-rx">Drugs</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <table class="drug-table">
+          <thead><tr><th>Drug Class</th><th>Examples</th><th>Indications</th><th>Key Side Effects / Notes</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="cat-col">SSRIs</td>
+              <td>Fluoxetine, Sertraline, Escitalopram</td>
+              <td>Depression, Anxiety, OCD, PTSD</td>
+              <td><strong class="hl2">Black box warning: increased suicidality</strong> in &lt;25 yrs; monitor closely for 4 wks; GI upset, sexual dysfunction</td>
+            </tr>
+            <tr>
+              <td class="cat-col">Stimulants</td>
+              <td>Methylphenidate (Ritalin), Amphetamine salts (Adderall)</td>
+              <td>ADHD</td>
+              <td>Decreased appetite, insomnia, growth suppression; check BP &amp; HR; contraindicated in structural cardiac disease</td>
+            </tr>
+            <tr>
+              <td class="cat-col">Non-stimulants</td>
+              <td>Atomoxetine, Guanfacine, Clonidine</td>
+              <td>ADHD (when stimulants fail/contraindicated)</td>
+              <td>Atomoxetine: black box (suicidality); slower onset; Guanfacine: sedation, hypotension</td>
+            </tr>
+            <tr>
+              <td class="cat-col">Atypical antipsychotics</td>
+              <td>Risperidone, Aripiprazole, Quetiapine</td>
+              <td>Schizophrenia, bipolar, tics, irritability in ASD</td>
+              <td>Weight gain, metabolic syndrome, EPS, tardive dyskinesia, QT prolongation; monitor metabolic panel</td>
+            </tr>
+            <tr>
+              <td class="cat-col">Mood stabilizers</td>
+              <td>Lithium, Valproate, Lamotrigine</td>
+              <td>Bipolar disorder</td>
+              <td>Lithium: narrow therapeutic index, monitor levels; Valproate: hepatotoxicity, teratogen (NTD)</td>
+            </tr>
+            <tr>
+              <td class="cat-col">Benzodiazepines</td>
+              <td>Lorazepam, Diazepam</td>
+              <td>Acute anxiety, status epilepticus</td>
+              <td>Sedation, dependence risk; avoid long-term use in children</td>
+            </tr>
+          </tbody>
+        </table>
+        <ul class="key-points">
+          <li class="crit"><strong class="hl2">Black box warning — ALL antidepressants</strong>: increased risk of suicidal thinking &amp; behavior in patients &lt;25 years — monitor closely especially in first 4 weeks</li>
+          <li class="imp"><strong class="hl4">Fluoxetine</strong> is the only FDA-approved antidepressant for children ≥8 years; <strong class="hl4">escitalopram</strong> approved ≥12 years</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- CH 34 -->
+    <div class="chapter-card" data-keywords="psychotherapy CBT cognitive behavioral therapy psychiatric hospitalization play therapy DBT family">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 34</span>
+        <span class="ch-title">Psychotherapy and Psychiatric Hospitalization</span>
+        <div class="ch-tags"><span class="tag tag-psy">Therapy</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp"><strong class="hl">CBT (Cognitive Behavioral Therapy)</strong> = most evidence-based therapy for children; used for anxiety, depression, OCD, PTSD</li>
+          <li class="note">Play therapy: for young children (&lt;6 yrs) who cannot verbalize feelings; uses play as communication</li>
+          <li class="note">DBT (Dialectical Behavior Therapy): for adolescents with emotional dysregulation, borderline traits, self-harm</li>
+          <li class="note">Family therapy: for eating disorders (Maudsley approach = family-based treatment = gold standard for adolescent AN)</li>
+          <li class="imp">Psychiatric hospitalization criteria: imminent danger to self or others, unable to care for self, acute psychosis, medically unstable (e.g., AN with bradycardia)</li>
+          <li class="crit">Involuntary hospitalization: when patient refuses but is at imminent risk — requires clinical and often legal authorization</li>
+        </ul>
+        <div class="mnemonic">CBT works for: "A-D-OCD-P" → Anxiety, Depression, OCD, PTSD</div>
+      </div>
+    </div>
+
+    <!-- CH 35 -->
+    <div class="chapter-card" data-keywords="somatic symptom functional disorder conversion hysteria pain hypochondria medically unexplained illness factitious">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 35</span>
+        <span class="ch-title">Somatic Symptom and Related Disorders</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-psy">Psych</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <table class="drug-table">
+          <thead><tr><th>Disorder</th><th>Key Feature</th><th>Awareness of Feigning?</th></tr></thead>
+          <tbody>
+            <tr><td><strong class="hl4">Somatic Symptom Disorder</strong></td><td>Excessive distress/preoccupation with physical symptoms; symptoms real to patient</td><td>No — not feigning</td></tr>
+            <tr><td><strong class="hl4">Illness Anxiety Disorder</strong></td><td>Fear of having serious illness with minimal/no symptoms (formerly hypochondriasis)</td><td>No</td></tr>
+            <tr><td><strong class="hl4">Conversion Disorder</strong></td><td>Neurological symptoms (paralysis, blindness, seizures) without neurological cause; "la belle indifférence" (calm about symptoms)</td><td>No</td></tr>
+            <tr><td><strong class="hl2">Factitious Disorder</strong></td><td>Deliberately faking symptoms for sick role; no external gain</td><td>Yes — intentional, but not for gain</td></tr>
+            <tr><td><strong class="hl2">Malingering</strong></td><td>Deliberately faking symptoms for external gain (avoid school, get money)</td><td>Yes — intentional for gain</td></tr>
+          </tbody>
+        </table>
+        <ul class="key-points">
+          <li class="imp">Conversion disorder: neurologic exam normal; symptoms often triggered by psychosocial stress; "glove-and-stocking" distribution of sensory loss does not follow dermatomes</li>
+          <li class="crit">Factitious Disorder Imposed on Another (FDIA / Munchausen by Proxy): caregiver induces illness — <strong class="hl2">mandated report required</strong></li>
+          <li class="note">Treatment: CBT + physical therapy; avoid unnecessary medical workup; therapeutic alliance essential</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- CH 36 -->
+    <div class="chapter-card" data-keywords="rumination pica iron deficiency intellectual disability lead ingestion eating non-food">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 36</span>
+        <span class="ch-title">Rumination and Pica</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-beh">Behavior</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp"><strong class="hl4">Pica</strong>: persistent eating of non-nutritive, non-food substances for ≥1 month; inappropriate for developmental level</li>
+          <li class="imp">Pica associations: <strong class="hl2">iron deficiency anemia</strong>, lead poisoning (pica for paint/soil), intellectual disability, pregnancy, stress</li>
+          <li class="crit">Pica complications: lead toxicity, parasitic infections (Toxocara from soil), intestinal obstruction</li>
+          <li class="imp"><strong class="hl4">Rumination Disorder</strong>: effortless regurgitation and re-chewing/re-swallowing of food; NOT associated with nausea; starts 3–12 months of age</li>
+          <li class="note">Rumination ≠ GERD: no distress, no acid, voluntary (subconscious), happens shortly after meals</li>
+          <li>Treatment: behavioral — diaphragmatic breathing (habit reversal), reassurance</li>
+        </ul>
+        <div class="mnemonic">Pica red flag workup: check iron, lead level, and screen for ID</div>
+      </div>
+    </div>
+
+    <!-- CH 37 -->
+    <div class="chapter-card" data-keywords="motor disorders habits tics Tourette enuresis encopresis thumb sucking nail biting stereotypy">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 37</span>
+        <span class="ch-title">Motor Disorders and Habits</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-beh">Behavior</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp"><strong class="hl4">Tourette Disorder</strong>: multiple motor tics + ≥1 vocal tic; present &gt;1 year; onset before age 18; waxes and wanes</li>
+          <li class="imp">Tic disorder hierarchy: Provisional (tics &lt;1 yr) → Persistent motor/vocal (&gt;1 yr, not both) → <strong class="hl4">Tourette</strong> (both motor + vocal &gt;1 yr)</li>
+          <li class="note">Tics: suppressible (briefly), worsen with stress/anxiety, decrease with focused activity and sleep</li>
+          <li class="note">Treatment of tics: behavioral (CBIT = Comprehensive Behavioral Intervention for Tics) first-line; alpha-2 agonists (guanfacine, clonidine); severe = haloperidol/fluphenazine/aripiprazole</li>
+          <li class="imp"><strong class="hl4">Enuresis</strong>: involuntary urination ≥2×/week for ≥3 months; age ≥5 yrs. Primary (never dry) vs Secondary (relapse after 6+ months dry)</li>
+          <li class="imp">Enuresis treatment: <strong class="hl3">bedwetting alarm</strong> (most effective long-term); <strong class="hli">desmopressin (DDAVP)</strong> for short-term/social occasions</li>
+          <li class="imp"><strong class="hl4">Encopresis</strong>: fecal soiling ≥1×/month for ≥3 months; age ≥4 yrs; most due to constipation with overflow incontinence</li>
+          <li class="note">Encopresis treatment: disimpaction (PEG laxative / enema) → maintenance laxative + behavioral toileting program</li>
+        </ul>
+        <div class="mnemonic">Tourette = Motor tics + Vocal tics + More than 1 year + Teen onset</div>
+      </div>
+    </div>
+
+    <!-- CH 38 -->
+    <div class="chapter-card" data-keywords="anxiety disorders GAD separation anxiety social phobia OCD PTSD panic CBT SSRI obsessive compulsive">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 38</span>
+        <span class="ch-title">Anxiety Disorders, OCD, and PTSD</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-psy">Psych</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <table class="drug-table">
+          <thead><tr><th>Disorder</th><th>Key Features</th><th>First-Line Treatment</th></tr></thead>
+          <tbody>
+            <tr><td><strong class="hl4">GAD</strong></td><td>Excessive worry about multiple domains ≥6 months; somatic complaints (headache, stomachache)</td><td>CBT ± SSRI</td></tr>
+            <tr><td><strong class="hl4">Separation Anxiety</strong></td><td>Fear of separation from attachment figure; school refusal; physical complaints on school mornings; most common anxiety in young children</td><td>CBT + gradual exposure; SSRI if severe</td></tr>
+            <tr><td><strong class="hl4">Social Anxiety</strong></td><td>Fear of social scrutiny/embarrassment; selective mutism in young children</td><td>CBT + SSRI</td></tr>
+            <tr><td><strong class="hl4">Specific Phobia</strong></td><td>Marked fear of specific object/situation; immediate anxiety response; avoided or endured with distress</td><td>CBT (exposure therapy)</td></tr>
+            <tr><td><strong class="hl4">Panic Disorder</strong></td><td>Recurrent unexpected panic attacks + concern about future attacks; agoraphobia may develop</td><td>CBT + SSRI</td></tr>
+            <tr><td><strong class="hl">OCD</strong></td><td>Obsessions (unwanted intrusive thoughts) + Compulsions (rituals to neutralize); ego-dystonic; time-consuming (&gt;1 hr/day)</td><td>CBT (ERP) + SSRI (fluvoxamine/sertraline)</td></tr>
+            <tr><td><strong class="hl">PTSD</strong></td><td>After traumatic event: re-experiencing (flashbacks, nightmares), avoidance, negative cognitions, hyperarousal; ≥1 month</td><td>Trauma-focused CBT (TF-CBT); SSRI</td></tr>
+          </tbody>
+        </table>
+        <ul class="key-points">
+          <li class="imp">OCD = <strong class="hl">ego-dystonic</strong> (patient recognizes thoughts as unwanted) vs. OCD personality = ego-syntonic</li>
+          <li class="crit"><strong class="hl2">PANDAS</strong> (Pediatric Autoimmune Neuropsychiatric Disorders Associated with Streptococcal infections): abrupt onset OCD/tics after GAS infection; controversial but recognized</li>
+          <li class="note">School refusal: most common cause is anxiety (especially separation anxiety); behavioral approach with rapid return to school</li>
+        </ul>
+        <div class="mnemonic">OCD treatment: "ERP + SSRI" → Exposure Response Prevention + Serotonin</div>
+      </div>
+    </div>
+
+    <!-- CH 39 -->
+    <div class="chapter-card" data-keywords="mood disorders depression bipolar MDD dysthymia PHQ fluoxetine suicidality mania">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 39</span>
+        <span class="ch-title">Mood Disorders</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-psy">Psych</span><span class="tag tag-rx">Drugs</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp"><strong class="hl4">MDD</strong> in children: ≥5 symptoms for ≥2 weeks; must include depressed mood OR loss of interest; in children, mood may appear as <strong class="hl">irritability</strong> (not sadness)</li>
+          <li class="imp">SIG E CAPS: <strong>S</strong>leep, <strong>I</strong>nterest, <strong>G</strong>uilt, <strong>E</strong>nergy, <strong>C</strong>oncentration, <strong>A</strong>ppetite, <strong>P</strong>sychomotor, <strong>S</strong>uicidal ideation</li>
+          <li class="imp">Screening tool: <strong class="hli">PHQ-A</strong> (Patient Health Questionnaire for Adolescents) — score ≥10 = moderate depression</li>
+          <li class="imp">Treatment: mild = psychotherapy (CBT) alone; moderate-severe = <strong class="hl4">CBT + SSRI</strong></li>
+          <li class="crit"><strong class="hl4">Fluoxetine</strong> = only FDA-approved antidepressant for depression in children ≥8 yrs</li>
+          <li class="imp"><strong class="hl4">Bipolar Disorder</strong> in children: often presents with irritability, mood lability, mixed episodes; mania = elevated/expansive/irritable mood + increased energy + decreased need for sleep ≥1 week</li>
+          <li class="note">Bipolar treatment: mood stabilizers (lithium, valproate) + atypical antipsychotics; SSRIs alone can trigger mania</li>
+          <li class="crit">Lithium monitoring: thyroid, renal function, serum levels (therapeutic 0.8–1.2 mEq/L); toxicity → tremor, ataxia, confusion</li>
+        </ul>
+        <div class="mnemonic">MDD criteria: SIG E CAPS (Sleep, Interest, Guilt, Energy, Concentration, Appetite, Psychomotor, Suicidality)</div>
+      </div>
+    </div>
+
+    <!-- CH 40 -->
+    <div class="chapter-card" data-keywords="suicide attempted suicidal ideation risk factors assessment safety plan means restriction firearms">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 40</span>
+        <span class="ch-title">Suicide and Attempted Suicide</span>
+        <div class="ch-tags"><span class="tag tag-crit">Critical</span><span class="tag tag-hiy">High Yield</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="crit"><strong class="hl2">Suicide = 2nd leading cause of death</strong> in ages 10–34 in the US</li>
+          <li class="imp">Risk factors: prior attempt (strongest predictor), depression, hopelessness, substance use, access to firearms, family history, LGBTQ+ identity, recent loss, social isolation</li>
+          <li class="imp">Protective factors: social support, family connectedness, religious beliefs, no access to means, reasons for living</li>
+          <li class="crit"><strong class="hl2">Means restriction counseling</strong> = most effective suicide prevention intervention — specifically ask about <strong class="hl2">firearms in the home</strong></li>
+          <li class="imp">Ask directly: "Are you thinking about killing yourself?" — does NOT increase risk, and does help identify at-risk patients</li>
+          <li class="imp">Safety planning: identify warning signs, coping strategies, reasons for living, remove means, emergency contacts</li>
+          <li class="note">Methods: girls → overdose (medication); boys → firearms (higher lethality → higher completion rate in boys)</li>
+          <li class="crit">Any suicidal ideation with plan/intent → emergency evaluation and hospitalization</li>
+        </ul>
+        <div class="mnemonic">Suicide #1 risk = Prior attempt. #1 intervention = Means restriction (guns, medications)</div>
+      </div>
+    </div>
+
+    <!-- CH 41 -->
+    <div class="chapter-card" data-keywords="eating disorders anorexia bulimia ARFID binge eating lanugo amenorrhea refeeding syndrome bradycardia">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 41</span>
+        <span class="ch-title">Eating Disorders</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-crit">Critical</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <table class="drug-table">
+          <thead><tr><th>Disorder</th><th>Key Features</th><th>Physical Findings</th><th>Treatment</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong class="hl2">Anorexia Nervosa</strong></td>
+              <td>Restriction of energy intake; intense fear of weight gain; distorted body image; BMI &lt;17.5 or &lt;85% ideal BW</td>
+              <td>Lanugo, bradycardia, hypotension, amenorrhea, hypothermia, low bone density, lanugo, carotenemia</td>
+              <td>Family-Based Treatment (Maudsley); nutritional rehabilitation; CBT; hospitalize if HR &lt;50, BP low, syncope, &lt;75% ideal BW</td>
+            </tr>
+            <tr>
+              <td><strong class="hl4">Bulimia Nervosa</strong></td>
+              <td>Binge eating + compensatory purging (vomiting, laxatives, exercise); normal or overweight BMI; feel ashamed</td>
+              <td>Russell's sign (calluses on dorsum of hand), parotid enlargement, dental erosion, hypokalemia, metabolic alkalosis</td>
+              <td>CBT + fluoxetine (only FDA-approved drug for bulimia); nutritional counseling</td>
+            </tr>
+            <tr>
+              <td><strong class="hl4">ARFID</strong></td>
+              <td>Avoidant/Restrictive Food Intake Disorder; restriction NOT due to body image; sensory aversion or fear of choking</td>
+              <td>Malnutrition, growth failure; no body image distortion</td>
+              <td>CBT, occupational therapy, nutritional support</td>
+            </tr>
+          </tbody>
+        </table>
+        <ul class="key-points">
+          <li class="crit"><strong class="hl2">Anorexia nervosa has the highest mortality</strong> of any psychiatric disorder (~5–10%)</li>
+          <li class="crit"><strong class="hl2">Refeeding syndrome</strong>: hypophosphatemia, hypokalemia, hypomagnesemia when refeeding malnourished patients — monitor electrolytes closely</li>
+          <li class="imp">Hospitalization for AN: HR &lt;50 bpm, BP &lt;90/45, syncope, &lt;75% ideal body weight, electrolyte disturbances</li>
+          <li class="imp">Russell's sign + parotid enlargement + dental erosion + hypokalemia + metabolic alkalosis = <strong class="hl4">Bulimia</strong></li>
+        </ul>
+        <div class="mnemonic">AN physical signs: "BHLAC" → Bradycardia, Hypothermia, Lanugo, Amenorrhea, Carotenemia</div>
+      </div>
+    </div>
+
+    <!-- CH 42 -->
+    <div class="chapter-card" data-keywords="disruptive impulse control conduct disorder ODD oppositional defiant ADHD antisocial aggression">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 42</span>
+        <span class="ch-title">Disruptive, Impulse-Control, and Conduct Disorders</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-beh">Behavior</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <table class="drug-table">
+          <thead><tr><th>Disorder</th><th>DSM-5 Key Criteria</th><th>Notes</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong class="hl4">ODD</strong> (Oppositional Defiant)</td>
+              <td>≥4 symptoms from angry/irritable mood, argumentative/defiant behavior, or vindictiveness; ≥6 months; directed at ≥1 person who is not a sibling</td>
+              <td>Onset &lt;8 yrs; often precedes conduct disorder; treat with parent management training</td>
+            </tr>
+            <tr>
+              <td><strong class="hl2">Conduct Disorder</strong></td>
+              <td>Repetitive violation of others' rights or major social norms: aggression to people/animals, property destruction, deceitfulness/theft, serious rule violations</td>
+              <td>Precursor to <strong class="hl2">Antisocial Personality Disorder</strong> in adults; callous-unemotional traits = worse prognosis</td>
+            </tr>
+            <tr>
+              <td>Intermittent Explosive</td>
+              <td>Recurrent outbursts of aggression grossly disproportionate to provocation; impulsive (not premeditated)</td>
+              <td>Treat with CBT; SSRIs may help</td>
+            </tr>
+          </tbody>
+        </table>
+        <ul class="key-points">
+          <li class="imp">ODD → Conduct Disorder → <strong class="hl2">Antisocial Personality Disorder</strong> (progression risk if untreated)</li>
+          <li class="note">First-line treatment: parent management training (PMT), CBT, family therapy; medications adjunctive only</li>
+          <li class="imp">Conduct disorder ≠ just "bad behavior" — must assess for comorbid ADHD, trauma, mood disorders, learning disabilities</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- CH 43 -->
+    <div class="chapter-card" data-keywords="tantrums breath holding spells cyanotic pallid iron deficiency toddler benign self-limiting">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 43</span>
+        <span class="ch-title">Tantrums and Breath-Holding Spells</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-beh">Behavior</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp"><strong class="hl4">Tantrums</strong>: peak age 18 months–3 years; normal developmental behavior; manage with consistent calm response, ignore mild tantrums, do not give in to demands</li>
+          <li class="imp"><strong class="hl4">Breath-Holding Spells</strong>: involuntary; triggered by frustration/anger (cyanotic type) or pain/fright (pallid type); child cries → stops breathing → loses tone/consciousness → recovers quickly</li>
+          <li class="crit"><strong class="hli">Cyanotic BHS</strong>: most common; vigorous crying → apnea → cyanosis → LOC; self-resolves; always benign</li>
+          <li class="crit"><strong class="hli">Pallid BHS</strong>: sudden pain/fright → no crying → pallor → loss of tone; vagally mediated; associated with iron deficiency anemia</li>
+          <li class="imp">BHS: <strong class="hl3">no treatment needed</strong>; reassure parents; check iron status (pallid type); resolves by age 5–6</li>
+          <li class="note">BHS vs seizure: BHS triggered, self-limited, normal EEG; distinguish by history</li>
+        </ul>
+        <div class="mnemonic">BHS: Cyanotic = Cry first → Pallid = Pain/fright, no cry → Both are BENIGN</div>
+      </div>
+    </div>
+
+    <!-- CH 44 -->
+    <div class="chapter-card" data-keywords="lying stealing truancy dishonesty stealing normal development moral conduct intervention">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 44</span>
+        <span class="ch-title">Lying, Stealing, and Truancy</span>
+        <div class="ch-tags"><span class="tag tag-beh">Behavior</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp">Lying: normal before age 4 (magical thinking); after age 7 → intentional, assess context and frequency</li>
+          <li class="note">Lying in context of anxiety or abuse should be explored; fear of punishment is the most common motivation</li>
+          <li class="imp">Stealing: occasional stealing in younger children = normal curiosity about ownership; persistent → assess for conduct disorder, impulsivity, peer influence</li>
+          <li class="note">Truancy (school avoidance) causes: anxiety (most common), bullying, learning disabilities, depression, substance use, family dysfunction</li>
+          <li>Intervention: assess underlying cause; school-family collaboration; behavioral strategies; screen for comorbidities</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- CH 45 -->
+    <div class="chapter-card" data-keywords="aggression violence bullying cyberbullying reactive proactive anger management">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 45</span>
+        <span class="ch-title">Aggression</span>
+        <div class="ch-tags"><span class="tag tag-beh">Behavior</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp">Types: <strong class="hl4">Reactive</strong> (emotional, impulsive response to provocation) vs <strong class="hl4">Proactive</strong> (instrumental, goal-directed, predatory)</li>
+          <li class="note">Proactive aggression with callous-unemotional traits → worse prognosis, associated with conduct disorder</li>
+          <li class="imp"><strong class="hl4">Bullying</strong>: repeated harmful behavior with power imbalance; cyberbullying increasingly prevalent</li>
+          <li>Risk factors for aggression: exposure to violence, abuse, substance use, poor impulse control, ADHD, conduct disorder</li>
+          <li class="note">Treatment: CBT for anger management, parent training, school-based programs; medications adjunctive (risperidone for irritability in ASD)</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- CH 46 -->
+    <div class="chapter-card" data-keywords="self-injurious behavior non-suicidal self harm cutting NSSI borderline DBT assessment safety plan">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 46</span>
+        <span class="ch-title">Self-Injurious Behavior</span>
+        <div class="ch-tags"><span class="tag tag-crit">Critical</span><span class="tag tag-hiy">High Yield</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp"><strong class="hl4">Non-Suicidal Self-Injury (NSSI)</strong>: deliberate self-harm without intent to die; most common = cutting; also burning, hitting, scratching</li>
+          <li class="imp">Function of NSSI: emotion regulation (relief from overwhelming feelings), self-punishment, communication of distress</li>
+          <li class="crit"><strong class="hl2">Always assess suicidal intent</strong> — NSSI ≠ suicide attempt, but is a risk factor for future attempts</li>
+          <li class="imp">Assessment: Columbia Suicide Severity Rating Scale (C-SSRS); assess plan, intent, means, history</li>
+          <li class="note">Treatment: <strong class="hli">DBT</strong> (Dialectical Behavior Therapy) — most evidence-based for NSSI and borderline personality; safety planning; remove access to means</li>
+          <li class="note">NSSI in developmentally disabled children: often stereotyped, repetitive (head-banging, hand-biting); different mechanism</li>
+        </ul>
+        <div class="mnemonic">NSSI assessment: Intent? Plan? History? Access to means? → ALWAYS ask about suicidality</div>
+      </div>
+    </div>
+
+    <!-- CH 47 -->
+    <div class="chapter-card" data-keywords="childhood psychoses schizophrenia hallucinations delusions psychosis antipsychotic early onset">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 47</span>
+        <span class="ch-title">Childhood Psychoses</span>
+        <div class="ch-tags"><span class="tag tag-psy">Psych</span><span class="tag tag-hiy">High Yield</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp"><strong class="hl4">Early-onset schizophrenia</strong>: onset before age 18; childhood-onset (&lt;13 yrs) is rare but more severe</li>
+          <li class="imp">DSM-5 criteria: ≥2 of: delusions, hallucinations, disorganized speech, disorganized/catatonic behavior, negative symptoms; ≥1 must be delusions/hallucinations/disorganized speech; duration ≥6 months</li>
+          <li class="imp"><strong class="hl4">Positive symptoms</strong>: hallucinations (auditory most common), delusions, disorganized thought/behavior</li>
+          <li class="imp"><strong class="hl4">Negative symptoms</strong>: flat affect, alogia (poverty of speech), avolition, anhedonia, social withdrawal</li>
+          <li class="note">Auditory hallucinations in children: command hallucinations most concerning; distinguish from normal imaginative play</li>
+          <li class="crit">Rule out: substance-induced psychosis, mood disorder with psychosis, medical causes (autoimmune encephalitis, Wilson's disease, CNS infection)</li>
+          <li class="imp">Treatment: <strong class="hli">atypical antipsychotics</strong> (risperidone, aripiprazole) + psychosocial support; early treatment = better prognosis</li>
+        </ul>
+        <div class="mnemonic">Schizophrenia symptoms: Positive = hallucinations/delusions; Negative = "AAAV" → Alogia, Avolition, Anhedonia, flat Affect</div>
+      </div>
+    </div>
+
+    <!-- CH 48 -->
+    <div class="chapter-card" data-keywords="delirium acute confusion fluctuating attention ICU sepsis encephalopathy organic brain hypoactive hyperactive">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 48</span>
+        <span class="ch-title">Delirium</span>
+        <div class="ch-tags"><span class="tag tag-crit">Critical</span><span class="tag tag-hiy">High Yield</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp"><strong class="hl4">Delirium</strong>: acute disturbance in attention and awareness with cognitive changes; <strong class="hl2">fluctuates over the day</strong>; NOT explained by pre-existing neurocognitive disorder</li>
+          <li class="crit">Core features: <strong class="hl2">ACUTE onset, FLUCTUATING course, inAttention, and altered Awareness</strong></li>
+          <li class="imp">Types: <strong class="hl4">Hyperactive</strong> (agitated, hallucinating — easier to recognize), <strong class="hl4">Hypoactive</strong> (withdrawn, quiet — often MISSED), Mixed</li>
+          <li class="crit">Most common in: ICU patients, post-operative, sepsis, TBI, drug toxicity/withdrawal, metabolic disturbances, CNS infection</li>
+          <li class="imp">Common causes (AEIOU-TIPS mnemonic): Alcohol/drugs, Epilepsy, Infection, Overdose/trauma, Uremia/metabolic; Temperature, Insulin (glucose), Psychogenic, Stroke/structural</li>
+          <li class="note">Delirium vs dementia: delirium = acute/fluctuating, altered consciousness; dementia = chronic, insidious, consciousness preserved until late</li>
+          <li class="crit">Management: identify and treat underlying cause; non-pharmacologic (reorientation, lighting, sleep hygiene, family presence); low-dose antipsychotics for severe agitation</li>
+        </ul>
+        <div class="mnemonic">Delirium core = AAAA: Acute onset, Attention impaired, Awareness altered, Always fluctuating</div>
+      </div>
+    </div>
+
+  </div><!-- end chapters-grid -->
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <span>Nelson Textbook of Pediatrics · 22nd Ed. · 2024</span>
+    <span>Part III: Chapters 32–48</span>
+  </div>
+
+</div><!-- end page-wrap -->
+
+<script>
+  let openedChapters = new Set();
+  const TOTAL = 17;
+
+  function toggleCard(header) {
+    const card = header.parentElement;
+    const wasOpen = card.classList.contains('open');
+    card.classList.toggle('open');
+    const chNum = card.querySelector('.ch-num').textContent;
+    if (!wasOpen) openedChapters.add(chNum);
+    updateProgress();
+  }
+
+  function updateProgress() {
+    const pct = Math.min((openedChapters.size / TOTAL) * 100, 100);
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressText').textContent = `${openedChapters.size} / ${TOTAL} opened`;
+  }
+
+  function filterChapters() {
+    const q = document.getElementById('searchInput').value.toLowerCase().trim();
+    const cards = document.querySelectorAll('.chapter-card');
+    let visible = 0;
+    cards.forEach(card => {
+      const text = card.textContent.toLowerCase();
+      const keywords = (card.dataset.keywords || '').toLowerCase();
+      const match = !q || text.includes(q) || keywords.includes(q);
+      card.classList.toggle('hidden', !match);
+      if (match) visible++;
+    });
+    document.getElementById('chapterCount').textContent = q
+      ? `${visible} result${visible !== 1 ? 's' : ''}`
+      : `${TOTAL} chapters`;
+  }
+
+  // Ctrl+E = expand all
+  document.addEventListener('keydown', e => {
+    if (e.ctrlKey && e.key === 'e') {
+      e.preventDefault();
+      document.querySelectorAll('.chapter-card:not(.open)').forEach(c => {
+        c.classList.add('open');
+        openedChapters.add(c.querySelector('.ch-num').textContent);
+      });
+      updateProgress();
+    }
+  });
+</script>
+
+</body>
+</html>

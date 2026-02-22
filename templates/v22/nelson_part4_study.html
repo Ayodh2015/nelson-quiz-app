@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nelson Pediatrics — Part IV: Learning &amp; Developmental Disorders</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --surface2: #1c2333;
+    --border: #30363d;
+    --accent: #38bdf8;
+    --accent2: #fb923c;
+    --accent3: #63d98a;
+    --accent4: #e8a44a;
+    --danger: #f07a7a;
+    --purple: #c792ea;
+    --text: #e6edf3;
+    --text-muted: #8b949e;
+    --text-dim: #484f58;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.75;
+    min-height: 100vh;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+  }
+
+  .page-wrap {
+    position: relative;
+    z-index: 1;
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 0 24px 80px;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    padding: 72px 0 48px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 48px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::after {
+    content: 'IV';
+    position: absolute;
+    right: -10px;
+    top: 10px;
+    font-family: 'Playfair Display', serif;
+    font-size: 200px;
+    font-weight: 900;
+    color: var(--border);
+    line-height: 1;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .hero-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(56,189,248,0.1);
+    border: 1px solid rgba(56,189,248,0.3);
+    color: var(--accent);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+  }
+
+  .hero-tag::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.8); }
+  }
+
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(26px, 4.5vw, 48px);
+    font-weight: 900;
+    line-height: 1.1;
+    margin-bottom: 12px;
+  }
+
+  .hero h1 span { color: var(--accent); }
+
+  .hero-sub {
+    font-size: 15px;
+    color: var(--text-muted);
+    max-width: 520px;
+    margin-bottom: 28px;
+  }
+
+  .hero-meta { display: flex; gap: 24px; flex-wrap: wrap; }
+
+  .meta-pill {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--text-muted);
+    font-family: 'DM Mono', monospace;
+  }
+
+  .meta-pill .dot { width: 8px; height: 8px; border-radius: 50%; }
+
+  /* ── STICKY SEARCH ── */
+  .search-bar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(13,17,23,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 0;
+    margin-bottom: 36px;
+  }
+
+  .search-inner {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .search-input {
+    flex: 1;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 14px 8px 36px;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%238b949e' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: 10px center;
+  }
+
+  .search-input:focus { border-color: var(--accent); }
+  .search-input::placeholder { color: var(--text-dim); }
+
+  .chapter-count {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
+
+  /* ── STATS ── */
+  .stats-strip {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    margin-bottom: 48px;
+  }
+
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 18px;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+
+  .stat-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+
+  .stat-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+  }
+
+  .stat-value {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  .stat-desc { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+
+  /* ── HIGH YIELD ── */
+  .hiyield {
+    background: linear-gradient(135deg, rgba(56,189,248,0.08), rgba(56,189,248,0.02));
+    border: 1px solid rgba(56,189,248,0.25);
+    border-left: 3px solid var(--accent);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin-bottom: 48px;
+  }
+
+  .hiyield-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--accent);
+    margin-bottom: 14px;
+  }
+
+  .hiyield ul {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 8px;
+  }
+
+  .hiyield ul li {
+    font-size: 13px;
+    color: var(--text);
+    padding-left: 16px;
+    position: relative;
+    line-height: 1.5;
+  }
+
+  .hiyield ul li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-size: 11px;
+  }
+
+  strong.hl  { color: var(--accent);  font-weight: 600; }
+  strong.hl2 { color: var(--accent2); font-weight: 600; }
+  strong.hl3 { color: var(--accent3); font-weight: 600; }
+  strong.hl4 { color: var(--accent4); font-weight: 600; }
+  strong.hlp { color: var(--purple);  font-weight: 600; }
+  strong.hld { color: var(--danger);  font-weight: 600; }
+
+  /* ── COMPARISON TABLE ── */
+  .cmp-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin: 12px 0;
+  }
+
+  .cmp-table th {
+    background: var(--surface2);
+    color: var(--accent);
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 8px 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .cmp-table td {
+    padding: 7px 12px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+    vertical-align: top;
+    line-height: 1.55;
+  }
+
+  .cmp-table tr:hover td { background: rgba(255,255,255,0.02); }
+
+  .cmp-table .lbl {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--accent2);
+    white-space: nowrap;
+    font-weight: 500;
+  }
+
+  /* ── CHAPTERS ── */
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .chapters-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 48px;
+  }
+
+  .chapter-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  .chapter-card:hover {
+    border-color: rgba(56,189,248,0.35);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  }
+
+  .chapter-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 20px;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .ch-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text-muted);
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 3px 8px;
+    white-space: nowrap;
+    min-width: 42px;
+    text-align: center;
+  }
+
+  .ch-title {
+    flex: 1;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text);
+  }
+
+  .ch-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+
+  .tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 2px 7px;
+    border-radius: 4px;
+    border: 1px solid;
+  }
+
+  .tag-hiy  { color: var(--accent4); border-color: rgba(232,164,74,0.3);  background: rgba(232,164,74,0.08);  }
+  .tag-dev  { color: var(--accent);  border-color: rgba(56,189,248,0.3);  background: rgba(56,189,248,0.08);  }
+  .tag-neu  { color: var(--purple);  border-color: rgba(199,146,234,0.3); background: rgba(199,146,234,0.08); }
+  .tag-crit { color: var(--danger);  border-color: rgba(240,122,122,0.3); background: rgba(240,122,122,0.08); }
+  .tag-rx   { color: var(--accent3); border-color: rgba(99,217,138,0.3);  background: rgba(99,217,138,0.08);  }
+
+  .ch-toggle {
+    color: var(--text-muted);
+    font-size: 18px;
+    transition: transform 0.3s;
+    line-height: 1;
+  }
+
+  .chapter-card.open .ch-toggle { transform: rotate(180deg); }
+
+  .chapter-body {
+    display: none;
+    padding: 0 20px 20px;
+    border-top: 1px solid var(--border);
+    animation: slideIn 0.2s ease;
+  }
+
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateY(-6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .chapter-card.open .chapter-body { display: block; }
+
+  .key-points {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 12px;
+  }
+
+  .key-points li {
+    font-size: 13.5px;
+    color: var(--text);
+    padding: 8px 12px;
+    background: var(--surface2);
+    border-radius: 6px;
+    border-left: 2px solid var(--border);
+    line-height: 1.6;
+  }
+
+  .key-points li.imp  { border-left-color: var(--accent4); }
+  .key-points li.crit { border-left-color: var(--danger);  }
+  .key-points li.note { border-left-color: var(--accent);  }
+  .key-points li.grn  { border-left-color: var(--accent3); }
+  .key-points li.pur  { border-left-color: var(--purple);  }
+
+  .mnemonic {
+    margin-top: 12px;
+    background: rgba(99,217,138,0.07);
+    border: 1px dashed rgba(99,217,138,0.25);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 13px;
+    color: var(--accent3);
+  }
+
+  .mnemonic::before { content: '💡 '; }
+
+  /* ── PROGRESS ── */
+  .progress-wrap { margin-bottom: 32px; }
+
+  .progress-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .progress-bar { height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--purple));
+    border-radius: 2px;
+    width: 0%;
+    transition: width 0.4s ease;
+  }
+
+  /* ── FOOTER ── */
+  .footer {
+    margin-top: 60px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+  }
+
+  .chapter-card.hidden { display: none; }
+
+  @media (max-width: 600px) {
+    .hero::after { font-size: 110px; }
+    .stats-strip { grid-template-columns: repeat(2, 1fr); }
+    .hiyield ul  { grid-template-columns: 1fr; }
+    .ch-tags     { display: none; }
+    .cmp-table   { font-size: 12px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="search-bar">
+  <div class="search-inner">
+    <input class="search-input" type="text" id="searchInput" placeholder="Search ADHD, ASD, IQ, Down syndrome, dyslexia…" oninput="filterChapters()">
+    <span class="chapter-count" id="chapterCount">11 chapters</span>
+  </div>
+</div>
+
+<div class="page-wrap">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-tag">Nelson Textbook of Pediatrics · 22nd Edition · 2024</div>
+    <h1>Part <span>IV</span><br>Learning &amp; Developmental<br>Disorders</h1>
+    <p class="hero-sub">Exam-oriented study notes covering Chapters 49–59. ADHD, ASD, intellectual disability, Down syndrome, Fragile X — high-yield and exam-ready.</p>
+    <div class="hero-meta">
+      <div class="meta-pill"><span class="dot" style="background:var(--accent)"></span> 11 Chapters</div>
+      <div class="meta-pill"><span class="dot" style="background:var(--accent2)"></span> DSM-5 Criteria</div>
+      <div class="meta-pill"><span class="dot" style="background:var(--accent3)"></span> IQ & Genetics Focus</div>
+    </div>
+  </div>
+
+  <!-- PROGRESS -->
+  <div class="progress-wrap">
+    <div class="progress-label">
+      <span>Reading Progress</span>
+      <span id="progressText">0 / 11 opened</span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-strip">
+    <div class="stat-card">
+      <div class="stat-label">ADHD prevalence</div>
+      <div class="stat-value">~9–10%</div>
+      <div class="stat-desc">Most common neurodevelopmental disorder; boys 3:1</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">ASD prevalence</div>
+      <div class="stat-value">1 in 36</div>
+      <div class="stat-desc">Boys 4:1; 2023 CDC data</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Intellectual Disability</div>
+      <div class="stat-value">IQ &lt;70</div>
+      <div class="stat-desc">+ deficits in adaptive functioning; ~1–3% prevalence</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Down syndrome trisomy</div>
+      <div class="stat-value">Trisomy 21</div>
+      <div class="stat-desc">Most common chromosomal cause of ID; 1 in 700 births</div>
+    </div>
+  </div>
+
+  <!-- HIGH YIELD -->
+  <div class="hiyield">
+    <div class="hiyield-header">⚡ High-Yield Exam Points — Part IV</div>
+    <ul>
+      <li><strong class="hl">ADHD</strong>: inattention/hyperactivity-impulsivity; present before age 12; in ≥2 settings; stimulants = first-line ≥6 yrs</li>
+      <li><strong class="hl2">Dyslexia</strong>: most common learning disability; phonological processing deficit; IQ is normal</li>
+      <li><strong class="hl">ASD</strong>: deficits in social communication + restricted/repetitive behaviors; early intervention = best outcome</li>
+      <li><strong class="hlp">Down syndrome</strong>: trisomy 21; 1 in 700 births; maternal age risk; most common chromosomal cause of ID</li>
+      <li><strong class="hlp">Fragile X</strong>: most common inherited cause of ID; FMR1 gene mutation; CGG trinucleotide repeat expansion</li>
+      <li><strong class="hld">ID</strong>: IQ &lt;70 + adaptive deficits; mild = 55–70 (most common = 85%); moderate = 40–55; severe = 25–40</li>
+      <li><strong class="hl3">Executive function</strong>: planning, working memory, inhibition, cognitive flexibility; impaired in ADHD</li>
+      <li><strong class="hl2">Methylphenidate</strong>: first-line ADHD Rx ≥6 yrs; monitor growth, BP, HR</li>
+      <li><strong class="hl">M-CHAT-R</strong>: autism screen at 18 &amp; 24 months; refer if positive</li>
+      <li><strong class="hlp">Down syndrome</strong>: atlanto-axial instability — screen before contact sports (C-spine X-ray)</li>
+      <li><strong class="hl4">Language disorder</strong>: refer if no words by 16 mo, no phrases by 24 mo, or any regression</li>
+      <li><strong class="hl3">IEP</strong> (Individualized Education Program): legally mandated for children with disabilities in US schools</li>
+    </ul>
+  </div>
+
+  <!-- CHAPTERS -->
+  <div class="section-label">Chapters 49 – 59</div>
+  <div class="chapters-grid" id="chaptersGrid">
+
+    <!-- CH 49 -->
+    <div class="chapter-card" data-keywords="neurodevelopmental executive function working memory inhibition planning cognitive flexibility frontal lobe">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 49</span>
+        <span class="ch-title">Neurodevelopmental and Executive Function and Dysfunction</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-neu">Neuro</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp"><strong class="hl">Executive function (EF)</strong>: higher-order cognitive processes mediated by the prefrontal cortex</li>
+          <li class="imp">Core EF domains: <strong class="hl4">Working memory</strong> (hold info in mind), <strong class="hl4">Inhibitory control</strong> (suppress impulses), <strong class="hl4">Cognitive flexibility</strong> (shift strategies), <strong class="hl4">Planning/organization</strong></li>
+          <li class="note">EF develops throughout childhood and adolescence; not fully mature until early-mid 20s</li>
+          <li class="imp">EF deficits are central to: <strong class="hl2">ADHD</strong>, autism spectrum disorder, intellectual disability, TBI, and many learning disabilities</li>
+          <li class="note">Assessment: standardized neuropsychological testing (BRIEF questionnaire for EF at home/school, NEPSY-II battery)</li>
+          <li class="grn">Neurodevelopmental disorders: a broad group of conditions that impair development of the nervous system and affect personal, social, academic, or occupational functioning</li>
+        </ul>
+        <div class="mnemonic">EF core = "WICP" → Working memory, Inhibition, Cognitive flexibility, Planning</div>
+      </div>
+    </div>
+
+    <!-- CH 50 -->
+    <div class="chapter-card" data-keywords="ADHD attention deficit hyperactivity disorder inattention hyperimpulsivity methylphenidate amphetamine stimulant DSM-5 criteria">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 50</span>
+        <span class="ch-title">Attention-Deficit / Hyperactivity Disorder (ADHD)</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-rx">Drugs</span><span class="tag tag-neu">Neuro</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp">Most common neurodevelopmental disorder; prevalence ~9–10%; <strong class="hl">Boys 3:1 girls</strong></li>
+          <li class="imp"><strong class="hl4">DSM-5 Criteria</strong>: ≥6 symptoms of inattention AND/OR ≥6 symptoms of hyperactivity-impulsivity (≥5 if ≥17 yrs); present <strong class="hl">before age 12</strong>; in <strong class="hl">≥2 settings</strong>; causing impairment; not explained by another disorder</li>
+        </ul>
+        <table class="cmp-table">
+          <thead><tr><th>Inattention Symptoms</th><th>Hyperactivity-Impulsivity Symptoms</th></tr></thead>
+          <tbody>
+            <tr><td>Fails to give close attention to details / careless mistakes</td><td>Fidgets, squirms in seat</td></tr>
+            <tr><td>Difficulty sustaining attention in tasks/play</td><td>Leaves seat when expected to remain seated</td></tr>
+            <tr><td>Does not seem to listen when spoken to directly</td><td>Runs/climbs in inappropriate situations</td></tr>
+            <tr><td>Does not follow through on instructions / fails to finish tasks</td><td>Unable to play quietly</td></tr>
+            <tr><td>Difficulty organizing tasks</td><td>Always "on the go," driven by a motor</td></tr>
+            <tr><td>Avoids tasks requiring sustained mental effort</td><td>Talks excessively</td></tr>
+            <tr><td>Loses things necessary for tasks</td><td>Blurts out answers before question is finished</td></tr>
+            <tr><td>Easily distracted by extraneous stimuli</td><td>Difficulty waiting turn</td></tr>
+            <tr><td>Forgetful in daily activities</td><td>Interrupts or intrudes on others</td></tr>
+          </tbody>
+        </table>
+        <ul class="key-points">
+          <li class="imp">Subtypes: <strong class="hl">Predominantly Inattentive</strong>, <strong class="hl">Predominantly Hyperactive-Impulsive</strong>, <strong class="hl">Combined</strong> (most common)</li>
+          <li class="imp">Assessment: clinical interview + rating scales (Vanderbilt, Conners) from parent AND teacher; rule out vision/hearing problems, anxiety, learning disorders, sleep issues</li>
+          <li class="imp"><strong class="hld">Treatment ≥6 years</strong>: <strong class="hl2">stimulant medications FIRST</strong> + behavioral therapy</li>
+          <li class="imp"><strong class="hld">Treatment 4–5 years</strong>: <strong class="hl2">behavioral therapy FIRST</strong>; medication second if behavior insufficient</li>
+        </ul>
+        <table class="cmp-table">
+          <thead><tr><th>Medication</th><th>Class</th><th>Onset</th><th>Key Side Effects</th></tr></thead>
+          <tbody>
+            <tr><td><strong class="hl3">Methylphenidate</strong> (Ritalin, Concerta)</td><td>Stimulant (blocks DA/NE reuptake)</td><td>30–45 min</td><td>Decreased appetite, insomnia, growth suppression, headache, increased BP/HR</td></tr>
+            <tr><td><strong class="hl3">Amphetamine salts</strong> (Adderall, Vyvanse)</td><td>Stimulant (releases + blocks reuptake)</td><td>30–60 min</td><td>Same as above; slightly more potent</td></tr>
+            <tr><td><strong class="hl">Atomoxetine</strong> (Strattera)</td><td>Non-stimulant (NE reuptake inhibitor)</td><td>4–6 weeks</td><td>Suicidality black box warning; slower onset; good for anxiety comorbidity</td></tr>
+            <tr><td><strong class="hl">Guanfacine / Clonidine</strong></td><td>Non-stimulant (α-2 agonist)</td><td>2–4 weeks</td><td>Sedation, hypotension, rebound hypertension if stopped abruptly</td></tr>
+          </tbody>
+        </table>
+        <ul class="key-points">
+          <li class="crit">Contraindications to stimulants: structural cardiac disease, hypertrophic cardiomyopathy, severe anxiety, history of stimulant abuse — get cardiac history before prescribing</li>
+          <li class="note">Growth monitoring: measure height/weight every 6 months; drug holidays over summer may help if growth concern</li>
+          <li class="grn">ADHD persists into adulthood in ~50–70% of cases</li>
+        </ul>
+        <div class="mnemonic">ADHD Rx age rule: ≥6 years = Stimulant first; 4–5 years = Behavior first</div>
+      </div>
+    </div>
+
+    <!-- CH 51 -->
+    <div class="chapter-card" data-keywords="dyslexia reading disorder phonological processing learning disability decoding fluency IQ normal">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 51</span>
+        <span class="ch-title">Dyslexia</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-dev">Learning</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp"><strong class="hl">Dyslexia</strong> = most common learning disability; ~5–15% of school-age children</li>
+          <li class="imp">Core deficit: <strong class="hl2">phonological processing</strong> — difficulty mapping sounds to letters (phoneme-grapheme correspondence)</li>
+          <li class="imp"><strong class="hl4">IQ is normal</strong> — dyslexia is NOT a global cognitive deficit; it is specific to reading</li>
+          <li class="note">Features: slow/inaccurate decoding, poor spelling, difficulty with reading fluency; often a family history</li>
+          <li class="imp">Diagnosis: standardized reading tests showing performance significantly below expected for age, IQ, and education; despite adequate instruction</li>
+          <li class="crit">NOT caused by: poor vision, low intelligence, lack of effort, poor teaching — these must be ruled out</li>
+          <li class="imp">Treatment: <strong class="hl3">structured literacy / Orton-Gillingham</strong> approach — systematic, explicit, multisensory reading instruction; early intervention = best outcomes</li>
+          <li class="note">Accommodations: extra time, audiobooks, text-to-speech tools, reduced reading load; mandated via IEP/504 plan</li>
+        </ul>
+        <div class="mnemonic">Dyslexia = Decoding Deficit, Normal IQ, Phonological Problem, Early intervention works</div>
+      </div>
+    </div>
+
+    <!-- CH 52 -->
+    <div class="chapter-card" data-keywords="math writing disabilities dyscalculia dysgraphia specific learning disorder arithmetic number sense">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 52</span>
+        <span class="ch-title">Math and Writing Disabilities</span>
+        <div class="ch-tags"><span class="tag tag-dev">Learning</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp"><strong class="hl">Dyscalculia</strong>: specific learning disorder in mathematics; deficit in number sense and arithmetic fact retrieval; normal IQ; prevalence ~5–7%</li>
+          <li class="imp"><strong class="hl">Dysgraphia</strong>: specific learning disorder in written expression; affects handwriting (letter formation, spacing, fluency) and/or written composition</li>
+          <li class="note">All specific learning disorders: performance substantially below expected for age, IQ, and education; despite adequate instruction</li>
+          <li class="note">Comorbidities common: dyslexia + dyscalculia often co-occur; also co-occur with ADHD (~30–50%)</li>
+          <li class="imp">Management: targeted intervention (math tutoring, occupational therapy for dysgraphia); IEP/504 accommodations (calculator use, keyboarding instead of handwriting, extended time)</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- CH 53 -->
+    <div class="chapter-card" data-keywords="language development communication disorders expressive receptive mixed language disorder aphasia late talker speech">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 53</span>
+        <span class="ch-title">Language Development and Communication Disorders</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-dev">Language</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <table class="cmp-table">
+          <thead><tr><th>Disorder</th><th>Key Features</th><th>Notes</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong class="hl4">Language Disorder</strong></td>
+              <td>Persistent difficulties in acquisition and use of language (grammar, vocabulary, narrative); expressive and/or receptive; NOT due to hearing loss, motor, or neurological cause</td>
+              <td>Most common communication disorder; refer to speech-language pathologist (SLP)</td>
+            </tr>
+            <tr>
+              <td><strong class="hl">Speech Sound Disorder</strong></td>
+              <td>Persistent difficulty with speech sound production; mispronunciation; unintelligible speech beyond expected age</td>
+              <td>Normal: 50% intelligible at 2, 75% at 3, 100% at 4 yrs</td>
+            </tr>
+            <tr>
+              <td><strong class="hl">Childhood-Onset Fluency Disorder</strong> (Stuttering)</td>
+              <td>Disruptions in speech fluency: repetitions, prolongations, blocks; often begins 2–5 yrs; boys > girls</td>
+              <td>~75% resolve spontaneously; refer to SLP if persists &gt;6 months or causes distress</td>
+            </tr>
+            <tr>
+              <td><strong class="hl2">Social (Pragmatic) Communication Disorder</strong></td>
+              <td>Difficulty with social use of verbal and nonverbal communication; does NOT meet criteria for ASD</td>
+              <td>Distinguish from ASD: no restricted/repetitive behaviors</td>
+            </tr>
+            <tr>
+              <td><strong class="hl">Selective Mutism</strong></td>
+              <td>Consistent failure to speak in specific social situations (e.g., school) despite speaking normally in others; anxiety-based</td>
+              <td>Treat as anxiety disorder: CBT, gradual exposure; SSRIs if severe</td>
+            </tr>
+          </tbody>
+        </table>
+        <ul class="key-points">
+          <li class="crit">Red flags requiring immediate referral to SLP: no babbling by 12 mo, no words by 16 mo, no 2-word phrases by 24 mo, <strong class="hld">any loss of language at any age</strong></li>
+          <li class="imp">Hearing loss must be ruled out in all children with language delay — audiological evaluation is mandatory</li>
+          <li class="note">Bilingual children: may have smaller vocabulary in each language than monolingual peers, but total vocabulary is comparable — not a delay</li>
+        </ul>
+        <div class="mnemonic">Refer at: 16 months (no words), 24 months (no phrases), or ANY regression</div>
+      </div>
+    </div>
+
+    <!-- CH 54 -->
+    <div class="chapter-card" data-keywords="augmentative alternative communication AAC non-verbal speech generating device picture exchange PECS symbol">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 54</span>
+        <span class="ch-title">Augmentative and Alternative Communication (AAC)</span>
+        <div class="ch-tags"><span class="tag tag-dev">Language</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp"><strong class="hl">AAC</strong>: any method that supplements or replaces natural speech for those with communication disorders</li>
+          <li class="note">Types: Unaided (sign language, gestures) and Aided (picture boards, PECS, speech-generating devices, apps)</li>
+          <li class="imp"><strong class="hl4">PECS</strong> (Picture Exchange Communication System): structured approach used in ASD; child exchanges picture cards for desired items/activities</li>
+          <li class="imp">AAC does <strong class="hl3">NOT</strong> inhibit speech development — evidence shows it can enhance natural speech production</li>
+          <li class="note">Candidates: children with ASD, cerebral palsy, intellectual disability, apraxia of speech who cannot communicate effectively verbally</li>
+          <li class="grn">Early introduction of AAC is recommended — no minimum age or cognitive threshold required to begin</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- CH 55 -->
+    <div class="chapter-card" data-keywords="outcomes infants children disabilities premature early intervention services IDEA IEP 504 special education">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 55</span>
+        <span class="ch-title">Outcomes Among Infants and Children with Disabilities</span>
+        <div class="ch-tags"><span class="tag tag-dev">Special Ed</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp"><strong class="hl">IDEA</strong> (Individuals with Disabilities Education Act): US federal law mandating free appropriate public education (FAPE) for children with disabilities</li>
+          <li class="imp"><strong class="hl2">Part C of IDEA</strong>: early intervention services for infants and toddlers <strong class="hl2">birth–3 years</strong>; provided in natural environments</li>
+          <li class="imp"><strong class="hl2">Part B of IDEA</strong>: special education services for children <strong class="hl2">3–21 years</strong> in least restrictive environment (LRE)</li>
+          <li class="imp"><strong class="hl4">IEP</strong> (Individualized Education Program): legally mandated plan for students with disabilities; reviewed annually; requires parental consent</li>
+          <li class="note"><strong class="hl4">504 Plan</strong>: civil rights accommodation plan for students who don't qualify for special education but need accommodations (e.g., extra time, preferential seating)</li>
+          <li class="grn">Early intervention (birth–5 yrs) produces greatest developmental gains due to brain plasticity</li>
+          <li class="note">IEP vs 504: IEP = specialized instruction + services; 504 = accommodations only; IEP is more comprehensive</li>
+        </ul>
+        <div class="mnemonic">IDEA: Part C = birth–3 (Community/early); Part B = 3–21 (school-Based)</div>
+      </div>
+    </div>
+
+    <!-- CH 56 -->
+    <div class="chapter-card" data-keywords="developmental delay intellectual disability global IQ adaptive behavior causes evaluation etiology chromosomal metabolic">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 56</span>
+        <span class="ch-title">Developmental Delay and Intellectual Disability</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-neu">Neuro</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp"><strong class="hl">Intellectual Disability (ID)</strong>: IQ &lt;70 + significant deficits in adaptive functioning in ≥1 domain (conceptual, social, practical); onset during developmental period</li>
+          <li class="imp">ID severity by IQ: <strong class="hl4">Mild</strong> 55–70 (85% of cases; can live/work independently with support), <strong class="hl4">Moderate</strong> 40–55 (need daily supervision), <strong class="hl4">Severe</strong> 25–40, <strong class="hl4">Profound</strong> &lt;25</li>
+          <li class="crit">Causes: genetic (chromosomal, single gene), prenatal (teratogens, infections, TORCH), perinatal (hypoxia, prematurity), postnatal (TBI, lead, meningitis, deprivation)</li>
+          <li class="imp">Most common identifiable causes: <strong class="hlp">Down syndrome</strong> (#1 chromosomal), <strong class="hlp">Fragile X</strong> (#1 inherited), <strong class="hl2">Fetal Alcohol Spectrum Disorder</strong> (#1 preventable), hypothyroidism (#1 preventable metabolic)</li>
+          <li class="note">Evaluation: chromosomal microarray (first-line genetic test), FMR1 testing, metabolic workup, thyroid, lead, MRI brain, TORCH if indicated</li>
+          <li class="imp"><strong class="hl4">Global developmental delay</strong>: used for children &lt;5 years when too young to reliably assess IQ; ≥2 developmental domains significantly delayed</li>
+        </ul>
+        <table class="cmp-table">
+          <thead><tr><th>ID Level</th><th>IQ Range</th><th>% of ID</th><th>Adaptive Function</th></tr></thead>
+          <tbody>
+            <tr><td class="lbl">Mild</td><td>55–70</td><td>85%</td><td>May live independently with support; can hold a job</td></tr>
+            <tr><td class="lbl">Moderate</td><td>40–55</td><td>10%</td><td>Needs daily supervision; can do simple tasks; group home</td></tr>
+            <tr><td class="lbl">Severe</td><td>25–40</td><td>3–4%</td><td>Needs substantial support for daily living; limited communication</td></tr>
+            <tr><td class="lbl">Profound</td><td>&lt;25</td><td>1–2%</td><td>Requires full care; very limited language; may have motor impairments</td></tr>
+          </tbody>
+        </table>
+        <div class="mnemonic">ID causes: "Down Fragile FASD Thyroid" → Down syndrome, Fragile X, FASD, Hypothyroidism</div>
+      </div>
+    </div>
+
+    <!-- CH 57 -->
+    <div class="chapter-card" data-keywords="Down syndrome trisomy 21 Brushfield spots hypothyroidism atlantoaxial instability congenital heart AV canal dementia Alzheimer">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 57</span>
+        <span class="ch-title">Down Syndrome and Other Chromosomal Abnormalities</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-crit">Critical</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp"><strong class="hlp">Down syndrome</strong>: <strong class="hlp">Trisomy 21</strong>; most common chromosomal disorder; 1 in 700 live births; risk increases with maternal age</li>
+          <li class="imp">Mechanisms: nondisjunction (95%), Robertsonian translocation (4% — not age-related; carrier parent risk), mosaicism (1% — milder phenotype)</li>
+        </ul>
+        <table class="cmp-table">
+          <thead><tr><th>System</th><th>Down Syndrome Features</th></tr></thead>
+          <tbody>
+            <tr><td class="lbl">Dysmorphic</td><td>Upslanting palpebral fissures, epicanthal folds, flat nasal bridge, small ears, macroglossia, single palmar crease, sandal gap toe (wide space between 1st &amp; 2nd toes), brachycephaly, Brushfield spots (iris)</td></tr>
+            <tr><td class="lbl">Cardiac</td><td><strong class="hld">Congenital heart disease in ~50%</strong>; most common = <strong class="hld">AVSD (atrioventricular septal defect / endocardial cushion defect)</strong>; also VSD, ASD, PDA</td></tr>
+            <tr><td class="lbl">GI</td><td>Duodenal atresia ("double bubble" sign), Hirschsprung disease, imperforate anus</td></tr>
+            <tr><td class="lbl">Endocrine</td><td><strong class="hl4">Hypothyroidism</strong> (screen annually); also diabetes mellitus</td></tr>
+            <tr><td class="lbl">Neurologic</td><td>Intellectual disability (mild–moderate); <strong class="hld">Alzheimer disease</strong> risk by age 40+ (APP gene on chromosome 21)</td></tr>
+            <tr><td class="lbl">Orthopedic</td><td><strong class="hld">Atlantoaxial instability</strong> — screen with C-spine X-ray before contact sports; hypotonia universal</td></tr>
+            <tr><td class="lbl">Hematologic</td><td>Transient myeloproliferative disorder (neonates); <strong class="hld">leukemia risk 10–20×</strong> (ALL &amp; AML)</td></tr>
+            <tr><td class="lbl">Sensory</td><td>Hearing loss (50–70%); visual problems (cataracts, strabismus, nystagmus)</td></tr>
+          </tbody>
+        </table>
+        <ul class="key-points">
+          <li class="crit">Most common cause of death in Down syndrome: <strong class="hld">congenital heart disease</strong> (early life) and <strong class="hld">respiratory infection</strong></li>
+          <li class="imp">Prenatal screening: cell-free DNA (NIPT) most sensitive; confirmed by karyotype (amniocentesis or CVS)</li>
+          <li class="note">Health supervision: annual thyroid, echocardiogram at birth, audiological evaluation, ophthalmology, C-spine X-ray at 3–5 yrs or before sports</li>
+        </ul>
+        <div class="mnemonic">Down syndrome CHD: AVSD (Atrioventricular Septal Defect) is most common → think "21 = AV"</div>
+      </div>
+    </div>
+
+    <!-- CH 58 -->
+    <div class="chapter-card" data-keywords="autism spectrum disorder ASD social communication restricted repetitive DSM-5 M-CHAT early intervention ABA applied behavior">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 58</span>
+        <span class="ch-title">Autism Spectrum Disorder (ASD)</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-crit">Critical</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp">Prevalence: <strong class="hl2">1 in 36</strong> children (CDC 2023); <strong class="hl2">Boys 4:1</strong> girls; highly heritable (~80% concordance in identical twins)</li>
+          <li class="imp"><strong class="hl4">DSM-5 Criteria</strong> — BOTH domains must be present:</li>
+          <li class="imp"><strong>Domain A</strong>: Persistent deficits in social communication and social interaction across multiple contexts: (1) social-emotional reciprocity, (2) nonverbal communicative behaviors, (3) developing/maintaining relationships</li>
+          <li class="imp"><strong>Domain B</strong>: Restricted, repetitive patterns of behavior, interests, or activities — ≥2 of: (1) stereotyped/repetitive motor movements, (2) insistence on sameness/inflexible routines, (3) highly restricted/fixated interests, (4) hyper- or hyporeactivity to sensory input</li>
+          <li class="imp">Must be present in <strong class="hl">early developmental period</strong> (may not fully manifest until social demands exceed capacities)</li>
+        </ul>
+        <table class="cmp-table">
+          <thead><tr><th>Severity Level</th><th>Social Communication</th><th>Restricted/Repetitive Behaviors</th></tr></thead>
+          <tbody>
+            <tr><td class="lbl">Level 1 (Requiring support)</td><td>Noticeable impairments without support; difficulty initiating social interaction</td><td>Inflexibility causes significant interference; difficulty switching activities</td></tr>
+            <tr><td class="lbl">Level 2 (Substantial support)</td><td>Marked deficits even with support; limited initiation; reduced/atypical response</td><td>Inflexibility/repetitive behaviors obvious; distress when routines changed</td></tr>
+            <tr><td class="lbl">Level 3 (Very substantial support)</td><td>Severe deficits; very limited initiation; minimal response to social overtures</td><td>Extreme difficulty with change; interferes markedly with functioning</td></tr>
+          </tbody>
+        </table>
+        <ul class="key-points">
+          <li class="imp">Screening: <strong class="hl">M-CHAT-R</strong> at 18 and 24 months; positive screen → diagnostic evaluation by specialist</li>
+          <li class="imp">Red flags: no pointing by 12 mo, no words by 16 mo, no 2-word phrases by 24 mo, <strong class="hld">any loss of language or social skills at any age</strong>, lack of social smile, not responding to name</li>
+          <li class="crit">Vaccines do <strong class="hld">NOT</strong> cause autism — the 1998 Wakefield study was fraudulent and retracted; multiple large studies confirm no link</li>
+          <li class="imp">Treatment: <strong class="hl3">ABA (Applied Behavior Analysis)</strong> — most evidence-based behavioral intervention; early intensive ABA (≥25 hrs/week) shows greatest gains</li>
+          <li class="note">Additional interventions: speech therapy, OT (sensory integration), social skills training, special education (IEP)</li>
+          <li class="note">Medications: no cure; <strong class="hl2">risperidone</strong> and <strong class="hl2">aripiprazole</strong> = only FDA-approved drugs for irritability in ASD</li>
+          <li class="imp">Comorbidities in ASD: ADHD (~50%), intellectual disability (~30%), epilepsy (~20–30%), anxiety, GI problems, sleep disorders</li>
+        </ul>
+        <div class="mnemonic">ASD DSM-5 = 2 domains: Social Communication deficits + Restricted Repetitive Behaviors (≥2)</div>
+      </div>
+    </div>
+
+    <!-- CH 59 -->
+    <div class="chapter-card" data-keywords="Fragile X syndrome FMR1 CGG trinucleotide repeat macroorchidism autism intellectual disability X-linked">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 59</span>
+        <span class="ch-title">Fragile X Syndrome</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-neu">Genetics</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp"><strong class="hlp">Fragile X syndrome</strong>: most common <strong class="hlp">inherited cause</strong> of intellectual disability; most common single-gene cause of ASD</li>
+          <li class="imp">Gene: <strong class="hl4">FMR1</strong> on the X chromosome; mutation = <strong class="hl4">CGG trinucleotide repeat expansion</strong> → gene silenced → loss of FMRP protein</li>
+          <li class="imp">Normal: &lt;45 repeats | Premutation: 55–200 repeats | <strong class="hld">Full mutation: &gt;200 repeats</strong> → causes disease</li>
+          <li class="imp">X-linked; males more severely affected (hemizygous); females may be carriers (with premutation) or mildly affected</li>
+        </ul>
+        <table class="cmp-table">
+          <thead><tr><th>Feature</th><th>Fragile X Clinical Findings</th></tr></thead>
+          <tbody>
+            <tr><td class="lbl">Cognitive</td><td>Intellectual disability (mild–moderate in males); learning disabilities in females</td></tr>
+            <tr><td class="lbl">Behavioral</td><td>ASD features (~30%), ADHD, anxiety, hand-flapping, hand-biting, gaze avoidance</td></tr>
+            <tr><td class="lbl">Physical</td><td>Long face, prominent ears, high-arched palate, hyperextensible joints, flat feet, soft skin</td></tr>
+            <tr><td class="lbl">Macroorchidism</td><td><strong class="hld">Large testes</strong> (post-pubertal males) — highly characteristic, often the exam clue</td></tr>
+            <tr><td class="lbl">Mitral valve</td><td>Mitral valve prolapse (MVP) in ~50%</td></tr>
+            <tr><td class="lbl">Premutation carriers</td><td>FXTAS (Fragile X Tremor Ataxia Syndrome) in older males; Fragile X-associated POI (premature ovarian insufficiency) in females</td></tr>
+          </tbody>
+        </table>
+        <ul class="key-points">
+          <li class="crit">Classic exam scenario: boy with ID + ASD features + <strong class="hld">large testes</strong> + prominent ears + family history of ID = <strong class="hlp">Fragile X</strong></li>
+          <li class="imp">Diagnosis: <strong class="hl">FMR1 DNA testing</strong> (PCR + Southern blot for repeat number); not detected on routine chromosomal microarray</li>
+          <li class="note">Treatment: symptomatic — ABA, speech therapy, special education, medications for ADHD/anxiety/ASD features; genetic counseling for family</li>
+        </ul>
+        <div class="mnemonic">Fragile X: FMR1, CGG repeats &gt;200, Macroorchidism, Most common inherited ID, Males affected more</div>
+      </div>
+    </div>
+
+  </div><!-- end chapters-grid -->
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <span>Nelson Textbook of Pediatrics · 22nd Ed. · 2024</span>
+    <span>Part IV: Chapters 49–59</span>
+  </div>
+
+</div><!-- end page-wrap -->
+
+<script>
+  let openedChapters = new Set();
+  const TOTAL = 11;
+
+  function toggleCard(header) {
+    const card = header.parentElement;
+    const wasOpen = card.classList.contains('open');
+    card.classList.toggle('open');
+    const chNum = card.querySelector('.ch-num').textContent;
+    if (!wasOpen) openedChapters.add(chNum);
+    updateProgress();
+  }
+
+  function updateProgress() {
+    const pct = Math.min((openedChapters.size / TOTAL) * 100, 100);
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressText').textContent = `${openedChapters.size} / ${TOTAL} opened`;
+  }
+
+  function filterChapters() {
+    const q = document.getElementById('searchInput').value.toLowerCase().trim();
+    const cards = document.querySelectorAll('.chapter-card');
+    let visible = 0;
+    cards.forEach(card => {
+      const text = card.textContent.toLowerCase();
+      const keywords = (card.dataset.keywords || '').toLowerCase();
+      const match = !q || text.includes(q) || keywords.includes(q);
+      card.classList.toggle('hidden', !match);
+      if (match) visible++;
+    });
+    document.getElementById('chapterCount').textContent = q
+      ? `${visible} result${visible !== 1 ? 's' : ''}`
+      : `${TOTAL} chapters`;
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.ctrlKey && e.key === 'e') {
+      e.preventDefault();
+      document.querySelectorAll('.chapter-card:not(.open)').forEach(c => {
+        c.classList.add('open');
+        openedChapters.add(c.querySelector('.ch-num').textContent);
+      });
+      updateProgress();
+    }
+  });
+</script>
+
+</body>
+</html>

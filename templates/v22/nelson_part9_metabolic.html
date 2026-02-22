@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nelson Pediatrics — Part IX: Metabolic Disorders</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --surface2: #1c2333;
+    --border: #30363d;
+    --accent: #e8a44a;
+    --accent2: #5caaee;
+    --accent3: #63d98a;
+    --danger: #f07a7a;
+    --text: #e6edf3;
+    --text-muted: #8b949e;
+    --text-dim: #484f58;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.75;
+    min-height: 100vh;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+  }
+
+  .page-wrap {
+    position: relative;
+    z-index: 1;
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 0 24px 80px;
+  }
+
+  .hero {
+    padding: 72px 0 48px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 48px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::after {
+    content: 'IX';
+    position: absolute;
+    right: -10px;
+    top: 10px;
+    font-family: 'Playfair Display', serif;
+    font-size: 200px;
+    font-weight: 900;
+    color: var(--border);
+    line-height: 1;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .hero-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(232,164,74,0.1);
+    border: 1px solid rgba(232,164,74,0.3);
+    color: var(--accent);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+  }
+
+  .hero-tag::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.8); }
+  }
+
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 4.5vw, 48px);
+    font-weight: 900;
+    line-height: 1.1;
+    margin-bottom: 12px;
+    color: var(--text);
+  }
+
+  .hero h1 span { color: var(--accent); }
+
+  .hero-sub {
+    font-size: 15px;
+    color: var(--text-muted);
+    max-width: 560px;
+    margin-bottom: 28px;
+  }
+
+  .hero-meta {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  .meta-pill {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--text-muted);
+    font-family: 'DM Mono', monospace;
+  }
+
+  .meta-pill .dot { width: 8px; height: 8px; border-radius: 50%; }
+
+  .search-bar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(13,17,23,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 0;
+    margin-bottom: 36px;
+  }
+
+  .search-inner {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .search-input {
+    flex: 1;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 14px 8px 36px;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%238b949e' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: 10px center;
+  }
+
+  .search-input:focus { border-color: var(--accent); }
+  .search-input::placeholder { color: var(--text-dim); }
+
+  .chapter-count {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
+
+  .stats-strip {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    margin-bottom: 48px;
+  }
+
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 18px;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+
+  .stat-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+
+  .stat-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+  }
+
+  .stat-value {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  .stat-desc { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+
+  .hiyield {
+    background: linear-gradient(135deg, rgba(232,164,74,0.08), rgba(232,164,74,0.03));
+    border: 1px solid rgba(232,164,74,0.25);
+    border-left: 3px solid var(--accent);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin-bottom: 48px;
+  }
+
+  .hiyield-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--accent);
+    margin-bottom: 14px;
+  }
+
+  .hiyield ul {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 8px;
+  }
+
+  .hiyield ul li {
+    font-size: 13px;
+    color: var(--text);
+    padding-left: 16px;
+    position: relative;
+    line-height: 1.5;
+  }
+
+  .hiyield ul li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-size: 11px;
+  }
+
+  strong.hl  { color: var(--accent);  font-weight: 600; }
+  strong.hl2 { color: var(--accent2); font-weight: 600; }
+  strong.hl3 { color: var(--accent3); font-weight: 600; }
+  strong.hld { color: var(--danger);  font-weight: 600; }
+
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .chapters-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 48px;
+  }
+
+  .chapter-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  .chapter-card:hover {
+    border-color: rgba(92,170,238,0.4);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  }
+
+  .chapter-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 20px;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .ch-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text-muted);
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 3px 8px;
+    white-space: nowrap;
+    min-width: 42px;
+    text-align: center;
+  }
+
+  .ch-title {
+    flex: 1;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text);
+  }
+
+  .ch-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+
+  .tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 2px 7px;
+    border-radius: 4px;
+    border: 1px solid;
+  }
+
+  .tag-hiy  { color: var(--accent);  border-color: rgba(232,164,74,0.3);  background: rgba(232,164,74,0.08); }
+  .tag-eth  { color: var(--accent2); border-color: rgba(92,170,238,0.3);  background: rgba(92,170,238,0.08); }
+  .tag-soc  { color: var(--accent3); border-color: rgba(99,217,138,0.3);  background: rgba(99,217,138,0.08); }
+  .tag-crit { color: var(--danger);  border-color: rgba(240,122,122,0.3); background: rgba(240,122,122,0.08); }
+
+  .ch-toggle {
+    color: var(--text-muted);
+    font-size: 18px;
+    transition: transform 0.3s;
+    line-height: 1;
+  }
+
+  .chapter-card.open .ch-toggle { transform: rotate(180deg); }
+
+  .chapter-body {
+    display: none;
+    padding: 0 20px 20px 20px;
+    border-top: 1px solid var(--border);
+    animation: slideIn 0.2s ease;
+  }
+
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateY(-6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .chapter-card.open .chapter-body { display: block; }
+
+  .chapter-body p {
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.8;
+    margin-top: 14px;
+    margin-bottom: 10px;
+  }
+
+  .key-points {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 10px;
+  }
+
+  .key-points li {
+    font-size: 13.5px;
+    color: var(--text);
+    padding: 8px 12px;
+    background: var(--surface2);
+    border-radius: 6px;
+    border-left: 2px solid var(--border);
+    line-height: 1.6;
+  }
+
+  .key-points li.imp  { border-left-color: var(--accent); }
+  .key-points li.crit { border-left-color: var(--danger); }
+  .key-points li.note { border-left-color: var(--accent2); }
+
+  .mnemonic {
+    margin-top: 12px;
+    background: rgba(99,217,138,0.07);
+    border: 1px dashed rgba(99,217,138,0.25);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 13px;
+    color: var(--accent3);
+  }
+
+  .mnemonic::before { content: '💡 '; }
+
+  .progress-wrap { margin-bottom: 32px; }
+
+  .progress-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .progress-bar {
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    border-radius: 2px;
+    width: 0%;
+    transition: width 0.4s ease;
+  }
+
+  .footer {
+    margin-top: 60px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+  }
+
+  .chapter-card.hidden { display: none; }
+
+  @media (max-width: 600px) {
+    .hero::after { font-size: 110px; }
+    .stats-strip { grid-template-columns: repeat(2, 1fr); }
+    .hiyield ul { grid-template-columns: 1fr; }
+    .ch-tags { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="search-bar">
+  <div class="search-inner">
+    <input class="search-input" type="text" id="searchInput" placeholder="Search chapters, topics, keywords…" oninput="filterChapters()">
+    <span class="chapter-count" id="chapterCount">10 chapters</span>
+  </div>
+</div>
+
+<div class="page-wrap">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-tag">Nelson Textbook of Pediatrics · 22nd Edition · 2024</div>
+    <h1>Part <span>IX</span><br>Metabolic Disorders</h1>
+    <p class="hero-sub">Inborn errors of metabolism — amino acid, organic acid, fatty acid, carbohydrate, lysosomal storage, peroxisomal, and mitochondrial disorders. Approach, diagnosis, and management.</p>
+    <div class="hero-meta">
+      <span class="meta-pill"><span class="dot" style="background:var(--accent)"></span>Chapters 104–113</span>
+      <span class="meta-pill"><span class="dot" style="background:var(--accent2)"></span>10 Chapters</span>
+      <span class="meta-pill"><span class="dot" style="background:var(--accent3)"></span>High-Yield for Boards &amp; USMLE</span>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-strip">
+    <div class="stat-card">
+      <div class="stat-label">Chapters</div>
+      <div class="stat-value">10</div>
+      <div class="stat-desc">Ch. 104–113</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">IEM Categories</div>
+      <div class="stat-value">7</div>
+      <div class="stat-desc">AA · OA · FA · Carb · Lysosomal · Perox · Mito</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Key Diseases</div>
+      <div class="stat-value">25+</div>
+      <div class="stat-desc">Classic board-tested IEMs</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Board Relevance</div>
+      <div class="stat-value">★★★★★</div>
+      <div class="stat-desc">Newborn screen & metabolic crises tested heavily</div>
+    </div>
+  </div>
+
+  <!-- HIGH YIELD OVERVIEW -->
+  <div class="hiyield">
+    <div class="hiyield-header">⚡ High-Yield Quick Reference — Part IX</div>
+    <ul>
+      <li>IEM red flags: <strong class="hld">sick neonate after symptom-free interval</strong>, unexplained metabolic acidosis, hyperammonemia, hypoglycemia, neurological deterioration</li>
+      <li>PKU: ↑phenylalanine → musty odor, fair skin/hair, intellectual disability — treat with low-Phe diet + BH4 (sapropterin)</li>
+      <li>MSUD: branched-chain AA (Leu, Ile, Val) → maple syrup urine odor, encephalopathy — dietary restriction + thiamine</li>
+      <li>Homocystinuria: ↑homocysteine → Marfanoid, downward lens dislocation, thromboembolism, intellectual disability</li>
+      <li>Urea cycle defects: <strong class="hld">hyperammonemia</strong> → encephalopathy; treat with nitrogen scavengers + arginine</li>
+      <li>OTC deficiency: most common urea cycle defect; X-linked; ↑orotic acid in urine</li>
+      <li>MCAD deficiency: most common fatty acid oxidation defect; hypoketotic hypoglycemia with fasting</li>
+      <li>Galactosemia: jaundice, cataracts, E. coli sepsis in neonate — eliminate galactose immediately</li>
+      <li>Glycogen storage diseases: Von Gierke (GSD I) — fasting hypoglycemia, hepatomegaly, ↑lactate, ↑uric acid</li>
+      <li>Gaucher disease: most common lysosomal storage disorder; glucocerebrosidase deficiency; ERT available</li>
+      <li>Tay-Sachs: hexosaminidase A deficiency; cherry-red spot, neurodegeneration — NO treatment</li>
+      <li>Mitochondrial disorders: maternal inheritance OR sporadic; affects high-energy tissues; ↑lactate/pyruvate ratio</li>
+    </ul>
+  </div>
+
+  <!-- PROGRESS BAR -->
+  <div class="progress-wrap">
+    <div class="progress-label">
+      <span>Study Progress</span>
+      <span id="progressText">0 / 10 opened</span>
+    </div>
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- SECTION A: APPROACH TO IEM                  -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div class="section-label">Section A — Approach to Inborn Errors of Metabolism</div>
+  <div class="chapters-grid">
+
+    <!-- CH 104 -->
+    <div class="chapter-card" data-keywords="inborn errors metabolism IEM approach newborn screen metabolic crisis hyperammonemia acidosis hypoglycemia anion gap lactate ammonia acylcarnitine urine organic acids amino acids">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 104</span>
+        <span class="ch-title">An Approach to Inborn Errors of Metabolism</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-crit">Critical</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp">IEM = inherited defects in enzymes/transporters → accumulation of toxic substrates OR deficiency of essential products</li>
+          <li class="crit">Classic presentation: <strong class="hld">well neonate → symptom-free interval → acute deterioration</strong> (encephalopathy, vomiting, poor feeding) after protein/glucose load or catabolism</li>
+          <li class="imp">Key metabolic emergencies: <strong class="hl">hyperammonemia</strong> (urea cycle defects), <strong class="hl">metabolic acidosis</strong> with ↑anion gap (organic acidemias), <strong class="hl">hypoketotic hypoglycemia</strong> (fatty acid oxidation defects), <strong class="hl">lactic acidosis</strong> (mitochondrial/glycogen storage disorders)</li>
+          <li class="imp">Initial workup: blood glucose, ammonia, lactate, ABG (anion gap), CBC, LFTs, urine ketones; then <strong class="hl">plasma amino acids, urine organic acids, acylcarnitine profile, urine reducing substances</strong></li>
+          <li class="imp"><strong class="hl">Newborn screening (NBS)</strong>: tandem mass spectrometry (MS/MS) screens for 50+ IEMs from dried blood spot; most IEMs now detected before symptoms</li>
+          <li class="note">High anion gap metabolic acidosis in neonate → think organic acidemia (MMA, PA, IVA) or lactic acidosis</li>
+          <li class="note">Hyperammonemia WITHOUT acidosis → think urea cycle defect; WITH acidosis → think organic acidemia</li>
+          <li class="crit">Emergency management: <strong class="hl">STOP protein intake</strong>, provide <strong class="hl">high-glucose IV (glucose infusion rate 8–10 mg/kg/min)</strong> to suppress catabolism, treat hyperammonemia (dialysis if &gt;400 µmol/L)</li>
+        </ul>
+        <div class="mnemonic">IEM crisis clue: "Sick neonate after symptom-free interval + ↑NH3 or ↑AG acidosis or hypoketotic hypoglycemia = IEM until proven otherwise"</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- SECTION B: AMINO ACID DISORDERS             -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div class="section-label">Section B — Amino Acid &amp; Organic Acid Disorders</div>
+  <div class="chapters-grid">
+
+    <!-- CH 105 -->
+    <div class="chapter-card" data-keywords="PKU phenylketonuria phenylalanine hydroxylase BH4 sapropterin musty odor intellectual disability fair skin diet tyrosine MSUD maple syrup branched chain homocystinuria lens dislocation thrombosis marfanoid tyrosinemia hawkinsinuria alkaptonuria">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 105</span>
+        <span class="ch-title">Defects in Amino Acid Metabolism (PKU, MSUD, Homocystinuria, Tyrosinemia &amp; Others)</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-crit">Critical</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="crit"><strong class="hld">Phenylketonuria (PKU)</strong>: phenylalanine hydroxylase (PAH) deficiency → ↑phenylalanine → ↓tyrosine; AR</li>
+          <li class="imp">PKU features: <strong class="hl">musty/mousy urine odor</strong>, fair skin &amp; hair (↓melanin), intellectual disability, seizures, eczema, microcephaly — ALL preventable with treatment</li>
+          <li class="imp">PKU treatment: <strong class="hl">low-phenylalanine diet for life</strong> + tyrosine supplementation; BH4 (sapropterin) for BH4-responsive PKU; pegvaliase (enzyme substitution)</li>
+          <li class="crit">Maternal PKU: untreated PKU in pregnant mother → fetal microcephaly, CHD, IUGR even if fetus heterozygous — strict dietary control before conception</li>
+          <li class="crit"><strong class="hld">MSUD (Maple Syrup Urine Disease)</strong>: BCKD enzyme deficiency → accumulation of branched-chain AA (Leu, Ile, Val) + branched-chain ketoacids</li>
+          <li class="imp">MSUD features: <strong class="hl">maple syrup odor</strong> (urine/cerumen), encephalopathy, seizures, opisthotonus, cerebral edema; neonatal onset — often fatal if untreated</li>
+          <li class="imp">MSUD treatment: branched-chain AA-restricted diet; <strong class="hl">thiamine (B1) — cofactor</strong> for BCKD; responsive cases improve with high-dose thiamine; liver transplant curative</li>
+          <li class="crit"><strong class="hld">Homocystinuria</strong>: cystathionine β-synthase (CBS) deficiency → ↑homocysteine + ↑methionine; AR</li>
+          <li class="imp">Homocystinuria features: <strong class="hl">Marfanoid habitus</strong> (tall, long limbs), <strong class="hld">downward (inferior) lens dislocation</strong> (vs Marfan = upward), <strong class="hld">thromboembolic events</strong> (DVT, stroke), intellectual disability, osteoporosis, fair complexion</li>
+          <li class="imp">Treatment: pyridoxine (B6)-responsive cases (50%); otherwise low-methionine diet + cysteine supplementation + betaine (remethylation); anticoagulation</li>
+          <li class="note"><strong class="hl">Tyrosinemia type I</strong>: fumarylacetoacetate hydrolase (FAH) deficiency → toxic metabolites → hepatic failure, renal tubular dysfunction (Fanconi), hepatocellular carcinoma; treat with <strong class="hl">nitisinone (NTBC)</strong> + low-Tyr/Phe diet</li>
+          <li class="note"><strong class="hl">Alkaptonuria</strong>: homogentisate oxidase deficiency → HGA accumulates → dark urine (oxidizes on standing), ochronosis (dark pigment in connective tissue), arthritis in adults</li>
+        </ul>
+        <div class="mnemonic">Lens dislocation: "Homocystinuria = Down (inferior); Marfan = Up (superior)" — remember HOMOcystinuria goes DOWN</div>
+      </div>
+    </div>
+
+    <!-- CH 106 -->
+    <div class="chapter-card" data-keywords="organic acidemia methylmalonic acidemia MMA propionic acidemia PA isovaleric acidemia IVA glutaric aciduria GA1 sweaty feet odor metabolic acidosis hyperammonemia neutropenia B12 biotin">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 106</span>
+        <span class="ch-title">Organic Acidemias (MMA, Propionic, Isovaleric &amp; Others)</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-crit">Critical</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp">Organic acidemias: defects in catabolism of amino acids/odd-chain fatty acids → accumulation of organic acids → high AG metabolic acidosis + hyperammonemia + ketosis</li>
+          <li class="crit"><strong class="hld">Methylmalonic Acidemia (MMA)</strong>: methylmalonyl-CoA mutase deficiency (or B12 metabolism defects); most common organic acidemia</li>
+          <li class="imp">MMA features: neonatal metabolic crisis (acidosis, hyperammonemia, neutropenia, thrombocytopenia), developmental delay, renal failure (long-term), cardiomyopathy</li>
+          <li class="imp">MMA treatment: low protein diet, carnitine supplementation; <strong class="hl">B12 (hydroxocobalamin)</strong> — responsive in B12-related forms; liver/kidney transplant for severe cases</li>
+          <li class="crit"><strong class="hld">Propionic Acidemia (PA)</strong>: propionyl-CoA carboxylase deficiency (biotin-dependent); similar presentation to MMA; treat with biotin, low protein diet, carnitine</li>
+          <li class="imp"><strong class="hl">Isovaleric Acidemia (IVA)</strong>: isovaleryl-CoA dehydrogenase deficiency → isovaleric acid accumulates → <strong class="hl">"sweaty feet" odor</strong>; treat with glycine + carnitine supplementation</li>
+          <li class="note"><strong class="hl">Glutaric Aciduria Type I (GA1)</strong>: glutaryl-CoA dehydrogenase deficiency; macrocephaly, striatal injury → dystonia; acute encephalopathic crisis with febrile illness in first 6 years; treat with riboflavin + carnitine + emergency protocol during illness</li>
+          <li class="note">Key lab pattern: ↑AG metabolic acidosis + ketosis + hyperammonemia + cytopenia → organic acidemia</li>
+        </ul>
+        <div class="mnemonic">Organic acidemia crisis: "High AG + Ketosis + High NH3 + Cytopenia in neonate = Organic Acidemia"</div>
+      </div>
+    </div>
+
+    <!-- CH 107 -->
+    <div class="chapter-card" data-keywords="urea cycle defect hyperammonemia OTC ornithine transcarbamylase citrullinemia argininosuccinic aciduria argininemia CPS deficiency orotic acid nitrogen scavenger sodium benzoate phenylbutyrate">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 107</span>
+        <span class="ch-title">Urea Cycle Disorders</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-crit">Critical</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp">Urea cycle: converts toxic <strong class="hl">ammonia → urea</strong> for excretion; 6 enzymes (CPS I, OTC, AS, AL, ARG, NAGS)</li>
+          <li class="crit"><strong class="hld">Hyperammonemia</strong>: NH3 &gt;150 µmol/L = encephalopathy; &gt;400 µmol/L = cerebral edema, herniation → emergency dialysis</li>
+          <li class="crit"><strong class="hld">OTC (Ornithine Transcarbamylase) deficiency</strong>: most common urea cycle defect; <strong class="hld">X-linked</strong> (unlike others = AR); males severely affected</li>
+          <li class="imp">OTC deficiency: high NH3, respiratory alkalosis (NH3 stimulates hyperventilation), <strong class="hl">↑urine orotic acid</strong> (diagnostic), low citrulline; females may have partial deficiency with protein aversion</li>
+          <li class="imp">Citrullinemia (AS deficiency): ↑citrulline; Argininosuccinic aciduria (AL deficiency): ↑argininosuccinic acid, trichorrhexis nodosa (brittle hair); Arginemia: ↑arginine, spastic diplegia</li>
+          <li class="crit">Emergency treatment: <strong class="hl">stop protein</strong>, IV glucose (suppress catabolism), <strong class="hld">IV sodium benzoate + sodium phenylacetate (Ammonul)</strong> — nitrogen scavengers; IV arginine (except arginemia); dialysis if severe</li>
+          <li class="note">Long-term: protein-restricted diet, nitrogen scavengers, essential AA supplementation; liver transplant curative (replaces enzyme defect)</li>
+          <li class="note">Distinguish UCD from organic acidemia: UCD = no metabolic acidosis (or respiratory alkalosis), no ketosis; OA = high AG acidosis + ketosis</li>
+        </ul>
+        <div class="mnemonic">OTC deficiency: "X-linked, Orotic acid UP, NH3 UP, no acidosis" — only X-linked urea cycle defect</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- SECTION C: FATTY ACID & CARBOHYDRATE        -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div class="section-label">Section C — Fatty Acid Oxidation &amp; Carbohydrate Disorders</div>
+  <div class="chapters-grid">
+
+    <!-- CH 108 -->
+    <div class="chapter-card" data-keywords="fatty acid oxidation MCAD LCHAD VLCAD carnitine deficiency hypoketotic hypoglycemia fasting SIDS acylcarnitine profile sudden death Reye-like">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 108</span>
+        <span class="ch-title">Fatty Acid Oxidation Defects</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-crit">Critical</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp">Fatty acid oxidation (FAO) defects: cannot use fat as fuel during fasting → <strong class="hl">hypoketotic hypoglycemia</strong> (low glucose + inappropriately low ketones)</li>
+          <li class="crit"><strong class="hld">MCAD (Medium-Chain Acyl-CoA Dehydrogenase) deficiency</strong>: <strong class="hld">most common FAO defect</strong>; AR; presents with fasting-induced <strong class="hl">hypoketotic hypoglycemia</strong>, lethargy, vomiting, hepatomegaly → Reye-like syndrome; sudden death risk</li>
+          <li class="imp">MCAD diagnosis: <strong class="hl">acylcarnitine profile</strong> — ↑C8 (octanoylcarnitine) on NBS; urine organic acids (↑medium-chain dicarboxylic acids)</li>
+          <li class="imp">MCAD treatment: <strong class="hl">avoid fasting</strong> (key!), frequent feeds, emergency glucose during illness; carnitine supplementation controversial</li>
+          <li class="imp"><strong class="hl">LCHAD/VLCAD deficiency</strong>: long-chain FAO defects; more severe than MCAD; cardiomyopathy, peripheral neuropathy, rhabdomyolysis, pigmentary retinopathy; treat with low-fat diet + MCT oil supplementation</li>
+          <li class="crit"><strong class="hl">Primary carnitine deficiency</strong>: carnitine transporter defect → ↓plasma carnitine → cardiomyopathy, myopathy, hypoketotic hypoglycemia; treat with oral <strong class="hl">L-carnitine supplementation</strong></li>
+          <li class="note">FAO defects associated with SIDS and sudden unexplained infant death — NBS has dramatically reduced mortality</li>
+          <li class="note">Lab clue: hypoglycemia + LOW ketones (inappropriately) = FAO defect (ketones should be HIGH if glucose is low)</li>
+        </ul>
+        <div class="mnemonic">FAO defects: "No Ketones with Low Sugar = Fatty Acid problem" — hypoKETOTIC hypoglycemia is the hallmark</div>
+      </div>
+    </div>
+
+    <!-- CH 109 -->
+    <div class="chapter-card" data-keywords="glycogen storage disease GSD Von Gierke Pompe McArdle Cori Forbes Andersen glucose-6-phosphatase acid maltase liver hypoglycemia muscle weakness cardiomyopathy lactate uric acid">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 109</span>
+        <span class="ch-title">Glycogen Storage Diseases (GSD)</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-crit">Critical</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="crit"><strong class="hld">GSD Type I (Von Gierke)</strong>: glucose-6-phosphatase deficiency; most common hepatic GSD</li>
+          <li class="imp">Von Gierke features: severe fasting <strong class="hl">hypoglycemia</strong>, massive <strong class="hl">hepatomegaly</strong> (glycogen + fat), "doll-like" facies, growth retardation, lactic acidosis, <strong class="hl">hyperuricemia</strong> (gout), hyperlipidemia; NO hepatosplenomegaly</li>
+          <li class="imp">Von Gierke treatment: <strong class="hl">continuous cornstarch feeds</strong> (uncooked cornstarch = slow-release glucose), avoid fasting; G-tube feeding overnight</li>
+          <li class="crit"><strong class="hld">GSD Type II (Pompe disease)</strong>: acid α-glucosidase (acid maltase) deficiency → lysosomal glycogen accumulation</li>
+          <li class="imp">Pompe features: <strong class="hl">cardiomegaly</strong> (massive), hypotonia, muscle weakness, macroglossia; infantile form fatal by 2 years if untreated; juvenile/adult forms less severe</li>
+          <li class="imp">Pompe treatment: <strong class="hl">ERT (alglucosidase alfa — Myozyme)</strong> — dramatically improves survival; now on NBS in many states</li>
+          <li class="note"><strong class="hl">GSD Type III (Cori/Forbes)</strong>: debranching enzyme deficiency; hepatomegaly + hypoglycemia (milder than GSD I) + myopathy; ↑CK</li>
+          <li class="note"><strong class="hl">GSD Type V (McArdle)</strong>: muscle phosphorylase deficiency; exercise-induced muscle cramps, myoglobinuria; <strong class="hl">no rise in lactate with forearm exercise</strong> (diagnostic ischemic forearm test); treat with avoidance of intense exercise, sucrose before exercise</li>
+          <li class="note"><strong class="hl">GSD Type VI/IX</strong>: liver phosphorylase deficiency; mild hypoglycemia, hepatomegaly, generally benign</li>
+        </ul>
+        <div class="mnemonic">GSD I vs II: "Von Gierke = hepatic (no rise in glucose with glucagon); Pompe = cardiac/muscle (lysosomal, treat with ERT)"</div>
+      </div>
+    </div>
+
+    <!-- CH 110 -->
+    <div class="chapter-card" data-keywords="galactosemia galactose-1-phosphate uridyltransferase GALT galactosemia E. coli sepsis cataracts jaundice liver failure Duarte reducing substance lactose fructose intolerance aldolase B fructose-1-phosphate">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 110</span>
+        <span class="ch-title">Galactosemia &amp; Disorders of Fructose Metabolism</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-crit">Critical</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="crit"><strong class="hld">Classic Galactosemia</strong>: GALT (galactose-1-phosphate uridyltransferase) deficiency → galactose-1-phosphate accumulation; AR</li>
+          <li class="crit">Galactosemia features: <strong class="hld">jaundice + hepatomegaly + cataracts + E. coli sepsis in neonate after milk feeding</strong>; vomiting, hypoglycemia, coagulopathy, intellectual disability (long-term)</li>
+          <li class="imp">Diagnosis: <strong class="hl">reducing substances in urine</strong> (Clinitest positive, dipstick negative — glucose oxidase negative), red cell GALT enzyme assay, urine galactitol</li>
+          <li class="crit">Treatment: <strong class="hld">immediate elimination of lactose/galactose</strong> (stop breast milk and cow milk formula → soy formula); start ASAP — cataracts may reverse; E. coli sepsis risk ↓</li>
+          <li class="note">Long-term complications despite treatment: learning difficulties, speech problems, premature ovarian insufficiency (females), cerebellar ataxia</li>
+          <li class="imp"><strong class="hl">Hereditary Fructose Intolerance (HFI)</strong>: aldolase B deficiency → fructose-1-phosphate accumulation; presents when fructose/sucrose introduced (weaning); hypoglycemia, vomiting, liver failure</li>
+          <li class="imp">HFI treatment: eliminate fructose, sucrose, and sorbitol from diet; characteristic <strong class="hl">aversion to sweets</strong> — patients self-select away from fructose-containing foods → often few/no dental caries</li>
+          <li class="note">Benign fructosuria: fructokinase deficiency → fructose in urine but asymptomatic — no treatment needed</li>
+        </ul>
+        <div class="mnemonic">Galactosemia: "4 Cs" → Cataracts, Cirrhosis (liver), Coagulopathy, (E.) Coli sepsis — eliminate galactose immediately!</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- SECTION D: LYSOSOMAL STORAGE DISORDERS      -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div class="section-label">Section D — Lysosomal Storage Disorders</div>
+  <div class="chapters-grid">
+
+    <!-- CH 111 -->
+    <div class="chapter-card" data-keywords="lysosomal storage disorder sphingolipidosis Gaucher Niemann-Pick Tay-Sachs Fabry Krabbe Metachromatic leukodystrophy MLD glucocerebrosidase hexosaminidase cherry red spot ERT substrate reduction">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 111</span>
+        <span class="ch-title">Lysosomal Storage Disorders (Sphingolipidoses)</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-crit">Critical</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="crit"><strong class="hld">Gaucher Disease</strong>: glucocerebrosidase deficiency → glucocerebroside accumulates in macrophages; <strong class="hld">most common lysosomal storage disorder</strong>; AR; common in Ashkenazi Jews</li>
+          <li class="imp">Gaucher features: <strong class="hl">hepatosplenomegaly</strong>, bone pain/fractures (Erlenmeyer flask deformity on X-ray), pancytopenia; Type 1 (non-neuronopathic — most common); Type 2/3 (neuronopathic)</li>
+          <li class="imp">Gaucher treatment: <strong class="hl">ERT (imiglucerase/velaglucerase)</strong> for Type 1; substrate reduction therapy (miglustat/eliglustat)</li>
+          <li class="crit"><strong class="hld">Tay-Sachs Disease</strong>: hexosaminidase A (HexA) deficiency → GM2 ganglioside accumulates in neurons; AR; Ashkenazi Jewish population</li>
+          <li class="crit">Tay-Sachs features: normal at birth → progressive neurodegeneration from 3–6 months; <strong class="hld">cherry-red spot on macula</strong>, hyperacusis (exaggerated startle to sound), hypotonia → spasticity, seizures, blindness; death by age 2–4; <strong class="hld">NO treatment</strong></li>
+          <li class="imp"><strong class="hl">Niemann-Pick Type A</strong>: sphingomyelinase deficiency; hepatosplenomegaly + <strong class="hl">cherry-red spot</strong> + neurodegeneration; fatal in infancy; Ashkenazi Jewish</li>
+          <li class="imp"><strong class="hl">Niemann-Pick Type C</strong>: cholesterol trafficking defect (NPC1/NPC2); vertical supranuclear gaze palsy, ataxia, dementia; miglustat (SRT) slows progression</li>
+          <li class="imp"><strong class="hl">Fabry Disease</strong>: α-galactosidase A deficiency; X-linked; acroparesthesias (burning pain hands/feet), angiokeratomas, corneal whorling (verticillata), renal failure, cardiac involvement; treat with ERT (agalsidase)</li>
+          <li class="note"><strong class="hl">Krabbe Disease</strong>: galactocerebrosidase deficiency; early infantile form — irritability, peripheral neuropathy, rapid neurodegeneration; HSCT if pre-symptomatic (now on NBS)</li>
+          <li class="note"><strong class="hl">Metachromatic Leukodystrophy (MLD)</strong>: arylsulfatase A deficiency; late infantile most common — gait disturbance, peripheral neuropathy, dementia; metachromatic granules in urine sediment</li>
+        </ul>
+        <div class="mnemonic">Cherry-red spot diseases: "Tay-Sachs (HexA), Niemann-Pick A (sphingomyelinase), Sialidosis, GM1 gangliosidosis" — all lysosomal</div>
+      </div>
+    </div>
+
+    <!-- CH 112 -->
+    <div class="chapter-card" data-keywords="mucopolysaccharidosis MPS Hurler Hunter Sanfilippo Morquio glycosaminoglycan heparan dermatan keratan coarse facies corneal clouding dysostosis multiplex hepatosplenomegaly IDUA iduronate sulfatase">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 112</span>
+        <span class="ch-title">Mucopolysaccharidoses (MPS)</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-crit">Critical</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp">MPS: defects in lysosomal degradation of glycosaminoglycans (GAGs: heparan sulfate, dermatan sulfate, keratan sulfate, chondroitin sulfate) → progressive multi-system storage</li>
+          <li class="imp">Common features of severe MPS: <strong class="hl">coarse facies</strong>, macrocephaly, <strong class="hl">corneal clouding</strong>, hepatosplenomegaly, <strong class="hl">dysostosis multiplex</strong> (skeletal abnormalities: J-shaped sella, oar-shaped ribs, kyphosis, joint stiffness), recurrent ear/respiratory infections, cardiomyopathy/valve disease</li>
+          <li class="crit"><strong class="hld">MPS Type I (Hurler syndrome)</strong>: α-L-iduronidase deficiency → dermatan + heparan sulfate accumulation; severe ID, corneal clouding, gargoyle facies, early death; treat with <strong class="hl">HSCT (before age 2)</strong> or ERT (laronidase)</li>
+          <li class="crit"><strong class="hld">MPS Type II (Hunter syndrome)</strong>: iduronate-2-sulfatase deficiency; <strong class="hld">X-linked</strong> (only X-linked MPS); similar to Hurler but <strong class="hl">NO corneal clouding</strong>, slower progression; ivory-colored skin papules; ERT (idursulfase)</li>
+          <li class="imp"><strong class="hl">MPS Type III (Sanfilippo)</strong>: 4 subtypes; heparan sulfate accumulation; severe <strong class="hl">behavioral/neurological deterioration</strong> with relatively mild somatic features; no effective treatment</li>
+          <li class="imp"><strong class="hl">MPS Type IV (Morquio)</strong>: keratan sulfate accumulation; <strong class="hl">skeletal dysplasia predominant</strong> (short trunk, kyphoscoliosis, odontoid hypoplasia → atlantoaxial instability, cervical myelopathy), <strong class="hl">normal intelligence</strong>, corneal clouding; ERT (elosulfase alfa)</li>
+          <li class="note">Diagnosis: urine GAGs (screening) + enzyme assay (confirmatory) + molecular testing</li>
+        </ul>
+        <div class="mnemonic">Hunter vs Hurler: "Hunter = X-linked, No corneal clouding, Has ivory skin papules" — Hurler has corneal clouding</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- SECTION E: PEROXISOMAL & MITOCHONDRIAL      -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div class="section-label">Section E — Peroxisomal &amp; Mitochondrial Disorders</div>
+  <div class="chapters-grid">
+
+    <!-- CH 113 -->
+    <div class="chapter-card" data-keywords="mitochondrial disorders MELAS MERRF Leigh syndrome LHON Kearns-Sayre lactic acidosis maternal inheritance mtDNA pyruvate dehydrogenase complex I complex IV respiratory chain peroxisomal Zellweger VLCFA adrenoleukodystrophy ALD">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 113</span>
+        <span class="ch-title">Mitochondrial &amp; Peroxisomal Disorders</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-crit">Critical</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp"><strong class="hl">Mitochondrial disorders</strong>: impaired oxidative phosphorylation (ETC complexes I–V); affect high-energy tissues: <strong class="hl">brain, muscle, heart, liver, retina</strong></li>
+          <li class="imp">Inheritance: <strong class="hl">maternal</strong> (mtDNA mutations — passed through oocyte), or <strong class="hl">nuclear DNA</strong> mutations (Mendelian — usually AR)</li>
+          <li class="imp">Key lab: <strong class="hl">↑lactate/pyruvate ratio</strong> (&gt;20) = impaired ETC (pyruvate backs up into lactate); CSF lactate elevated; brain MRI: basal ganglia signal change</li>
+          <li class="crit"><strong class="hld">MELAS</strong> (Mitochondrial Encephalomyopathy, Lactic Acidosis, Stroke-like episodes): mt.3243A&gt;G mutation (80%); episodic vomiting, headache, seizures, stroke-like episodes (cortical); hearing loss, short stature, diabetes</li>
+          <li class="crit"><strong class="hld">Leigh Syndrome</strong> (subacute necrotizing encephalomyelopathy): most common mitochondrial disorder in children; bilateral symmetric basal ganglia/brainstem lesions on MRI; developmental regression, hypotonia, respiratory failure; multiple genetic causes (SURF1, Complex I/IV deficiency, PDHA1)</li>
+          <li class="imp"><strong class="hld">MERRF</strong>: myoclonic epilepsy, ragged-red fibers (Gomori trichrome stain of muscle biopsy); mt.8344A&gt;G; cerebellar ataxia, myoclonus, dementia</li>
+          <li class="imp"><strong class="hld">Kearns-Sayre Syndrome (KSS)</strong>: large mtDNA deletion; <strong class="hl">PEO (progressive external ophthalmoplegia)</strong> + pigmentary retinopathy + cardiac conduction defects + onset &lt;20 yrs; cerebellar ataxia, CSF protein elevated</li>
+          <li class="note"><strong class="hl">LHON</strong> (Leber Hereditary Optic Neuropathy): acute/subacute painless central visual loss in young males; maternal inheritance; Complex I mutations</li>
+          <li class="imp"><strong class="hl">Peroxisomal disorders</strong>: defects in very-long-chain fatty acid (VLCFA) oxidation or peroxisome biogenesis</li>
+          <li class="crit"><strong class="hld">Zellweger Spectrum Disorder</strong>: PEX gene mutations → absent/dysfunctional peroxisomes; ↑plasma VLCFA; neonatal hypotonia, seizures, characteristic facies (high forehead, large fontanelle), liver disease, stippled epiphyses; severe form lethal in 1st year</li>
+          <li class="crit"><strong class="hld">X-linked Adrenoleukodystrophy (X-ALD)</strong>: ABCD1 gene (X-linked); VLCFA accumulate in adrenal glands and white matter; childhood cerebral form: behavior change → neurological deterioration → vegetative state; <strong class="hl">adrenal insufficiency</strong> (Addison disease) can precede neurological symptoms</li>
+          <li class="imp">X-ALD treatment: <strong class="hl">HSCT</strong> (pre-symptomatic/early disease halts neurological progression); Lorenzo's oil (slows progression mildly); adrenal hormone replacement; now on NBS (VLCFA)</li>
+        </ul>
+        <div class="mnemonic">Mitochondrial disease clue: "MELAS = Strokes + Lactic Acidosis + Maternal; Leigh = Basal Ganglia on MRI + Regression in Infant"</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <span>Nelson Textbook of Pediatrics · 22nd Ed. · 2024</span>
+    <span>Part IX: Chapters 104–113 · Metabolic Disorders</span>
+  </div>
+
+</div><!-- end page-wrap -->
+
+<script>
+  let openedChapters = new Set();
+  const TOTAL_CHAPTERS = 10;
+
+  function toggleCard(header) {
+    const card = header.parentElement;
+    const wasOpen = card.classList.contains('open');
+    card.classList.toggle('open');
+    const chNum = card.querySelector('.ch-num').textContent;
+    if (!wasOpen) openedChapters.add(chNum);
+    updateProgress();
+  }
+
+  function updateProgress() {
+    const opened = openedChapters.size;
+    const pct = Math.min((opened / TOTAL_CHAPTERS) * 100, 100);
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressText').textContent = `${opened} / ${TOTAL_CHAPTERS} opened`;
+  }
+
+  function filterChapters() {
+    const q = document.getElementById('searchInput').value.toLowerCase().trim();
+    const cards = document.querySelectorAll('.chapter-card');
+    let visible = 0;
+
+    cards.forEach(card => {
+      const title    = card.querySelector('.ch-title').textContent.toLowerCase();
+      const body     = card.querySelector('.chapter-body') ? card.querySelector('.chapter-body').textContent.toLowerCase() : '';
+      const keywords = (card.dataset.keywords || '').toLowerCase();
+
+      if (!q || title.includes(q) || body.includes(q) || keywords.includes(q)) {
+        card.classList.remove('hidden');
+        visible++;
+      } else {
+        card.classList.add('hidden');
+      }
+    });
+
+    document.getElementById('chapterCount').textContent = q
+      ? `${visible} result${visible !== 1 ? 's' : ''}`
+      : `${TOTAL_CHAPTERS} chapters`;
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.ctrlKey && e.key === 'e') {
+      e.preventDefault();
+      document.querySelectorAll('.chapter-card:not(.open)').forEach(c => {
+        c.classList.add('open');
+        openedChapters.add(c.querySelector('.ch-num').textContent);
+      });
+      updateProgress();
+    }
+  });
+</script>
+
+</body>
+</html>

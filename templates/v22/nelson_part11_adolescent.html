@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nelson Pediatrics — Part XI: Adolescent Medicine</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --surface2: #1c2333;
+    --border: #30363d;
+    --accent: #e8a44a;
+    --accent2: #5caaee;
+    --accent3: #63d98a;
+    --danger: #f07a7a;
+    --text: #e6edf3;
+    --text-muted: #8b949e;
+    --text-dim: #484f58;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.75;
+    min-height: 100vh;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+  }
+
+  .page-wrap {
+    position: relative;
+    z-index: 1;
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 0 24px 80px;
+  }
+
+  .hero {
+    padding: 72px 0 48px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 48px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::after {
+    content: 'XI';
+    position: absolute;
+    right: -10px;
+    top: 10px;
+    font-family: 'Playfair Display', serif;
+    font-size: 200px;
+    font-weight: 900;
+    color: var(--border);
+    line-height: 1;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .hero-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(232,164,74,0.1);
+    border: 1px solid rgba(232,164,74,0.3);
+    color: var(--accent);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+  }
+
+  .hero-tag::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.8); }
+  }
+
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 4.5vw, 48px);
+    font-weight: 900;
+    line-height: 1.1;
+    margin-bottom: 12px;
+    color: var(--text);
+  }
+
+  .hero h1 span { color: var(--accent); }
+
+  .hero-sub {
+    font-size: 15px;
+    color: var(--text-muted);
+    max-width: 560px;
+    margin-bottom: 28px;
+  }
+
+  .hero-meta {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  .meta-pill {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--text-muted);
+    font-family: 'DM Mono', monospace;
+  }
+
+  .meta-pill .dot { width: 8px; height: 8px; border-radius: 50%; }
+
+  .search-bar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(13,17,23,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 0;
+    margin-bottom: 36px;
+  }
+
+  .search-inner {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .search-input {
+    flex: 1;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 14px 8px 36px;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%238b949e' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: 10px center;
+  }
+
+  .search-input:focus { border-color: var(--accent); }
+  .search-input::placeholder { color: var(--text-dim); }
+
+  .chapter-count {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
+
+  .stats-strip {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    margin-bottom: 48px;
+  }
+
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 18px;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+
+  .stat-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+
+  .stat-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+  }
+
+  .stat-value {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  .stat-desc { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+
+  .hiyield {
+    background: linear-gradient(135deg, rgba(232,164,74,0.08), rgba(232,164,74,0.03));
+    border: 1px solid rgba(232,164,74,0.25);
+    border-left: 3px solid var(--accent);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin-bottom: 48px;
+  }
+
+  .hiyield-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--accent);
+    margin-bottom: 14px;
+  }
+
+  .hiyield ul {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 8px;
+  }
+
+  .hiyield ul li {
+    font-size: 13px;
+    color: var(--text);
+    padding-left: 16px;
+    position: relative;
+    line-height: 1.5;
+  }
+
+  .hiyield ul li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-size: 11px;
+  }
+
+  strong.hl  { color: var(--accent);  font-weight: 600; }
+  strong.hl2 { color: var(--accent2); font-weight: 600; }
+  strong.hl3 { color: var(--accent3); font-weight: 600; }
+  strong.hld { color: var(--danger);  font-weight: 600; }
+
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .chapters-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 48px;
+  }
+
+  .chapter-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  .chapter-card:hover {
+    border-color: rgba(92,170,238,0.4);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  }
+
+  .chapter-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 20px;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .ch-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text-muted);
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 3px 8px;
+    white-space: nowrap;
+    min-width: 52px;
+    text-align: center;
+  }
+
+  .ch-title {
+    flex: 1;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text);
+  }
+
+  .ch-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+
+  .tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 2px 7px;
+    border-radius: 4px;
+    border: 1px solid;
+  }
+
+  .tag-hiy  { color: var(--accent);  border-color: rgba(232,164,74,0.3);  background: rgba(232,164,74,0.08); }
+  .tag-eth  { color: var(--accent2); border-color: rgba(92,170,238,0.3);  background: rgba(92,170,238,0.08); }
+  .tag-soc  { color: var(--accent3); border-color: rgba(99,217,138,0.3);  background: rgba(99,217,138,0.08); }
+  .tag-crit { color: var(--danger);  border-color: rgba(240,122,122,0.3); background: rgba(240,122,122,0.08); }
+
+  .ch-toggle {
+    color: var(--text-muted);
+    font-size: 18px;
+    transition: transform 0.3s;
+    line-height: 1;
+  }
+
+  .chapter-card.open .ch-toggle { transform: rotate(180deg); }
+
+  .chapter-body {
+    display: none;
+    padding: 0 20px 20px 20px;
+    border-top: 1px solid var(--border);
+    animation: slideIn 0.2s ease;
+  }
+
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateY(-6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .chapter-card.open .chapter-body { display: block; }
+
+  .chapter-body p {
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.8;
+    margin-top: 14px;
+    margin-bottom: 10px;
+  }
+
+  .key-points {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 10px;
+  }
+
+  .key-points li {
+    font-size: 13.5px;
+    color: var(--text);
+    padding: 8px 12px;
+    background: var(--surface2);
+    border-radius: 6px;
+    border-left: 2px solid var(--border);
+    line-height: 1.6;
+  }
+
+  .key-points li.imp  { border-left-color: var(--accent); }
+  .key-points li.crit { border-left-color: var(--danger); }
+  .key-points li.note { border-left-color: var(--accent2); }
+
+  .mnemonic {
+    margin-top: 12px;
+    background: rgba(99,217,138,0.07);
+    border: 1px dashed rgba(99,217,138,0.25);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 13px;
+    color: var(--accent3);
+  }
+
+  .mnemonic::before { content: '💡 '; }
+
+  .progress-wrap { margin-bottom: 32px; }
+
+  .progress-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .progress-bar {
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    border-radius: 2px;
+    width: 0%;
+    transition: width 0.4s ease;
+  }
+
+  .footer {
+    margin-top: 60px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+  }
+
+  .chapter-card.hidden { display: none; }
+
+  @media (max-width: 600px) {
+    .hero::after { font-size: 110px; }
+    .stats-strip { grid-template-columns: repeat(2, 1fr); }
+    .hiyield ul { grid-template-columns: 1fr; }
+    .ch-tags { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="search-bar">
+  <div class="search-inner">
+    <input class="search-input" type="text" id="searchInput" placeholder="Search chapters, topics, keywords…" oninput="filterChapters()">
+    <span class="chapter-count" id="chapterCount">14 chapters</span>
+  </div>
+</div>
+
+<div class="page-wrap">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-tag">Nelson Textbook of Pediatrics · 22nd Edition · 2024</div>
+    <h1>Part <span>XI</span><br>Adolescent Medicine</h1>
+    <p class="hero-sub">Puberty, adolescent development, reproductive health, substance use, eating disorders, mental health, STIs, and the unique clinical approach to the teenage patient.</p>
+    <div class="hero-meta">
+      <span class="meta-pill"><span class="dot" style="background:var(--accent)"></span>Chapters 150–163</span>
+      <span class="meta-pill"><span class="dot" style="background:var(--accent2)"></span>14 Chapters</span>
+      <span class="meta-pill"><span class="dot" style="background:var(--accent3)"></span>High-Yield for Boards &amp; USMLE</span>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-strip">
+    <div class="stat-card">
+      <div class="stat-label">Chapters</div>
+      <div class="stat-value">14</div>
+      <div class="stat-desc">Ch. 150–163</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Key Sections</div>
+      <div class="stat-value">5</div>
+      <div class="stat-desc">Puberty · Reproductive · Mental Health · Substance · STI</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Tanner Stages</div>
+      <div class="stat-value">5</div>
+      <div class="stat-desc">Breast · Pubic hair · Genital development</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Board Relevance</div>
+      <div class="stat-value">★★★★★</div>
+      <div class="stat-desc">Puberty, STIs, eating disorders heavily tested</div>
+    </div>
+  </div>
+
+  <!-- HIGH YIELD BOX -->
+  <div class="hiyield">
+    <div class="hiyield-header">⚡ High-Yield Quick Reference — Part XI</div>
+    <ul>
+      <li>Puberty begins: females 8–13 yrs (thelarche first); males 9–14 yrs (testicular enlargement first)</li>
+      <li>Precocious puberty: &lt;8 yrs female, &lt;9 yrs male; central (GnRH-dependent) vs peripheral</li>
+      <li>Delayed puberty: no pubertal signs by 13 yrs (F) or 14 yrs (M); most common = constitutional delay</li>
+      <li>Primary amenorrhea: no menarche by 15 yrs (with secondary sex characteristics) or 13 yrs (without)</li>
+      <li>Secondary amenorrhea: no menses × 3 months; rule out pregnancy first always</li>
+      <li>Dysmenorrhea: primary (no pathology, PGE2); secondary (endometriosis, fibroids); treat with NSAIDs + OCP</li>
+      <li>Confidentiality: minors can consent for STI, contraception, substance abuse, mental health in most states</li>
+      <li>HEADSSS: Home, Education, Activities, Drugs, Sex, Suicide/depression, Safety — adolescent psychosocial screen</li>
+      <li>Anorexia nervosa: highest mortality of any psychiatric illness; restrict calories; hospitalize if HR &lt;50</li>
+      <li>Chlamydia: most common bacterial STI; often asymptomatic; treat with azithromycin 1g single dose or doxycycline</li>
+      <li>Gonorrhea: treat with ceftriaxone IM 500 mg single dose; co-treat for chlamydia</li>
+      <li>Syphilis: painless chancre (primary); diffuse rash incl. palms/soles (secondary); treat with benzathine penicillin G</li>
+      <li>HPV vaccine: recommended 11–12 yrs; 2 doses if started &lt;15 yrs; 3 doses if ≥15 yrs or immunocompromised</li>
+      <li>Substance use: marijuana most common illicit drug; alcohol most common overall; screen with CRAFFT tool</li>
+    </ul>
+  </div>
+
+  <!-- PROGRESS BAR -->
+  <div class="progress-wrap">
+    <div class="progress-label">
+      <span>Study Progress</span>
+      <span id="progressText">0 / 14 opened</span>
+    </div>
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════ -->
+  <!-- SECTION A: ADOLESCENT DEVELOPMENT   -->
+  <!-- ════════════════════════════════════ -->
+  <div class="section-label">Section A — Adolescent Development &amp; Clinical Approach</div>
+  <div class="chapters-grid">
+
+    <!-- CH 150 -->
+    <div class="chapter-card" data-keywords="adolescent development psychosocial cognitive identity Erikson formal operations Piaget early middle late adolescence HEADSSS confidentiality consent minor anticipatory guidance">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 150</span>
+        <span class="ch-title">The Epidemiology of Adolescent Health &amp; Clinical Approach</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-eth">Counseling</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp">Adolescence: 10–21 years; three phases — <strong class="hl">early</strong> (10–13), <strong class="hl">middle</strong> (14–17), <strong class="hl">late</strong> (18–21)</li>
+          <li class="imp">Leading causes of adolescent mortality: <strong class="hld">accidents (MVA #1)</strong>, homicide, suicide — together account for &gt;70% of teen deaths</li>
+          <li class="imp">Psychosocial development: <strong class="hl">Erikson</strong> — Identity vs Role Confusion; <strong class="hl">Piaget</strong> — Formal operational thinking (abstract reasoning) begins ~12 yrs; risk-taking behavior peaks in middle adolescence</li>
+          <li class="imp"><strong class="hl">HEADSSS assessment</strong>: structured psychosocial screen — <strong class="hl">H</strong>ome, <strong class="hl">E</strong>ducation/Employment, <strong class="hl">A</strong>ctivities, <strong class="hl">D</strong>rugs, <strong class="hl">S</strong>exuality, <strong class="hl">S</strong>uicide/Depression, <strong class="hl">S</strong>afety</li>
+          <li class="crit"><strong class="hl">Confidentiality</strong>: essential for honest disclosure; most states allow minors to consent independently for <strong class="hl">STIs, contraception, pregnancy, substance abuse, mental health</strong>; breach only if imminent risk of harm to self or others</li>
+          <li class="note">Interview adolescent alone (without parents) for part of every visit; establish confidentiality early and clearly</li>
+          <li class="note">Anticipatory guidance topics: safe driving, seatbelts, firearms, substance avoidance, STI/pregnancy prevention, helmet use, mental health, screen time</li>
+        </ul>
+        <div class="mnemonic">HEADSSS: Home, Education, Activities, Drugs, Sexuality, Suicide/depression, Safety — ask every adolescent!</div>
+      </div>
+    </div>
+
+    <!-- CH 151 -->
+    <div class="chapter-card" data-keywords="puberty Tanner stages thelarche adrenarche pubarche menarche testicular enlargement GnRH LH FSH estrogen testosterone growth spurt normal sequence">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 151</span>
+        <span class="ch-title">Puberty &amp; Its Disorders (Normal Puberty)</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-crit">Critical</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp">Puberty triggered by <strong class="hl">pulsatile GnRH</strong> from hypothalamus → LH + FSH → gonadal sex steroids</li>
+          <li class="imp"><strong class="hl">Females</strong>: normal onset 8–13 yrs; sequence — <strong class="hl">thelarche (breast budding, B2) → pubarche → growth spurt → menarche</strong> (mean 12.5 yrs, ~2.5 yrs after thelarche); average duration 4 years</li>
+          <li class="imp"><strong class="hl">Males</strong>: normal onset 9–14 yrs; sequence — <strong class="hl">testicular enlargement (≥4 mL or ≥2.5 cm = G2, FIRST sign)</strong> → pubarche → growth spurt (later than females, but greater) → voice change → spermarche</li>
+          <li class="imp"><strong class="hl">Tanner Stages (SMR)</strong>: 5 stages for breast (B), pubic hair (PH), and male genitalia (G); Stage 1 = prepubertal; Stage 5 = adult</li>
+          <li class="note">Adrenarche: adrenal androgen production (DHEAS) → pubic/axillary hair, body odor, acne; independent of HPG axis; begins ~6–8 yrs</li>
+          <li class="note">Growth spurt: females peak at Tanner 2–3 (~10–12 yrs); males peak at Tanner 3–4 (~12–14 yrs); growth plates fuse after puberty (estrogen drives epiphyseal closure)</li>
+          <li class="imp">Gynecomastia: breast tissue in males; common in Tanner 2–3 (~50%); usually resolves in 1–2 yrs; if persists or &gt;4 cm → evaluate (Klinefelter, liver disease, drugs, tumor)</li>
+        </ul>
+        <div class="mnemonic">Female puberty sequence: "The Pigs Go Mad" → Thelarche, Pubarche, Growth spurt, Menarche</div>
+      </div>
+    </div>
+
+    <!-- CH 152 -->
+    <div class="chapter-card" data-keywords="precocious puberty central peripheral GnRH dependent independent McCune-Albright CAH gonadal tumor adrenal tumor leuprolide GnRH agonist delayed puberty constitutional hypogonadism Kallmann Turner Klinefelter">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 152</span>
+        <span class="ch-title">Precocious &amp; Delayed Puberty</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-crit">Critical</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="crit"><strong class="hld">Precocious puberty</strong>: signs of puberty before <strong class="hld">8 yrs in females</strong> or <strong class="hld">9 yrs in males</strong></li>
+          <li class="imp"><strong class="hl">Central (GnRH-dependent)</strong>: ↑GnRH → ↑LH/FSH → ↑sex steroids; idiopathic (females, 90%); CNS lesion (hypothalamic hamartoma, tumor — more common in males); bone age advanced; LH response to GnRH stimulation diagnostic</li>
+          <li class="imp"><strong class="hl">Peripheral (GnRH-independent)</strong>: sex steroids from gonad/adrenal/exogenous, NOT driven by GnRH; LH/FSH suppressed; causes: McCune-Albright (café-au-lait spots + polyostotic fibrous dysplasia + precocious puberty), CAH, gonadal/adrenal tumors, exogenous steroids, hCG-secreting tumor</li>
+          <li class="imp">Central PP treatment: <strong class="hl">GnRH agonist (leuprolide)</strong> — paradoxically suppresses HPG axis by downregulating receptors; preserves adult height</li>
+          <li class="crit"><strong class="hld">Delayed puberty</strong>: no breast development by <strong class="hld">13 yrs (F)</strong> or no testicular enlargement by <strong class="hld">14 yrs (M)</strong></li>
+          <li class="imp">Most common cause: <strong class="hl">constitutional delay of growth and puberty (CDGP)</strong> — "late bloomer"; family history, bone age delayed, normal GnRH response; reassurance + optional low-dose testosterone/estrogen to induce puberty</li>
+          <li class="imp">Hypogonadotropic hypogonadism (↓LH/FSH): Kallmann syndrome (GnRH deficiency + anosmia), panhypopituitarism, chronic illness, excessive exercise/low weight, hypothyroidism</li>
+          <li class="note">Hypergonadotropic hypogonadism (↑LH/FSH, ↓sex steroids): gonadal failure; Turner (45,X), Klinefelter (47,XXY), gonadal dysgenesis, chemotherapy/radiation damage</li>
+        </ul>
+        <div class="mnemonic">Precocious puberty: "Central = GnRH UP; Peripheral = GnRH DOWN" — leuprolide treats central only</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ════════════════════════════════════ -->
+  <!-- SECTION B: REPRODUCTIVE HEALTH      -->
+  <!-- ════════════════════════════════════ -->
+  <div class="section-label">Section B — Adolescent Reproductive Health</div>
+  <div class="chapters-grid">
+
+    <!-- CH 153 -->
+    <div class="chapter-card" data-keywords="menstrual disorders amenorrhea dysmenorrhea abnormal uterine bleeding AUB primary secondary PCOS endometriosis NSAIDs OCP pregnancy test anovulation">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 153</span>
+        <span class="ch-title">Menstrual Disorders in Adolescents</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-crit">Critical</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp"><strong class="hl">Primary amenorrhea</strong>: no menarche by <strong class="hl">15 yrs</strong> (with 2° sex characteristics) OR by <strong class="hl">13 yrs</strong> (without any 2° sex char.); workup: pregnancy test, karyotype, LH/FSH, prolactin, TSH, pelvic US</li>
+          <li class="imp">Primary amenorrhea causes: Turner syndrome (45,X), Müllerian agenesis (MRKH — absent uterus/vagina, normal 46,XX), androgen insensitivity syndrome (46,XY, blind vaginal pouch, ↑testosterone), hypothalamic-pituitary dysfunction, imperforate hymen (hematocolpos)</li>
+          <li class="imp"><strong class="hl">Secondary amenorrhea</strong>: no menses for <strong class="hl">3 months</strong> in previously menstruating girl; <strong class="hld">ALWAYS exclude pregnancy first</strong></li>
+          <li class="imp">Secondary amenorrhea causes: pregnancy (most common), hypothalamic amenorrhea (exercise, low weight, stress — ↓GnRH), PCOS (↑androgens, anovulation, insulin resistance), hyperprolactinemia, thyroid disease, premature ovarian insufficiency</li>
+          <li class="crit"><strong class="hld">PCOS</strong>: Rotterdam criteria ≥2 of 3: <strong class="hl">oligo/anovulation</strong>, <strong class="hl">clinical/biochemical hyperandrogenism</strong> (acne, hirsutism, ↑testosterone), <strong class="hl">polycystic ovaries on US</strong>; associated metabolic syndrome, insulin resistance, infertility; treat with OCPs + metformin</li>
+          <li class="imp"><strong class="hl">Primary dysmenorrhea</strong>: painful menses, no pathology; PGE2/PGF2α → uterine contractions; treat with <strong class="hl">NSAIDs (ibuprofen/naproxen — start 1–2 days before menses)</strong> ± OCPs</li>
+          <li class="note"><strong class="hl">Secondary dysmenorrhea</strong>: pathologic cause — endometriosis (most common secondary cause), fibroids, PID, ovarian cysts; pelvic pain not relieved by NSAIDs → evaluate further</li>
+          <li class="note">Normal menstrual cycle: 21–45 days; duration 3–7 days; flow 30–80 mL; anovulatory cycles common in first 1–2 yrs after menarche</li>
+        </ul>
+        <div class="mnemonic">Primary amenorrhea: "No period by 15 (with breasts) or 13 (without) → work it up"</div>
+      </div>
+    </div>
+
+    <!-- CH 154 -->
+    <div class="chapter-card" data-keywords="contraception adolescent OCP combined hormonal pill progestin only mini-pill patch ring Depo-Provera DMPA IUD levonorgestrel copper emergency contraception Plan B abstinence condom efficacy">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 154</span>
+        <span class="ch-title">Contraception in Adolescents</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-eth">Counseling</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp">Most effective: <strong class="hl">LARC (Long-Acting Reversible Contraception)</strong> — IUD (hormonal levonorgestrel or copper) and implant (etonogestrel); &gt;99% effective; first-line for adolescents per AAP</li>
+          <li class="imp"><strong class="hl">Combined OCP</strong>: estrogen + progestin; 91% typical use; suppresses ovulation; non-contraceptive benefits: ↓dysmenorrhea, ↓acne, ↓PMS, ↓anemia; contraindicated: migraine with aura, DVT history, active liver disease, smoker &gt;35 yrs</li>
+          <li class="imp"><strong class="hl">Depo-Provera (DMPA)</strong>: IM progestin every 3 months; 96% typical use; ↓bone density with prolonged use (reversible); causes irregular bleeding/amenorrhea; good for teens who can't remember daily pill</li>
+          <li class="imp"><strong class="hl">Emergency contraception (EC)</strong>: <strong class="hl">levonorgestrel (Plan B)</strong> — most effective within 72h (up to 120h); no prescription needed ≥17 yrs; <strong class="hl">copper IUD</strong> — most effective EC (99%), up to 5 days after unprotected sex; also provides ongoing contraception</li>
+          <li class="imp"><strong class="hl">Condoms</strong>: only method protecting against STIs; 85% typical use; encourage dual method (condom + hormonal method)</li>
+          <li class="note">Counseling key: all methods better than none; non-judgmental approach; confidentiality; include STI prevention in all discussions</li>
+          <li class="note">Progestin-only pill (mini-pill): for those with estrogen contraindications; must be taken same time daily; 91% typical use</li>
+        </ul>
+        <div class="mnemonic">Most effective contraception: "LARC is the STAR" → IUD + Implant = &gt;99% effective = First-line for teens</div>
+      </div>
+    </div>
+
+    <!-- CH 155 -->
+    <div class="chapter-card" data-keywords="adolescent pregnancy teen pregnancy prenatal care risks outcomes social support options counseling abortion adoption parenting">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 155</span>
+        <span class="ch-title">Adolescent Pregnancy</span>
+        <div class="ch-tags"><span class="tag tag-soc">Social</span><span class="tag tag-eth">Counseling</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp">Adolescent pregnancy: US teen birth rate declined significantly but remains high compared to other developed nations; highest in low-income, minority, rural populations</li>
+          <li class="imp">Medical risks: ↑preeclampsia, ↑anemia, ↑preterm birth, ↑LBW, ↑infant mortality, ↑maternal mortality compared to adult women</li>
+          <li class="imp">Psychosocial risks: school dropout, poverty, repeat pregnancy, domestic violence, social isolation</li>
+          <li class="crit">Role of physician: present all options (parenting, adoption, abortion) in <strong class="hl">non-directive, non-judgmental</strong> manner; provide prenatal care referral; ensure social support; confidentiality considerations vary by state</li>
+          <li class="note">Comprehensive sex education + access to LARC most effective at reducing teen pregnancy rates</li>
+          <li class="note">Screen all pregnant teens for depression, domestic violence, substance use, food insecurity; high-risk social situation requiring multidisciplinary support</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ════════════════════════════════════ -->
+  <!-- SECTION C: MENTAL HEALTH & BEHAVIOR -->
+  <!-- ════════════════════════════════════ -->
+  <div class="section-label">Section C — Mental Health &amp; Behavioral Disorders</div>
+  <div class="chapters-grid">
+
+    <!-- CH 156 -->
+    <div class="chapter-card" data-keywords="eating disorder anorexia nervosa bulimia nervosa ARFID binge eating disorder DSM criteria restriction purging lanugo amenorrhea Russell sign parotid refeeding syndrome hospitalization PHQ-A">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 156</span>
+        <span class="ch-title">Eating Disorders in Adolescents</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-crit">Critical</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="crit"><strong class="hld">Anorexia Nervosa (AN)</strong>: highest mortality rate of any psychiatric disorder; intense fear of weight gain, distorted body image, caloric restriction → significantly low body weight</li>
+          <li class="imp">AN physical findings: <strong class="hl">lanugo</strong> (fine body hair), <strong class="hl">bradycardia</strong>, hypotension, hypothermia, ↓bone density, amenorrhea (hypothalamic), hair loss, <strong class="hl">↓K (from vomiting/laxatives)</strong>, elevated LFTs, ↓WBC</li>
+          <li class="crit">Medical indications for hospitalization: HR &lt;50 bpm, BP &lt;90/45, <strong class="hl">K &lt;3.0</strong>, Na abnormal, syncope, rapid weight loss, failure of outpatient treatment, BMI &lt;85% of ideal body weight</li>
+          <li class="crit"><strong class="hld">Refeeding syndrome</strong> risk in severely malnourished AN: hypophosphatemia (most dangerous), hypokalemia, hypomagnesemia when calories are reintroduced — start low, go slow; monitor electrolytes closely; replace phosphate before feeding</li>
+          <li class="imp"><strong class="hl">Bulimia Nervosa (BN)</strong>: recurrent binge-purge cycles; normal/near-normal weight (distinguishes from AN); <strong class="hl">Russell sign</strong> (calluses on dorsum of hand), <strong class="hl">parotid enlargement</strong>, dental enamel erosion, ↓K, metabolic alkalosis (from purging)</li>
+          <li class="imp">BN treatment: <strong class="hl">CBT (cognitive behavioral therapy)</strong> — most effective; <strong class="hl">fluoxetine</strong> (SSRI — only FDA-approved medication for BN); nutritional counseling</li>
+          <li class="note">AN treatment: weight restoration first priority; family-based therapy (FBT/Maudsley) most effective for adolescents; SSRIs not effective for weight restoration in AN; avoid bupropion (↑seizure risk in low-weight patients)</li>
+          <li class="note"><strong class="hl">ARFID</strong> (Avoidant/Restrictive Food Intake Disorder): not driven by body image; sensory aversion, fear of choking/vomiting, limited interest in food; can cause severe nutritional deficiency; treat with behavioral therapy</li>
+        </ul>
+        <div class="mnemonic">Anorexia hospitalization: "SCARCB" → Syncope, ↓K(&lt;3), Arrhythmia/bradycardia (HR&lt;50), Rapid weight loss, BMI critical, BP low (&lt;90/45)</div>
+      </div>
+    </div>
+
+    <!-- CH 157 -->
+    <div class="chapter-card" data-keywords="depression adolescent PHQ-A PHQ-9 suicide suicidal ideation self-harm SSRI fluoxetine CBT hospitalization risk assessment safe messaging screening">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 157</span>
+        <span class="ch-title">Depression &amp; Suicide in Adolescents</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-crit">Critical</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp">Depression: affects ~20% of adolescents before adulthood; females 2× males after puberty; often presents with <strong class="hl">irritability</strong> (rather than sadness) in teens, somatic complaints, declining grades</li>
+          <li class="imp">Screening: <strong class="hl">PHQ-A (Patient Health Questionnaire for Adolescents)</strong> — recommended annually from age 12; PHQ-9 widely used</li>
+          <li class="crit"><strong class="hld">Suicide</strong>: <strong class="hld">2nd leading cause of death in adolescents 15–24 yrs</strong> (after accidents); females attempt more; males complete more (more lethal means)</li>
+          <li class="imp">Risk factors: prior attempt (strongest predictor), family history, depression, substance use, LGBTQ+ identity, bullying, access to firearms, social isolation</li>
+          <li class="crit">Assess every depressed teen for suicidal ideation; use Columbia Suicide Severity Rating Scale (C-SSRS); document means restriction counseling (firearms, medications)</li>
+          <li class="crit">Treatment: <strong class="hl">CBT</strong> (first-line); <strong class="hl">fluoxetine</strong> (only SSRI FDA-approved for depression in &lt;18 yrs); combination CBT + SSRI most effective; <strong class="hld">black box warning: SSRIs may ↑suicidal ideation in first weeks</strong> — monitor closely</li>
+          <li class="note">Hospitalize if: active suicidal ideation with plan/intent, psychosis, severe self-harm, unable to maintain safety contract</li>
+          <li class="note">Means restriction: <strong class="hl">removing firearms from home</strong> most impactful single intervention for suicide prevention</li>
+        </ul>
+        <div class="mnemonic">SSRIs in teens: "Fluoxetine FIRST, monitor for suicidal ideation in first 4 weeks — black box warning!"</div>
+      </div>
+    </div>
+
+    <!-- CH 158 -->
+    <div class="chapter-card" data-keywords="ADHD attention deficit hyperactivity disorder adolescent stimulant methylphenidate amphetamine non-stimulant atomoxetine guanfacine academic performance driving risky behavior">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 158</span>
+        <span class="ch-title">ADHD &amp; Learning Disorders in Adolescents</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-soc">Behavioral</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp">ADHD in adolescence: often hyperactivity ↓, but inattention/executive dysfunction persist and worsen with increased academic demands; risk of academic failure, substance use, accidents</li>
+          <li class="imp">Treatment: <strong class="hl">stimulants first-line</strong> (methylphenidate, amphetamine salts); non-stimulants (atomoxetine, guanfacine, clonidine) if stimulants contraindicated or substance abuse concern; behavioral therapy adjunct</li>
+          <li class="imp">Stimulant concerns in teens: diversion/misuse; monitor; consider non-stimulant if risk; cardiovascular screen (BP, HR) before starting; contraindicated with structural heart disease</li>
+          <li class="note">Driving: teens with ADHD have significantly higher MVA risk; stimulant treatment improves driving safety; counsel parents and teen</li>
+          <li class="note">Comorbidities common: depression, anxiety, ODD, conduct disorder, substance use disorder — screen and treat</li>
+          <li class="note">Learning disabilities: distinct from ADHD; diagnosed by psychoeducational testing; accommodations (extended time, preferential seating, 504 plan or IEP)</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ════════════════════════════════════ -->
+  <!-- SECTION D: SUBSTANCE USE            -->
+  <!-- ════════════════════════════════════ -->
+  <div class="section-label">Section D — Substance Use &amp; Addiction</div>
+  <div class="chapters-grid">
+
+    <!-- CH 159 -->
+    <div class="chapter-card" data-keywords="substance use disorder adolescent alcohol marijuana cannabis vaping e-cigarette tobacco nicotine opioid stimulant CRAFFT SBIRT screening brief intervention motivational interviewing">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 159</span>
+        <span name="ch-title" class="ch-title">Substance Use &amp; Addiction in Adolescents</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-crit">Critical</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp">Most commonly used substances: <strong class="hl">alcohol</strong> (most common overall), <strong class="hl">marijuana/cannabis</strong> (most common illicit), nicotine/vaping (rapidly increasing)</li>
+          <li class="imp">Screening: <strong class="hl">CRAFFT tool</strong> (Car, Relax, Alone, Forget, Friends, Trouble) — validated screening tool for adolescent substance use; score ≥2 = high risk → brief intervention</li>
+          <li class="imp"><strong class="hl">SBIRT</strong> (Screening, Brief Intervention, Referral to Treatment) — evidence-based approach in primary care</li>
+          <li class="crit">Cannabis: ↑potency modern strains; <strong class="hl">cannabis use disorder</strong> common; adolescent use → ↓IQ, ↓academic achievement, ↑psychosis risk, ↑anxiety/depression; cannabinoid hyperemesis syndrome (CHS): cyclical vomiting relieved by hot showers</li>
+          <li class="imp"><strong class="hl">E-cigarettes/vaping</strong>: rapidly increased in teens; nicotine addiction; <strong class="hl">EVALI</strong> (e-cigarette/vaping-associated lung injury) — bilateral ground-glass opacities, often linked to vitamin E acetate in THC cartridges; treat with corticosteroids</li>
+          <li class="imp">Alcohol: most dangerous in teens (developing brain); binge drinking (≥4–5 drinks in 2h); fetal alcohol spectrum if pregnant; ↑MVA risk; ↑sexual assault risk; screen with AUDIT-C</li>
+          <li class="note">Opioids: prescription opioid misuse → heroin; naloxone (Narcan) access important; treatment: buprenorphine/naloxone (Suboxone) for adolescents with opioid use disorder</li>
+          <li class="note">Motivational interviewing (MI): non-confrontational, patient-centered approach effective for adolescent behavior change; FRAMES model</li>
+        </ul>
+        <div class="mnemonic">CRAFFT: Car, Relax, Alone, Forget, Friends, Trouble — score ≥2 needs brief intervention</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ════════════════════════════════════ -->
+  <!-- SECTION E: STIs & SEXUAL HEALTH     -->
+  <!-- ════════════════════════════════════ -->
+  <div class="section-label">Section E — Sexually Transmitted Infections &amp; Sexual Health</div>
+  <div class="chapters-grid">
+
+    <!-- CH 160 -->
+    <div class="chapter-card" data-keywords="chlamydia trachomatis gonorrhea Neisseria cervicitis urethritis PID pelvic inflammatory disease tubo-ovarian abscess azithromycin doxycycline ceftriaxone NAAT screening treatment partner">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 160</span>
+        <span class="ch-title">Chlamydia &amp; Gonorrhea</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-crit">Critical</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="crit"><strong class="hld">Chlamydia trachomatis</strong>: <strong class="hld">most common bacterial STI</strong> in US; often <strong class="hld">asymptomatic</strong> (70% females, 50% males)</li>
+          <li class="imp">Chlamydia manifestations: cervicitis (mucopurulent discharge, friable cervix), urethritis (dysuria, discharge), PID, epididymo-orchitis, reactive arthritis (Reiter: urethritis + arthritis + conjunctivitis)</li>
+          <li class="imp">Chlamydia treatment: <strong class="hl">doxycycline 100 mg BID × 7 days</strong> (preferred) OR azithromycin 1g single dose (if compliance concern or pregnancy)</li>
+          <li class="imp">Screening: all sexually active females ≤25 yrs annually; MSM annually; males with symptoms</li>
+          <li class="crit"><strong class="hld">Gonorrhea (Neisseria gonorrhoeae)</strong>: 2nd most common bacterial STI; ↑antibiotic resistance (major concern)</li>
+          <li class="imp">Gonorrhea manifestations: urethritis (purulent discharge, dysuria in males), cervicitis (often asymptomatic), PID, pharyngitis, proctitis, disseminated gonococcal infection (DGI — septic arthritis/tenosynovitis + skin lesions + bacteremia)</li>
+          <li class="crit">Gonorrhea treatment: <strong class="hld">ceftriaxone 500 mg IM single dose</strong> (or 1g if weight &gt;150 kg); <strong class="hl">always co-treat for chlamydia</strong> (doxycycline × 7 days) unless chlamydia excluded by NAAT</li>
+          <li class="crit"><strong class="hld">PID (Pelvic Inflammatory Disease)</strong>: ascending infection; cervical motion tenderness + uterine tenderness + adnexal tenderness; complications: <strong class="hld">Fitz-Hugh-Curtis syndrome</strong> (perihepatitis — RUQ pain + violin string adhesions), tubo-ovarian abscess (TOA), infertility, ectopic pregnancy, chronic pelvic pain</li>
+          <li class="imp">PID treatment: outpatient — ceftriaxone IM + doxycycline + metronidazole; inpatient (TOA, pregnancy, severe illness): cefoxitin/cefotetan IV + doxycycline</li>
+          <li class="note">NAAT (nucleic acid amplification test) — most sensitive test for both Chlamydia and Gonorrhea; first-void urine or swab</li>
+        </ul>
+        <div class="mnemonic">PID criteria: "CMU" → Cervical Motion tenderness, Uterine tenderness, Adnexal tenderness — any one = treat empirically</div>
+      </div>
+    </div>
+
+    <!-- CH 161 -->
+    <div class="chapter-card" data-keywords="syphilis Treponema pallidum primary chancre secondary rash palms soles tertiary latent congenital neurosyphilis RPR VDRL FTA-ABS benzathine penicillin G Jarisch-Herxheimer">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 161</span>
+        <span class="ch-title">Syphilis</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-crit">Critical</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp">Syphilis (Treponema pallidum): resurgence in US including congenital syphilis; stages are highly tested</li>
+          <li class="crit"><strong class="hld">Primary syphilis</strong>: <strong class="hld">painless indurated chancre</strong> at site of inoculation; heals spontaneously in 3–6 wks; highly infectious</li>
+          <li class="crit"><strong class="hld">Secondary syphilis</strong>: 4–10 wks after chancre; <strong class="hld">diffuse maculopapular rash including palms and soles</strong>, condylomata lata (flat warts in moist areas), mucous patches, generalized LAD, malaise, fever; most infectious stage</li>
+          <li class="imp"><strong class="hl">Latent syphilis</strong>: positive serology, no symptoms; early (&lt;1 yr) vs late latent (&gt;1 yr or unknown); late latent less infectious</li>
+          <li class="imp"><strong class="hl">Tertiary syphilis</strong>: gummas (granulomatous lesions), cardiovascular syphilis (aortic aneurysm, aortic regurgitation), neurosyphilis (tabes dorsalis, Argyll Robertson pupil, general paresis)</li>
+          <li class="imp">Diagnosis: <strong class="hl">non-treponemal tests</strong> (RPR, VDRL) — screening, titers track treatment response; <strong class="hl">treponemal tests</strong> (FTA-ABS, TP-PA) — confirmatory, remain positive for life</li>
+          <li class="crit">Treatment: <strong class="hld">benzathine penicillin G IM</strong>; primary/secondary/early latent: single dose 2.4 MU; late latent/tertiary: 3 doses weekly; neurosyphilis: IV aqueous penicillin G × 10–14 days</li>
+          <li class="note"><strong class="hl">Jarisch-Herxheimer reaction</strong>: fever, rigors, myalgia within 24h of first penicillin dose (from cytokine release as spirochetes die); treat with NSAIDs; NOT penicillin allergy</li>
+        </ul>
+        <div class="mnemonic">Syphilis stages: "Chancre → Rash (palms/soles) → Latent → Gummas/Heart/Neuro" — rash on palms/soles = secondary syphilis</div>
+      </div>
+    </div>
+
+    <!-- CH 162 -->
+    <div class="chapter-card" data-keywords="HPV human papillomavirus genital warts condylomata acuminata cervical cancer Pap smear vaccine Gardasil 9 HSV herpes simplex acyclovir valacyclovir Tzanck HIV PrEP trichomoniasis BV bacterial vaginosis">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 162</span>
+        <span class="ch-title">HPV, Herpes, HIV, Trichomonas &amp; Other STIs</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-crit">Critical</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="crit"><strong class="hld">HPV</strong>: most common STI overall; HPV 16/18 → cervical/oropharyngeal/anal cancer; HPV 6/11 → genital warts (condylomata acuminata)</li>
+          <li class="imp">HPV vaccine (Gardasil 9): covers 9 types (6,11,16,18,31,33,45,52,58); recommended at <strong class="hl">11–12 yrs</strong>; <strong class="hl">2 doses</strong> if started &lt;15 yrs (0, 6–12 months); <strong class="hl">3 doses</strong> if ≥15 yrs or immunocompromised; can vaccinate up to age 45 (shared decision-making)</li>
+          <li class="imp">Cervical cancer screening (Pap smear): begin at <strong class="hl">21 years</strong> regardless of sexual activity onset; every 3 years (Pap alone) or every 5 yrs (Pap + HPV co-test) from age 25</li>
+          <li class="crit"><strong class="hld">HSV (Herpes Simplex Virus)</strong>: HSV-1 (oral, increasingly genital); HSV-2 (genital); painful vesicles/ulcers; primary episode most severe; recurrences common; no cure; treat with <strong class="hl">acyclovir/valacyclovir</strong> (reduces severity/duration/transmission); daily suppressive therapy for frequent recurrences</li>
+          <li class="imp">HSV diagnosis: viral culture or PCR of lesion; Tzanck smear (multinucleated giant cells) — less sensitive; type-specific serology</li>
+          <li class="crit"><strong class="hld">HIV in adolescents</strong>: screen all sexually active teens; <strong class="hl">PrEP (pre-exposure prophylaxis)</strong> — tenofovir/emtricitabine (Truvada) — for high-risk adolescents; 99% effective if taken daily; treat HIV with ART (antiretroviral therapy)</li>
+          <li class="imp"><strong class="hl">Trichomonas vaginalis</strong>: most common curable STI; profuse frothy yellow-green vaginal discharge, pruritus, strawberry cervix; wet mount (motile trichomonads); treat both partners with <strong class="hl">metronidazole 2g single dose</strong></li>
+          <li class="note"><strong class="hl">Bacterial vaginosis (BV)</strong>: not an STI but sexually associated; Gardnerella vaginalis overgrowth; fishy odor, thin gray discharge; Clue cells on wet mount; Whiff test (KOH) positive; treat with metronidazole or clindamycin</li>
+          <li class="note">Genital warts treatment: topical imiquimod, podofilox, TCA, or cryotherapy; HPV vaccine does NOT treat existing infection but prevents new types</li>
+        </ul>
+        <div class="mnemonic">HPV vaccine: "2 doses if under 15, 3 doses if 15 or older" — start at 11–12 for best protection</div>
+      </div>
+    </div>
+
+    <!-- CH 163 -->
+    <div class="chapter-card" data-keywords="LGBTQ transgender gender identity sexual orientation gender dysphoria affirmative care puberty blocker GnRH agonist hormone therapy mental health disparities conversion therapy minority stress">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 163</span>
+        <span class="ch-title">LGBTQ+ Youth Health &amp; Gender-Diverse Adolescents</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-eth">Counseling</span><span class="tag tag-soc">Social</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp">LGBTQ+ youth face significant health disparities: ↑depression, ↑anxiety, ↑suicidality (4× higher suicide attempt rate vs heterosexual peers), ↑substance use, ↑homelessness, ↑STI risk</li>
+          <li class="imp"><strong class="hl">Gender identity</strong> (internal sense of gender) is distinct from <strong class="hl">sexual orientation</strong> (attraction) and <strong class="hl">biological sex</strong>; use patient's preferred name and pronouns — improves mental health outcomes</li>
+          <li class="imp"><strong class="hl">Gender dysphoria</strong>: marked incongruence between experienced gender and assigned gender; causes significant distress; DSM-5 diagnosis</li>
+          <li class="crit"><strong class="hl">Gender-affirming care</strong> for transgender adolescents (multidisciplinary approach): <strong class="hl">GnRH agonists</strong> (puberty blockers — suppress unwanted puberty, fully reversible, used in Tanner 2+) → <strong class="hl">gender-affirming hormone therapy</strong> (testosterone for transmasculine; estrogen for transfeminine — partially reversible) → surgical options (adulthood)</li>
+          <li class="imp">Mental health benefits of gender-affirming care: significant ↓depression, ↓anxiety, ↓suicidality when adolescent receives affirming care and family support</li>
+          <li class="crit"><strong class="hld">Conversion therapy</strong>: attempts to change sexual orientation or gender identity; <strong class="hld">condemned by AAP, APA, AMA</strong>; associated with ↑depression, ↑suicidality, ↑PTSD — harmful and ineffective</li>
+          <li class="note">Family acceptance: most protective factor for LGBTQ+ youth; rejected youth 8× more likely to attempt suicide; support parents in accepting process</li>
+          <li class="note">Create inclusive clinical environment: use inclusive intake forms, non-judgmental language, ask about pronouns, ensure privacy; HEADSSS should include sexual orientation and gender identity questions</li>
+        </ul>
+        <div class="mnemonic">Gender-affirming care steps: "Block → Hormone → Surgery (optional)" → GnRH agonist → Gender hormones → Surgical options</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <span>Nelson Textbook of Pediatrics · 22nd Ed. · 2024</span>
+    <span>Part XI: Chapters 150–163 · Adolescent Medicine</span>
+  </div>
+
+</div><!-- end page-wrap -->
+
+<script>
+  let openedChapters = new Set();
+  const TOTAL_CHAPTERS = 14;
+
+  function toggleCard(header) {
+    const card = header.parentElement;
+    const wasOpen = card.classList.contains('open');
+    card.classList.toggle('open');
+    const chNum = card.querySelector('.ch-num').textContent;
+    if (!wasOpen) openedChapters.add(chNum);
+    updateProgress();
+  }
+
+  function updateProgress() {
+    const opened = openedChapters.size;
+    const pct = Math.min((opened / TOTAL_CHAPTERS) * 100, 100);
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressText').textContent = `${opened} / ${TOTAL_CHAPTERS} opened`;
+  }
+
+  function filterChapters() {
+    const q = document.getElementById('searchInput').value.toLowerCase().trim();
+    const cards = document.querySelectorAll('.chapter-card');
+    let visible = 0;
+
+    cards.forEach(card => {
+      const title    = card.querySelector('.ch-title').textContent.toLowerCase();
+      const body     = card.querySelector('.chapter-body') ? card.querySelector('.chapter-body').textContent.toLowerCase() : '';
+      const keywords = (card.dataset.keywords || '').toLowerCase();
+
+      if (!q || title.includes(q) || body.includes(q) || keywords.includes(q)) {
+        card.classList.remove('hidden');
+        visible++;
+      } else {
+        card.classList.add('hidden');
+      }
+    });
+
+    document.getElementById('chapterCount').textContent = q
+      ? `${visible} result${visible !== 1 ? 's' : ''}`
+      : `${TOTAL_CHAPTERS} chapters`;
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.ctrlKey && e.key === 'e') {
+      e.preventDefault();
+      document.querySelectorAll('.chapter-card:not(.open)').forEach(c => {
+        c.classList.add('open');
+        openedChapters.add(c.querySelector('.ch-num').textContent);
+      });
+      updateProgress();
+    }
+  });
+</script>
+
+</body>
+</html>

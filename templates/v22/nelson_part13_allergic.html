@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nelson Pediatrics — Part XIII: Allergic Disorders</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d1117; --surface: #161b22; --surface2: #1c2333; --border: #30363d;
+    --accent: #e8a44a; --accent2: #5caaee; --accent3: #63d98a; --danger: #f07a7a;
+    --text: #e6edf3; --text-muted: #8b949e; --text-dim: #484f58;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; font-weight: 300; line-height: 1.75; min-height: 100vh; }
+  body::before { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E"); pointer-events: none; z-index: 0; opacity: 0.4; }
+  .page-wrap { position: relative; z-index: 1; max-width: 920px; margin: 0 auto; padding: 0 24px 80px; }
+  .hero { padding: 72px 0 48px; border-bottom: 1px solid var(--border); margin-bottom: 48px; position: relative; overflow: hidden; }
+  .hero::after { content: 'XIII'; position: absolute; right: -10px; top: 10px; font-family: 'Playfair Display', serif; font-size: 140px; font-weight: 900; color: var(--border); line-height: 1; pointer-events: none; user-select: none; }
+  .hero-tag { display: inline-flex; align-items: center; gap: 8px; background: rgba(232,164,74,0.1); border: 1px solid rgba(232,164,74,0.3); color: var(--accent); font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; padding: 5px 12px; border-radius: 4px; margin-bottom: 20px; }
+  .hero-tag::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); animation: pulse 2s ease-in-out infinite; }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.8)} }
+  .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(28px,4.5vw,48px); font-weight: 900; line-height: 1.1; margin-bottom: 12px; color: var(--text); }
+  .hero h1 span { color: var(--accent); }
+  .hero-sub { font-size: 15px; color: var(--text-muted); max-width: 560px; margin-bottom: 28px; }
+  .hero-meta { display: flex; gap: 24px; flex-wrap: wrap; }
+  .meta-pill { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text-muted); font-family: 'DM Mono', monospace; }
+  .meta-pill .dot { width: 8px; height: 8px; border-radius: 50%; }
+  .search-bar { position: sticky; top: 0; z-index: 100; background: rgba(13,17,23,0.92); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: 12px 0; margin-bottom: 36px; }
+  .search-inner { max-width: 920px; margin: 0 auto; padding: 0 24px; display: flex; align-items: center; gap: 12px; }
+  .search-input { flex: 1; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 8px 14px 8px 36px; color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 14px; outline: none; transition: border-color 0.2s; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%238b949e' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: 10px center; }
+  .search-input:focus { border-color: var(--accent); }
+  .search-input::placeholder { color: var(--text-dim); }
+  .chapter-count { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--text-muted); white-space: nowrap; }
+  .stats-strip { display: grid; grid-template-columns: repeat(auto-fit,minmax(180px,1fr)); gap: 12px; margin-bottom: 48px; }
+  .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; transition: border-color 0.2s,transform 0.2s; }
+  .stat-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .stat-label { font-family: 'DM Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); margin-bottom: 6px; }
+  .stat-value { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: var(--accent); }
+  .stat-desc { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+  .hiyield { background: linear-gradient(135deg,rgba(232,164,74,0.08),rgba(232,164,74,0.03)); border: 1px solid rgba(232,164,74,0.25); border-left: 3px solid var(--accent); border-radius: 10px; padding: 20px 24px; margin-bottom: 48px; }
+  .hiyield-header { display: flex; align-items: center; gap: 8px; font-family: 'DM Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--accent); margin-bottom: 14px; }
+  .hiyield ul { list-style: none; display: grid; grid-template-columns: repeat(auto-fill,minmax(300px,1fr)); gap: 8px; }
+  .hiyield ul li { font-size: 13px; color: var(--text); padding-left: 16px; position: relative; line-height: 1.5; }
+  .hiyield ul li::before { content: '▸'; position: absolute; left: 0; color: var(--accent); font-size: 11px; }
+  strong.hl  { color: var(--accent);  font-weight: 600; }
+  strong.hl2 { color: var(--accent2); font-weight: 600; }
+  strong.hl3 { color: var(--accent3); font-weight: 600; }
+  strong.hld { color: var(--danger);  font-weight: 600; }
+  .section-label { font-family: 'DM Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.14em; color: var(--text-muted); margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
+  .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+  .chapters-grid { display: flex; flex-direction: column; gap: 12px; margin-bottom: 48px; }
+  .chapter-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; transition: border-color 0.2s,box-shadow 0.2s; }
+  .chapter-card:hover { border-color: rgba(92,170,238,0.4); box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
+  .chapter-header { display: flex; align-items: center; gap: 14px; padding: 16px 20px; cursor: pointer; user-select: none; }
+  .ch-num { font-family: 'DM Mono', monospace; font-size: 11px; font-weight: 500; color: var(--text-muted); background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; padding: 3px 8px; white-space: nowrap; min-width: 52px; text-align: center; }
+  .ch-title { flex: 1; font-size: 15px; font-weight: 500; color: var(--text); }
+  .ch-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+  .tag { font-family: 'DM Mono', monospace; font-size: 9px; text-transform: uppercase; letter-spacing: 0.08em; padding: 2px 7px; border-radius: 4px; border: 1px solid; }
+  .tag-hiy  { color: var(--accent);  border-color: rgba(232,164,74,0.3);  background: rgba(232,164,74,0.08); }
+  .tag-eth  { color: var(--accent2); border-color: rgba(92,170,238,0.3);  background: rgba(92,170,238,0.08); }
+  .tag-soc  { color: var(--accent3); border-color: rgba(99,217,138,0.3);  background: rgba(99,217,138,0.08); }
+  .tag-crit { color: var(--danger);  border-color: rgba(240,122,122,0.3); background: rgba(240,122,122,0.08); }
+  .ch-toggle { color: var(--text-muted); font-size: 18px; transition: transform 0.3s; line-height: 1; }
+  .chapter-card.open .ch-toggle { transform: rotate(180deg); }
+  .chapter-body { display: none; padding: 0 20px 20px; border-top: 1px solid var(--border); animation: slideIn 0.2s ease; }
+  @keyframes slideIn { from{opacity:0;transform:translateY(-6px)} to{opacity:1;transform:translateY(0)} }
+  .chapter-card.open .chapter-body { display: block; }
+  .key-points { list-style: none; display: flex; flex-direction: column; gap: 6px; margin-top: 10px; }
+  .key-points li { font-size: 13.5px; color: var(--text); padding: 8px 12px; background: var(--surface2); border-radius: 6px; border-left: 2px solid var(--border); line-height: 1.6; }
+  .key-points li.imp  { border-left-color: var(--accent); }
+  .key-points li.crit { border-left-color: var(--danger); }
+  .key-points li.note { border-left-color: var(--accent2); }
+  .mnemonic { margin-top: 12px; background: rgba(99,217,138,0.07); border: 1px dashed rgba(99,217,138,0.25); border-radius: 8px; padding: 10px 14px; font-size: 13px; color: var(--accent3); }
+  .mnemonic::before { content: '💡 '; }
+  .progress-wrap { margin-bottom: 32px; }
+  .progress-label { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--text-muted); margin-bottom: 6px; display: flex; justify-content: space-between; }
+  .progress-bar { height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg,var(--accent),var(--accent2)); border-radius: 2px; width: 0%; transition: width 0.4s ease; }
+  .footer { margin-top: 60px; padding-top: 24px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; font-family: 'DM Mono', monospace; font-size: 11px; color: var(--text-dim); }
+  .chapter-card.hidden { display: none; }
+  @media(max-width:600px){ .hero::after{font-size:80px} .stats-strip{grid-template-columns:repeat(2,1fr)} .hiyield ul{grid-template-columns:1fr} .ch-tags{display:none} }
+</style>
+</head>
+<body>
+
+<div class="search-bar">
+  <div class="search-inner">
+    <input class="search-input" type="text" id="searchInput" placeholder="Search chapters, topics, keywords…" oninput="filterChapters()">
+    <span class="chapter-count" id="chapterCount">12 chapters</span>
+  </div>
+</div>
+
+<div class="page-wrap">
+
+  <div class="hero">
+    <div class="hero-tag">Nelson Textbook of Pediatrics · 22nd Edition · 2024</div>
+    <h1>Part <span>XIII</span><br>Allergic Disorders</h1>
+    <p class="hero-sub">Mechanisms and clinical management of IgE-mediated and non-IgE-mediated allergic diseases — asthma, rhinitis, food allergy, anaphylaxis, urticaria, angioedema, and drug/insect sting reactions in children.</p>
+    <div class="hero-meta">
+      <span class="meta-pill"><span class="dot" style="background:var(--accent)"></span>Chapters 182–193</span>
+      <span class="meta-pill"><span class="dot" style="background:var(--accent2)"></span>12 Chapters</span>
+      <span class="meta-pill"><span class="dot" style="background:var(--accent3)"></span>Heavily Tested on Boards</span>
+    </div>
+  </div>
+
+  <div class="stats-strip">
+    <div class="stat-card"><div class="stat-label">Chapters</div><div class="stat-value">12</div><div class="stat-desc">Ch. 182–193</div></div>
+    <div class="stat-card"><div class="stat-label">Core Diseases</div><div class="stat-value">6</div><div class="stat-desc">Asthma · Rhinitis · Eczema · Food · Anaphylaxis · Drug</div></div>
+    <div class="stat-card"><div class="stat-label">Key Biologics</div><div class="stat-value">5+</div><div class="stat-desc">Dupilumab · Omalizumab · Mepolizumab · Benralizumab…</div></div>
+    <div class="stat-card"><div class="stat-label">Board Relevance</div><div class="stat-value">★★★★★</div><div class="stat-desc">Asthma & anaphylaxis = highest-yield allergic topics</div></div>
+  </div>
+
+  <div class="hiyield">
+    <div class="hiyield-header">⚡ High-Yield Quick Reference — Part XIII</div>
+    <ul>
+      <li>Asthma: reversible airway obstruction + hyperresponsiveness + inflammation; FEV₁/FVC &lt;0.8 + &gt;12% bronchodilator response confirms</li>
+      <li>Asthma step therapy: SABA PRN → low-dose ICS → ICS + LABA → high-dose ICS + LABA → biologics/oral steroids</li>
+      <li>Anaphylaxis: <strong class="hld">IM epinephrine 0.01 mg/kg (max 0.5 mg) anterolateral thigh — ALWAYS first-line</strong></li>
+      <li>Biphasic anaphylaxis: recurrence 4–12h later → observe ≥4–6h after reaction resolves</li>
+      <li>Allergic rhinitis: intranasal corticosteroids = most effective single agent (not antihistamines)</li>
+      <li>Top 9 food allergens: milk, egg, peanut, tree nuts, fish, shellfish, wheat, soy, sesame</li>
+      <li>LEAP trial: early peanut introduction (4–11 mo) → ↓peanut allergy 80% in high-risk infants</li>
+      <li>FPIES: non-IgE; profuse vomiting 1–4h after trigger; milk/soy most common; ondansetron + IV fluids</li>
+      <li>Atopic dermatitis: moisturizers + topical steroids first-line; dupilumab for moderate-severe</li>
+      <li>Urticaria &lt;6 wks = acute (usually viral/IgE); &gt;6 wks = chronic (idiopathic 80–90%); treat with non-sedating antihistamines</li>
+      <li>Penicillin allergy: true IgE-mediated &lt;1%; skin test to confirm; 10× cross-reactivity with cephalosporins overstated (~2%)</li>
+      <li>Venom allergy: systemic reaction to sting → refer for venom immunotherapy (VIT); EpiPen prescribed</li>
+    </ul>
+  </div>
+
+  <div class="progress-wrap">
+    <div class="progress-label"><span>Study Progress</span><span id="progressText">0 / 12 opened</span></div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+  </div>
+
+  <!-- ══════════════════════════════ -->
+  <!-- SECTION A: MECHANISMS & APPROACH -->
+  <!-- ══════════════════════════════ -->
+  <div class="section-label">Section A — Mechanisms of Allergic Disease</div>
+  <div class="chapters-grid">
+
+    <div class="chapter-card" data-keywords="allergy mechanism IgE sensitization mast cell basophil histamine leukotrienes prostaglandins Th2 IL-4 IL-5 IL-13 atopy atopic march early late phase reaction allergen skin test RAST specific IgE">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 182</span>
+        <span class="ch-title">Mechanisms of Allergic Disease</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp">Sensitization: first allergen exposure → Th2 cytokines (IL-4, IL-13) → B-cell class switch to <strong class="hl">IgE</strong> production → IgE binds to high-affinity FcεRI receptors on <strong class="hl">mast cells and basophils</strong></li>
+          <li class="imp">Re-exposure: allergen cross-links IgE on mast cells → <strong class="hl">degranulation</strong> → release of preformed mediators (histamine, tryptase, heparin) + newly synthesized mediators (prostaglandins, leukotrienes, PAF)</li>
+          <li class="imp"><strong class="hl">Early phase</strong> (0–1h): mast cell degranulation → histamine → vasodilation, ↑vascular permeability, smooth muscle contraction, mucus secretion; symptoms: itch, sneezing, wheezing, urticaria, angioedema</li>
+          <li class="imp"><strong class="hl">Late phase</strong> (2–12h): eosinophil/neutrophil/T-cell recruitment → IL-5, IL-13 → sustained inflammation; chronic airway remodeling in asthma</li>
+          <li class="imp">Key Th2 cytokines: <strong class="hl">IL-4</strong> (IgE class switching), <strong class="hl">IL-5</strong> (eosinophil development/survival), <strong class="hl">IL-13</strong> (mucus production, IgE class switching, airway hyperresponsiveness)</li>
+          <li class="note">Atopic march: eczema (infancy) → food allergy → allergic rhinitis → asthma; IgE-mediated sensitization precedes each step</li>
+          <li class="note">Hygiene hypothesis: reduced childhood microbial exposures → less Th1 stimulation → excess Th2 → ↑atopy; explains ↑allergy prevalence in developed countries</li>
+          <li class="note">Diagnostic testing: <strong class="hl">skin prick test</strong> (most sensitive, immediate results); <strong class="hl">serum specific IgE (ImmunoCAP/RAST)</strong> — useful when skin testing not possible; allergen provocation (oral food challenge) = gold standard for food allergy</li>
+        </ul>
+        <div class="mnemonic">Allergic reaction: "Sensitize → IgE on Mast cells → Re-expose → Degranulate → Histamine + Leukotrienes → Symptoms"</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ══════════════════════════════ -->
+  <!-- SECTION B: ASTHMA             -->
+  <!-- ══════════════════════════════ -->
+  <div class="section-label">Section B — Asthma</div>
+  <div class="chapters-grid">
+
+    <div class="chapter-card" data-keywords="asthma pathophysiology airway hyperresponsiveness inflammation remodeling reversible obstruction triggers viral rhinovirus allergen exercise cold air smoke FEV1 FVC spirometry peak flow methacholine bronchoprovocation">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 183</span>
+        <span class="ch-title">Asthma: Pathophysiology &amp; Diagnosis</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-crit">Critical</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp">Asthma: <strong class="hl">chronic inflammatory airway disease</strong> characterized by reversible airway obstruction, airway hyperresponsiveness (AHR), and airway inflammation; most common chronic disease of childhood</li>
+          <li class="imp">Pathology: mucosal edema, smooth muscle hypertrophy, mucus hypersecretion, subepithelial fibrosis (remodeling), eosinophilic inflammation; goblet cell metaplasia</li>
+          <li class="imp">Common triggers: <strong class="hl">viral URIs (rhinovirus #1)</strong>, allergens (dust mite, cockroach, mold, pet dander, pollen), exercise, cold air, cigarette smoke, pollutants, strong odors, GERD, aspirin/NSAIDs (in older children)</li>
+          <li class="crit">Diagnosis: <strong class="hl">spirometry</strong> — obstructive pattern: <strong class="hld">FEV₁/FVC &lt;0.8</strong> + <strong class="hld">≥12% improvement in FEV₁ after bronchodilator</strong> (reversibility); peak flow monitoring</li>
+          <li class="imp">If spirometry normal: <strong class="hl">methacholine bronchoprovocation challenge</strong> — PC₂₀ &lt;8 mg/mL confirms AHR; exercise challenge; FeNO (fractional exhaled NO) — elevated in eosinophilic asthma</li>
+          <li class="imp">Asthma phenotypes: <strong class="hl">allergic</strong> (most common, ↑IgE/eosinophils, Th2-driven), <strong class="hl">non-allergic</strong>, <strong class="hl">exercise-induced bronchoconstriction (EIB)</strong>, <strong class="hl">aspirin-exacerbated</strong> (Samter's triad: asthma + nasal polyps + aspirin sensitivity)</li>
+          <li class="note">Early wheeze (virus-triggered, resolves by school age) vs persistent asthma (atopic, continues); API (Asthma Predictive Index) predicts persistence</li>
+          <li class="note">Differential diagnosis: vocal cord dysfunction (inspiratory stridor, normal spirometry, responds to speech therapy), vascular ring, foreign body, tracheomalacia, CF, heart failure</li>
+        </ul>
+        <div class="mnemonic">Asthma spirometry: "FEV₁/FVC &lt;0.8 + &gt;12% bronchodilator response = confirmed reversible obstruction"</div>
+      </div>
+    </div>
+
+    <div class="chapter-card" data-keywords="asthma management NAEPP GINA step therapy SABA albuterol ICS inhaled corticosteroid LABA salmeterol formoterol LTRA montelukast tiotropium biologics omalizumab dupilumab mepolizumab benralizumab tezepelumab oral corticosteroid controller reliever">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 184</span>
+        <span class="ch-title">Asthma: Management &amp; Step Therapy</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-crit">Critical</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp">NAEPP classification: <strong class="hl">Intermittent</strong> (≤2 days/wk, ≤2 nights/mo, FEV₁ ≥80%); <strong class="hl">Mild persistent</strong> (&gt;2 days/wk, 3–4 nights/mo); <strong class="hl">Moderate persistent</strong> (daily, &gt;1 night/wk, FEV₁ 60–80%); <strong class="hl">Severe persistent</strong> (continuous, frequent nights, FEV₁ &lt;60%)</li>
+          <li class="crit">Step therapy (NAEPP 2020):</li>
+          <li class="imp">Step 1 (Intermittent): <strong class="hl">SABA PRN</strong> (albuterol — rescue only; short-acting β₂ agonist)</li>
+          <li class="imp">Step 2 (Mild persistent): <strong class="hl">low-dose ICS</strong> (inhaled corticosteroid — most effective controller; e.g., fluticasone, budesonide) + SABA PRN; or LTRA (montelukast) if ICS not possible</li>
+          <li class="imp">Step 3 (Moderate persistent): <strong class="hl">low-dose ICS + LABA</strong> (long-acting β₂ agonist — salmeterol/formoterol; never use LABA without ICS!) or medium-dose ICS</li>
+          <li class="imp">Step 4: <strong class="hl">medium-dose ICS + LABA</strong></li>
+          <li class="imp">Step 5: <strong class="hl">high-dose ICS + LABA</strong> ± biologics: <strong class="hl">omalizumab</strong> (anti-IgE, allergic asthma), <strong class="hl">mepolizumab/benralizumab</strong> (anti-IL-5/IL-5R, eosinophilic), <strong class="hl">dupilumab</strong> (anti-IL-4Rα, type 2), <strong class="hl">tezepelumab</strong> (anti-TSLP, severe uncontrolled)</li>
+          <li class="imp">Step 6: Step 5 + oral corticosteroids (minimum dose, significant side effects)</li>
+          <li class="crit"><strong class="hld">LABA black box warning</strong>: never use LABA as monotherapy (without ICS) — ↑asthma-related death; always combine with ICS</li>
+          <li class="note">Inhaler technique: spacer/VHC essential for all children using MDI; DPI requires sufficient inspiratory flow (not recommended &lt;4–5 yrs); nebulizer for acute exacerbations</li>
+          <li class="note">ICS side effects: oral candidiasis (rinse mouth after each use), dysphonia, minor growth suppression (dose-dependent, not clinically significant vs uncontrolled asthma)</li>
+        </ul>
+        <div class="mnemonic">Asthma steps: "SABA → ICS → ICS+LABA → High-dose ICS+LABA → Biologics → Oral steroids" — never LABA alone!</div>
+      </div>
+    </div>
+
+    <div class="chapter-card" data-keywords="acute asthma exacerbation status asthmaticus emergency treatment albuterol ipratropium magnesium sulfate systemic steroids heliox NICU intubation PICU oxygen saturation pulsus paradoxus silent chest">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 185</span>
+        <span class="ch-title">Acute Asthma Exacerbation &amp; Status Asthmaticus</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-crit">Critical</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp">Severity assessment: mild (SABA responsive, SpO₂ &gt;95%), moderate (partial response, SpO₂ 90–95%, accessory muscle use), severe (minimal response, SpO₂ &lt;90%, pulsus paradoxus &gt;12 mmHg)</li>
+          <li class="crit"><strong class="hld">Silent chest</strong>: no wheezing in severe asthma = air movement too poor to generate wheeze = <strong class="hld">impending respiratory failure</strong> — ominous sign!</li>
+          <li class="crit">Emergency treatment — all severe exacerbations:</li>
+          <li class="imp">1. <strong class="hl">Supplemental O₂</strong> (target SpO₂ ≥92–94%)</li>
+          <li class="imp">2. <strong class="hl">Continuous nebulized albuterol</strong> (or frequent MDI with spacer) ± <strong class="hl">ipratropium bromide</strong> (anticholinergic — additive bronchodilation, most benefit in first hour)</li>
+          <li class="imp">3. <strong class="hl">Systemic corticosteroids</strong> (oral prednisolone or IV methylprednisolone) — reduce inflammation, shorten hospitalization; onset 4–6h</li>
+          <li class="crit">4. If severe/refractory: <strong class="hld">IV magnesium sulfate 25–75 mg/kg</strong> (smooth muscle relaxation, bronchodilation); <strong class="hl">heliox</strong> (helium-oxygen mixture — ↓airway resistance, buys time); IV terbutaline or aminophylline; consider NICU/intubation</li>
+          <li class="imp">Status asthmaticus: severe asthma unresponsive to initial treatment; PICU admission; high-dose continuous bronchodilators, IV steroids, Mg, possible non-invasive ventilation</li>
+          <li class="note">Pulsus paradoxus: ↓systolic BP &gt;10 mmHg with inspiration; reflects severe air trapping and ↑intrathoracic pressure swings</li>
+          <li class="note">Avoid sedation (↓respiratory drive), avoid antibiotics (viral trigger, not bacterial), avoid chest X-ray routinely (does not change management in typical exacerbation)</li>
+        </ul>
+        <div class="mnemonic">Acute asthma escalation: "O₂ → Albuterol + Ipratropium → Steroids → Magnesium → Heliox → ICU"</div>
+      </div>
+    </div>
+
+    <div class="chapter-card" data-keywords="exercise induced bronchoconstriction EIB exercise induced asthma pre-treatment albuterol SABA warm up LABA montelukast post-exercise cough wheeze athletics sports">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 186</span>
+        <span class="ch-title">Exercise-Induced Bronchoconstriction (EIB)</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp">EIB: transient airway narrowing triggered by vigorous exercise; affects 40–90% of children with asthma; can also occur without underlying asthma (EIB without asthma, especially in elite athletes)</li>
+          <li class="imp">Mechanism: airway heat/water loss during exercise → hyperventilation of cool dry air → osmotic changes → mast cell activation → bronchoconstriction; peaks 5–15 min after exercise stops, resolves by 60 min</li>
+          <li class="imp">Diagnosis: exercise challenge test — ≥10% drop in FEV₁ after standardized exercise protocol confirms EIB</li>
+          <li class="imp">Treatment and prevention:</li>
+          <li class="imp"><strong class="hl">SABA (albuterol) 15–30 min before exercise</strong> — most effective pre-treatment; use as rescue if symptoms occur</li>
+          <li class="note">Alternatives: LTRA (montelukast — daily use), LABA (salmeterol) pre-exercise (not for daily use alone), inhaled sodium cromoglycate (mast cell stabilizer)</li>
+          <li class="note">Non-pharmacologic: warm-up period, nose breathing (warms/humidifies air), scarf/balaclava in cold weather, avoid high-pollen days, prefer swimming (warm humid air)</li>
+          <li class="note">If not responding to SABA: reconsider diagnosis — vocal cord dysfunction (peaks during exercise, inspiratory stridor), cardiac causes, deconditioning, hyperventilation syndrome</li>
+        </ul>
+        <div class="mnemonic">EIB: "Wheeze peaks 5–15 min AFTER exercise stops → SABA 15 min before exercise to prevent"</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ══════════════════════════════ -->
+  <!-- SECTION C: RHINITIS & SINUSITIS -->
+  <!-- ══════════════════════════════ -->
+  <div class="section-label">Section C — Allergic Rhinitis &amp; Rhinosinusitis</div>
+  <div class="chapters-grid">
+
+    <div class="chapter-card" data-keywords="allergic rhinitis seasonal perennial dust mite pet dander pollen mold antihistamine intranasal corticosteroid INCS decongestant LTRA immunotherapy subcutaneous sublingual allergic shiners nasal crease turbinate">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 187</span>
+        <span class="ch-title">Allergic Rhinitis</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-crit">Critical</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp">Allergic rhinitis: most common chronic atopic disease; affects 10–30% of children; seasonal (trees spring, grass summer, weeds fall) or perennial (dust mite, cockroach, pet dander, mold)</li>
+          <li class="imp">Symptoms: sneezing, rhinorrhea (clear), nasal congestion, pruritus (nose, eyes, palate), postnasal drip, anosmia</li>
+          <li class="imp">Signs: <strong class="hl">allergic salute</strong> (upward rubbing of nose), <strong class="hl">nasal crease</strong> (horizontal line across nose), <strong class="hl">allergic shiners</strong> (infraorbital darkening — venous congestion), <strong class="hl">cobblestoning</strong> (posterior pharynx), pale/bluish boggy turbinates, Dennie-Morgan lines (extra fold under eye)</li>
+          <li class="crit">Treatment hierarchy: <strong class="hld">intranasal corticosteroids (INCS)</strong> — most effective single agent (superior to antihistamines for nasal congestion); e.g., fluticasone, mometasone, budesonide; onset 1–2 weeks; minimal systemic absorption</li>
+          <li class="imp">Antihistamines: <strong class="hl">second-generation</strong> (cetirizine, loratadine, fexofenadine) — preferred (non-sedating, once daily); first-generation (diphenhydramine) — sedating, impairs cognition/school performance, avoid</li>
+          <li class="imp">Add-ons: <strong class="hl">LTRA (montelukast)</strong> — useful if concurrent asthma; intranasal antihistamine (azelastine) — rapid onset; decongestants (pseudoephedrine — ≥12 yrs; avoid oxymetazoline &gt;3 days — rebound rhinitis medicamentosa); intranasal cromoglycate (safe, less effective)</li>
+          <li class="imp"><strong class="hl">Allergen Immunotherapy (AIT)</strong>: subcutaneous (SCIT) or sublingual (SLIT); disease-modifying — induces tolerance; indicated for moderate-severe persistent allergic rhinitis not controlled by pharmacotherapy; 3–5 year course; only treatment that alters natural history</li>
+          <li class="note">Nasal cytology: eosinophils on nasal smear → allergic; neutrophils → infectious; may help distinguish</li>
+        </ul>
+        <div class="mnemonic">Allergic rhinitis: "INCS beats antihistamines for congestion — use second-gen antihistamines, NOT first-gen (sedating)"</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ══════════════════════════════ -->
+  <!-- SECTION D: ATOPIC DERMATITIS  -->
+  <!-- ══════════════════════════════ -->
+  <div class="section-label">Section D — Atopic Dermatitis</div>
+  <div class="chapters-grid">
+
+    <div class="chapter-card" data-keywords="atopic dermatitis eczema filaggrin FLG skin barrier pruritus flexural distribution infantile childhood adult moisturizer emollient topical corticosteroid tacrolimus pimecrolimus dupilumab tralokinumab JAK inhibitor abrocitinib upadacitinib Staph aureus superinfection bleach bath">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 188</span>
+        <span class="ch-title">Atopic Dermatitis (Eczema)</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-crit">Critical</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp">Atopic dermatitis (AD): most common inflammatory skin disease of children; affects 15–20% of children; strong association with asthma and allergic rhinitis (atopic march)</li>
+          <li class="imp">Pathogenesis: <strong class="hl">filaggrin (FLG) gene mutations</strong> → defective skin barrier → trans-epidermal water loss → allergen penetration → Th2 inflammation (↑IL-4, IL-13, IL-31 — pruritus); Th2 → IgE sensitization → ↑atopy</li>
+          <li class="imp">Distribution by age: <strong class="hl">infants</strong>: face, scalp, extensor surfaces; <strong class="hl">children</strong>: flexural creases (antecubital, popliteal fossa); <strong class="hl">adults</strong>: hands, eyelids, neck</li>
+          <li class="imp">Diagnosis: clinical — pruritus + chronic relapsing course + characteristic morphology/distribution + personal/family history of atopy (Hanifin-Rajka criteria)</li>
+          <li class="crit">Treatment ladder:</li>
+          <li class="imp">1. <strong class="hl">Moisturizers/emollients</strong>: cornerstone of management; apply liberally and frequently (especially immediately after bathing — "soak and seal"); fragrance-free</li>
+          <li class="imp">2. <strong class="hl">Topical corticosteroids (TCS)</strong>: first-line for flares; use lowest effective potency; avoid high-potency on face/folds/genitals; side effects: skin atrophy, striae, HPA suppression with prolonged use</li>
+          <li class="imp">3. <strong class="hl">Topical calcineurin inhibitors (TCI)</strong>: tacrolimus, pimecrolimus — steroid-sparing; safe for face/folds; no atrophy risk; FDA black box (theoretical lymphoma risk — not clinically proven); use on sensitive areas or steroid-intolerant</li>
+          <li class="crit">4. Moderate-severe AD: <strong class="hld">dupilumab (anti-IL-4Rα)</strong> — FDA approved ≥6 months; blocks IL-4 and IL-13 signaling; most effective biologic; injected every 2–4 weeks; excellent safety profile</li>
+          <li class="note">JAK inhibitors (abrocitinib, upadacitinib): oral; approved for moderate-severe AD ≥12 yrs; rapid onset; monitor for infections (herpes zoster), blood counts, lipids; black box: malignancy/thrombosis/CV risk</li>
+          <li class="crit"><strong class="hl">Staphylococcus aureus superinfection</strong>: most common trigger of flares; colonizes &gt;90% of AD skin; treat flares with topical antibiotics (mupirocin), dilute bleach baths (↓colonization), systemic antibiotics if spreading cellulitis</li>
+          <li class="note">Eczema herpeticum (Kaposi varicelliform eruption): HSV superinfection of eczematous skin → punched-out erosions + fever; <strong class="hl">treat with systemic acyclovir</strong> — potentially life-threatening</li>
+        </ul>
+        <div class="mnemonic">AD treatment: "Moisturize → TCS flares → TCI sensitive areas → Dupilumab for moderate-severe" — filaggrin defect = dry skin = moisturize!</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ══════════════════════════════ -->
+  <!-- SECTION E: FOOD ALLERGY       -->
+  <!-- ══════════════════════════════ -->
+  <div class="section-label">Section E — Food Allergy &amp; Gastrointestinal Allergic Disorders</div>
+  <div class="chapters-grid">
+
+    <div class="chapter-card" data-keywords="food allergy IgE mediated non-IgE peanut milk egg tree nuts fish shellfish wheat soy sesame top 9 allergens FPIES FPIAP EoE eosinophilic esophagitis oral allergy syndrome OAS LEAP trial elimination diet oral food challenge OIT">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 189</span>
+        <span class="ch-title">Food Allergy &amp; Gastrointestinal Allergic Disorders</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-crit">Critical</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp">Food allergy: affects ~8% of children; <strong class="hl">Top 9 allergens</strong> (responsible for &gt;90% reactions): <strong class="hl">milk, egg, peanut, tree nuts, fish, shellfish, wheat, soy, sesame</strong> (added 2023); peanut most common trigger of fatal anaphylaxis</li>
+          <li class="imp">IgE-mediated (immediate, within 2h): urticaria, angioedema, vomiting, anaphylaxis; skin prick test + specific IgE positive; management: strict avoidance + epinephrine auto-injector</li>
+          <li class="imp">Natural history: milk/egg/wheat/soy often outgrown; peanut/tree nut/fish/shellfish usually lifelong; peanut tolerance outgrown in ~20%</li>
+          <li class="imp"><strong class="hl">LEAP trial</strong>: early introduction of peanut-containing foods at 4–11 months in high-risk infants (severe eczema ± egg allergy) → <strong class="hl">↓peanut allergy by 80%</strong>; current AAP recommendation: introduce peanut early for all infants; high-risk → screen first with skin test or sIgE</li>
+          <li class="crit"><strong class="hld">FPIES</strong> (Food Protein-Induced Enterocolitis Syndrome): non-IgE; profuse repetitive <strong class="hld">vomiting 1–4h</strong> after trigger (milk/soy most common; also solid foods — rice, oats, meat); looks like sepsis; <strong class="hl">treat with ondansetron + IV NS</strong>; no skin test/sIgE (non-IgE); diagnosis by oral food challenge; most resolve by age 3–5</li>
+          <li class="imp"><strong class="hl">FPIAP</strong> (Food Protein-Induced Allergic Proctocolitis): non-IgE; bloody mucoid stools in well-appearing breastfed infants; maternal milk protein elimination; resolves by 12 months</li>
+          <li class="crit"><strong class="hld">Eosinophilic Esophagitis (EoE)</strong>: chronic immune-mediated esophageal inflammation driven by food antigens; ≥15 eosinophils/hpf on esophageal biopsy; symptoms: dysphagia, food impaction (older children), feeding difficulties/vomiting (infants); treat with <strong class="hl">PPI trial first</strong>, then topical swallowed steroids (fluticasone/budesonide slurry) or elimination diet (6-food or 2-food)</li>
+          <li class="note"><strong class="hl">Oral Allergy Syndrome (OAS/pollen-food allergy)</strong>: IgE cross-reactivity between pollen and raw food proteins; itching/tingling of mouth/lips/throat immediately after eating raw fruits/vegetables; cooking destroys labile proteins — cooked food tolerated; treat with antihistamines; not severe anaphylaxis risk typically</li>
+          <li class="note"><strong class="hl">Oral Immunotherapy (OIT)</strong>: Palforzia (FDA-approved peanut OIT) — desensitization by gradually increasing peanut protein dose; reduces severity of reactions if accidental exposure; does not cure; lifelong maintenance required</li>
+        </ul>
+        <div class="mnemonic">FPIES: "Profuse Vomiting 1–4h, Looks like Sepsis, non-IgE → Ondansetron + IV fluids" — no hives, no wheezing</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ══════════════════════════════ -->
+  <!-- SECTION F: ANAPHYLAXIS        -->
+  <!-- ══════════════════════════════ -->
+  <div class="section-label">Section F — Anaphylaxis</div>
+  <div class="chapters-grid">
+
+    <div class="chapter-card" data-keywords="anaphylaxis epinephrine auto-injector EpiPen biphasic antihistamine corticosteroid allergen trigger food insect sting latex drug diagnosis criteria multisystem skin GI respiratory cardiovascular">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 190</span>
+        <span class="ch-title">Anaphylaxis</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-crit">Critical</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp">Anaphylaxis: severe, life-threatening systemic allergic reaction; requires ≥2 organ systems OR hypotension after known allergen exposure</li>
+          <li class="imp">Diagnostic criteria (any ONE of three): 1) Acute onset with skin/mucosal + respiratory OR ↓BP; 2) ≥2 of: skin/mucosal, respiratory, ↓BP, GI symptoms after likely allergen exposure; 3) ↓BP after known allergen</li>
+          <li class="crit"><strong class="hld">EPINEPHRINE IM (0.01 mg/kg, max 0.5 mg) anterolateral thigh = FIRST AND ONLY FIRST-LINE TREATMENT — no delay, no exceptions</strong></li>
+          <li class="crit">Antihistamines and corticosteroids are <strong class="hld">adjuncts only</strong> — never substitute for epinephrine; they do NOT treat cardiovascular collapse or bronchospasm rapidly enough</li>
+          <li class="imp">After epinephrine: position supine + legs elevated (unless vomiting/respiratory distress); IV fluid bolus (20 mL/kg) for hypotension; O₂; continuous monitoring; second epinephrine dose if needed (q5–15 min); albuterol for bronchospasm</li>
+          <li class="crit"><strong class="hld">Biphasic anaphylaxis</strong>: recurrence of symptoms 4–12h (up to 72h) after apparent resolution; occurs in ~20%; observe ALL anaphylaxis patients ≥4–6h; some guidelines recommend 24h observation for severe reactions</li>
+          <li class="imp">Triggers: food (peanut #1 in children), insect venom, medications (penicillin, NSAIDs, cephalosporins), latex, exercise (exercise-induced anaphylaxis — often food + exercise cofactor), idiopathic</li>
+          <li class="crit">Discharge: <strong class="hl">prescribe 2 epinephrine auto-injectors</strong> (EpiPen/Auvi-Q); educate on use; anaphylaxis action plan; allergen avoidance education; referral to allergist; medic-alert bracelet</li>
+          <li class="note">Refractory anaphylaxis: glucagon (for patients on β-blockers — bypasses β-receptor); vasopressors (norepinephrine); methylene blue; ECMO in extremis</li>
+          <li class="note">Serum tryptase: peaks 60–90 min after anaphylaxis; helps confirm diagnosis retrospectively; mastocytosis if baseline ↑tryptase + recurrent anaphylaxis</li>
+        </ul>
+        <div class="mnemonic">Anaphylaxis: "Epi FIRST, epi FAST, epi THIGH — antihistamines and steroids are NEVER first-line!"</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ══════════════════════════════ -->
+  <!-- SECTION G: URTICARIA & ANGIOEDEMA -->
+  <!-- ══════════════════════════════ -->
+  <div class="section-label">Section G — Urticaria, Angioedema &amp; Other Allergic Conditions</div>
+  <div class="chapters-grid">
+
+    <div class="chapter-card" data-keywords="urticaria hives angioedema acute chronic antihistamine IgE mast cell dermographism cold cholinergic pressure physical urticaria idiopathic H1 H2 blocker omalizumab dermatographism Quincke edema">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 191</span>
+        <span class="ch-title">Urticaria &amp; Angioedema</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-crit">Critical</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp">Urticaria (hives): transient, pruritic wheals (raised, erythematous, blanching); individual lesions last &lt;24h (if &gt;24h consider urticarial vasculitis); mast cell histamine release</li>
+          <li class="imp"><strong class="hl">Acute urticaria (&lt;6 wks)</strong>: most common in children; usually IgE-mediated (food, drug, insect) or viral infection-triggered; often self-limited</li>
+          <li class="imp"><strong class="hl">Chronic urticaria (≥6 wks)</strong>: <strong class="hl">idiopathic/spontaneous in 80–90%</strong> of cases; workup rarely reveals cause; autoimmune (anti-FcεRI IgG antibodies) in some</li>
+          <li class="imp">Physical urticarias: <strong class="hl">dermatographism</strong> (skin writing — most common physical urticaria; scratch produces wheals), cold (swimming risk — anaphylaxis), cholinergic (small wheals with exercise/heat/stress), pressure, solar, aquagenic</li>
+          <li class="crit">Treatment: <strong class="hl">second-generation H1 antihistamines</strong> (cetirizine, loratadine, fexofenadine) — first-line, daily; can increase to 4× standard dose; add <strong class="hl">H2 blocker</strong> (ranitidine/famotidine) for refractory; <strong class="hl">omalizumab</strong> (anti-IgE) — approved for chronic spontaneous urticaria ≥12 yrs refractory to antihistamines; rapid onset; very effective</li>
+          <li class="imp">Angioedema: deeper dermal/submucosal swelling (lips, eyelids, tongue, GI tract, larynx); non-pitting, non-pruritic (vs urticaria which is pruritic); laryngeal angioedema = life-threatening → epinephrine</li>
+          <li class="crit">Angioedema WITHOUT urticaria: think <strong class="hld">hereditary angioedema (HAE)</strong> (C1-INH deficiency — bradykinin-mediated, NOT histamine — antihistamines ineffective!) or ACE inhibitor-induced (bradykinin — stop ACE inhibitor immediately)</li>
+          <li class="note">ACE inhibitor angioedema: bradykinin accumulation (ACE normally degrades bradykinin); more common in Black patients; treat with icatibant or fresh frozen plasma; switch to ARB (lower risk)</li>
+        </ul>
+        <div class="mnemonic">Angioedema without urticaria: "No Hives = No Histamine = Think Bradykinin = HAE or ACE inhibitor — antihistamines won't work!"</div>
+      </div>
+    </div>
+
+    <div class="chapter-card" data-keywords="insect sting allergy venom bee wasp yellow jacket hornet fire ant local reaction large local systemic anaphylaxis venom immunotherapy VIT EpiPen serum sickness">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 192</span>
+        <span class="ch-title">Insect Sting Allergy &amp; Venom Immunotherapy</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp">Stinging insects: Hymenoptera order — honeybee, bumble bee, yellow jacket (most common), wasp, hornets, fire ant (southeastern US)</li>
+          <li class="imp">Reaction types: <strong class="hl">normal local</strong> (pain, swelling &lt;10 cm — not allergic); <strong class="hl">large local</strong> (swelling &gt;10 cm, peaks 24–48h, lasts 3–10 days — IgE mediated but not systemic); <strong class="hl">systemic/anaphylaxis</strong> (remote urticaria, angioedema, bronchospasm, shock — true allergy)</li>
+          <li class="crit">Systemic reaction management: epinephrine immediately; prescribe EpiPen × 2 at discharge; refer to allergist for venom testing and immunotherapy</li>
+          <li class="crit"><strong class="hl">Venom Immunotherapy (VIT)</strong>: indicated for systemic reactions (not just large local); highly effective — reduces risk of future anaphylaxis from ~60% to &lt;5%; 3–5 year course; children with cutaneous-only systemic reactions (urticaria only) have lower future risk and VIT may not be necessary</li>
+          <li class="note">Honeybee: barbed stinger stays in skin → remove immediately (scrape, don't squeeze); yellow jackets can sting multiple times</li>
+          <li class="note">Fire ant: pustular papules characteristic (unique to fire ant — not seen with other Hymenoptera); pseudopustules form 24h after sting; treat with topical steroids; anaphylaxis risk same</li>
+          <li class="note">Mastocytosis: ↑baseline tryptase → ↑anaphylaxis risk with stings → VIT strongly indicated; tryptase level should be checked in all systemic sting reactors</li>
+        </ul>
+        <div class="mnemonic">VIT indication: "Systemic reaction to sting → VIT reduces future anaphylaxis risk from 60% to &lt;5%"</div>
+      </div>
+    </div>
+
+    <div class="chapter-card" data-keywords="drug allergy penicillin cephalosporin cross-reactivity beta-lactam NSAID aspirin serum sickness Stevens-Johnson TEN drug rash eosinophilia DRESS sulfonamide anticonvulsant skin test drug challenge graded challenge desensitization">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 193</span>
+        <span class="ch-title">Drug Allergy &amp; Adverse Drug Reactions</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-crit">Critical</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp">Drug reactions: classified as predictable (dose-dependent — most, e.g., side effects, toxicity) vs unpredictable (immunologic/idiosyncratic — "drug allergy")</li>
+          <li class="imp">Immunologic drug reactions: Type I (IgE — anaphylaxis, urticaria), Type II (cytotoxic — hemolytic anemia), Type III (serum sickness), Type IV (T-cell — contact dermatitis, SJS/TEN, DRESS)</li>
+          <li class="crit"><strong class="hld">Penicillin allergy</strong>: most commonly reported drug allergy (10% of patients); true IgE-mediated allergy in &lt;1%; ~80% lose allergy over 10 years; skin testing (major + minor determinants) most reliable; penicillin skin test negative → can receive penicillin safely</li>
+          <li class="imp">Penicillin-cephalosporin cross-reactivity: historically cited as ~10% — now known to be <strong class="hl">~2%</strong> (shared R1 side chain, not β-lactam ring); patients with penicillin allergy can usually receive cephalosporins; higher risk with structurally similar R1 chains (amoxicillin-cefadroxil/cefprozil)</li>
+          <li class="crit"><strong class="hld">DRESS</strong> (Drug Reaction with Eosinophilia and Systemic Symptoms): severe delayed reaction (2–8 wks after drug start); fever + widespread morbilliform rash + eosinophilia + lymphadenopathy + organ involvement (liver, kidney, heart, lung); drugs: aromatic anticonvulsants (phenytoin, carbamazepine, lamotrigine), allopurinol, sulfonamides, dapsone; treat: stop drug, systemic corticosteroids, IVIG; can be fatal</li>
+          <li class="crit"><strong class="hld">SJS/TEN</strong>: see Part XII; mucous membrane involvement + epidermal detachment; stop culprit drug immediately; supportive care in burn unit; IVIG or cyclosporine for TEN</li>
+          <li class="imp">Aspirin/NSAID reactions: Type A (pharmacologic — GI irritation, renal effects), aspirin-exacerbated respiratory disease (AERD/Samter triad — asthma + nasal polyps + aspirin sensitivity; leukotriene-mediated); true IgE-mediated NSAID allergy rare</li>
+          <li class="note">Drug desensitization: gradual incremental dosing to induce temporary tolerance; useful when no alternative drug exists (e.g., penicillin for syphilis in pregnancy, carboplatin allergy); temporary — must repeat if drug stopped</li>
+          <li class="note">Graded challenge (test dose): for patients with low probability of true allergy; not for those with confirmed IgE-mediated reaction</li>
+        </ul>
+        <div class="mnemonic">DRESS: "2–8 weeks after drug + Rash + Eosinophilia + Organ damage = DRESS — stop drug, give steroids"</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    <span>Nelson Textbook of Pediatrics · 22nd Ed. · 2024</span>
+    <span>Part XIII: Chapters 182–193 · Allergic Disorders</span>
+  </div>
+
+</div>
+
+<script>
+  let openedChapters = new Set();
+  const TOTAL_CHAPTERS = 12;
+
+  function toggleCard(header) {
+    const card = header.parentElement;
+    const wasOpen = card.classList.contains('open');
+    card.classList.toggle('open');
+    const chNum = card.querySelector('.ch-num').textContent;
+    if (!wasOpen) openedChapters.add(chNum);
+    updateProgress();
+  }
+
+  function updateProgress() {
+    const opened = openedChapters.size;
+    const pct = Math.min((opened / TOTAL_CHAPTERS) * 100, 100);
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressText').textContent = `${opened} / ${TOTAL_CHAPTERS} opened`;
+  }
+
+  function filterChapters() {
+    const q = document.getElementById('searchInput').value.toLowerCase().trim();
+    const cards = document.querySelectorAll('.chapter-card');
+    let visible = 0;
+    cards.forEach(card => {
+      const title    = card.querySelector('.ch-title').textContent.toLowerCase();
+      const body     = card.querySelector('.chapter-body') ? card.querySelector('.chapter-body').textContent.toLowerCase() : '';
+      const keywords = (card.dataset.keywords || '').toLowerCase();
+      if (!q || title.includes(q) || body.includes(q) || keywords.includes(q)) {
+        card.classList.remove('hidden'); visible++;
+      } else { card.classList.add('hidden'); }
+    });
+    document.getElementById('chapterCount').textContent = q
+      ? `${visible} result${visible !== 1 ? 's' : ''}`
+      : `${TOTAL_CHAPTERS} chapters`;
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.ctrlKey && e.key === 'e') {
+      e.preventDefault();
+      document.querySelectorAll('.chapter-card:not(.open)').forEach(c => {
+        c.classList.add('open');
+        openedChapters.add(c.querySelector('.ch-num').textContent);
+      });
+      updateProgress();
+    }
+  });
+</script>
+</body>
+</html>

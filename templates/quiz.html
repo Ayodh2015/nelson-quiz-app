@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}Question {{ current }} — Nelson Peds Quiz{% endblock %}
+{% block title %}Question {{ current }} — Postgraduate Pead MSQ Exam Help Tool{% endblock %}
 
 {% block extra_css %}
 <style>
@@ -277,15 +277,6 @@ document.getElementById('answer-form').addEventListener('submit', function(e) {
             e.preventDefault();
             alert('Please select an answer before continuing.');
             return;
-        }
-    } else {
-        const numStatements = {{ tf_statements | length }};
-        for (let i = 1; i <= numStatements; i++) {
-            if (!document.getElementById('tf_input_' + i).value) {
-                e.preventDefault();
-                alert('Please answer all statements before continuing.');
-                return;
-            }
         }
     }
     // Prevent double-submit

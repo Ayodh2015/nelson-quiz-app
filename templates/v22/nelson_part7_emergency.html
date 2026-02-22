@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nelson Pediatrics — Part VII: Emergency Medicine, Critical Care &amp; Anesthesia</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --surface2: #1c2333;
+    --border: #30363d;
+    --accent: #e8a44a;
+    --accent2: #5caaee;
+    --accent3: #63d98a;
+    --danger: #f07a7a;
+    --text: #e6edf3;
+    --text-muted: #8b949e;
+    --text-dim: #484f58;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.75;
+    min-height: 100vh;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+  }
+
+  .page-wrap {
+    position: relative;
+    z-index: 1;
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 0 24px 80px;
+  }
+
+  .hero {
+    padding: 72px 0 48px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 48px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::after {
+    content: 'VII';
+    position: absolute;
+    right: -10px;
+    top: 10px;
+    font-family: 'Playfair Display', serif;
+    font-size: 180px;
+    font-weight: 900;
+    color: var(--border);
+    line-height: 1;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .hero-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(232,164,74,0.1);
+    border: 1px solid rgba(232,164,74,0.3);
+    color: var(--accent);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+  }
+
+  .hero-tag::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.8); }
+  }
+
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 4.5vw, 48px);
+    font-weight: 900;
+    line-height: 1.1;
+    margin-bottom: 12px;
+    color: var(--text);
+  }
+
+  .hero h1 span { color: var(--accent); }
+
+  .hero-sub {
+    font-size: 15px;
+    color: var(--text-muted);
+    max-width: 560px;
+    margin-bottom: 28px;
+  }
+
+  .hero-meta {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  .meta-pill {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--text-muted);
+    font-family: 'DM Mono', monospace;
+  }
+
+  .meta-pill .dot { width: 8px; height: 8px; border-radius: 50%; }
+
+  .search-bar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(13,17,23,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 0;
+    margin-bottom: 36px;
+  }
+
+  .search-inner {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .search-input {
+    flex: 1;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 14px 8px 36px;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%238b949e' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: 10px center;
+  }
+
+  .search-input:focus { border-color: var(--accent); }
+  .search-input::placeholder { color: var(--text-dim); }
+
+  .chapter-count {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
+
+  .stats-strip {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    margin-bottom: 48px;
+  }
+
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 18px;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+
+  .stat-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+
+  .stat-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+  }
+
+  .stat-value {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  .stat-desc { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+
+  .hiyield {
+    background: linear-gradient(135deg, rgba(232,164,74,0.08), rgba(232,164,74,0.03));
+    border: 1px solid rgba(232,164,74,0.25);
+    border-left: 3px solid var(--accent);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin-bottom: 48px;
+  }
+
+  .hiyield-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--accent);
+    margin-bottom: 14px;
+  }
+
+  .hiyield ul {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 8px;
+  }
+
+  .hiyield ul li {
+    font-size: 13px;
+    color: var(--text);
+    padding-left: 16px;
+    position: relative;
+    line-height: 1.5;
+  }
+
+  .hiyield ul li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-size: 11px;
+  }
+
+  strong.hl  { color: var(--accent);  font-weight: 600; }
+  strong.hl2 { color: var(--accent2); font-weight: 600; }
+  strong.hl3 { color: var(--accent3); font-weight: 600; }
+  strong.hld { color: var(--danger);  font-weight: 600; }
+
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .chapters-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 48px;
+  }
+
+  .chapter-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  .chapter-card:hover {
+    border-color: rgba(92,170,238,0.4);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  }
+
+  .chapter-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 20px;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .ch-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text-muted);
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 3px 8px;
+    white-space: nowrap;
+    min-width: 42px;
+    text-align: center;
+  }
+
+  .ch-title {
+    flex: 1;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text);
+  }
+
+  .ch-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+
+  .tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 2px 7px;
+    border-radius: 4px;
+    border: 1px solid;
+  }
+
+  .tag-hiy  { color: var(--accent);  border-color: rgba(232,164,74,0.3);  background: rgba(232,164,74,0.08); }
+  .tag-eth  { color: var(--accent2); border-color: rgba(92,170,238,0.3);  background: rgba(92,170,238,0.08); }
+  .tag-soc  { color: var(--accent3); border-color: rgba(99,217,138,0.3);  background: rgba(99,217,138,0.08); }
+  .tag-crit { color: var(--danger);  border-color: rgba(240,122,122,0.3); background: rgba(240,122,122,0.08); }
+
+  .ch-toggle {
+    color: var(--text-muted);
+    font-size: 18px;
+    transition: transform 0.3s;
+    line-height: 1;
+  }
+
+  .chapter-card.open .ch-toggle { transform: rotate(180deg); }
+
+  .chapter-body {
+    display: none;
+    padding: 0 20px 20px 20px;
+    border-top: 1px solid var(--border);
+    animation: slideIn 0.2s ease;
+  }
+
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateY(-6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .chapter-card.open .chapter-body { display: block; }
+
+  .chapter-body p {
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.8;
+    margin-top: 14px;
+    margin-bottom: 10px;
+  }
+
+  .key-points {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 10px;
+  }
+
+  .key-points li {
+    font-size: 13.5px;
+    color: var(--text);
+    padding: 8px 12px;
+    background: var(--surface2);
+    border-radius: 6px;
+    border-left: 2px solid var(--border);
+    line-height: 1.6;
+  }
+
+  .key-points li.imp  { border-left-color: var(--accent); }
+  .key-points li.crit { border-left-color: var(--danger); }
+  .key-points li.note { border-left-color: var(--accent2); }
+
+  .mnemonic {
+    margin-top: 12px;
+    background: rgba(99,217,138,0.07);
+    border: 1px dashed rgba(99,217,138,0.25);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 13px;
+    color: var(--accent3);
+  }
+
+  .mnemonic::before { content: '💡 '; }
+
+  .progress-wrap { margin-bottom: 32px; }
+
+  .progress-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .progress-bar {
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    border-radius: 2px;
+    width: 0%;
+    transition: width 0.4s ease;
+  }
+
+  .footer {
+    margin-top: 60px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+  }
+
+  .chapter-card.hidden { display: none; }
+
+  @media (max-width: 600px) {
+    .hero::after { font-size: 100px; }
+    .stats-strip { grid-template-columns: repeat(2, 1fr); }
+    .hiyield ul { grid-template-columns: 1fr; }
+    .ch-tags { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="search-bar">
+  <div class="search-inner">
+    <input class="search-input" type="text" id="searchInput" placeholder="Search chapters, topics, keywords…" oninput="filterChapters()">
+    <span class="chapter-count" id="chapterCount">18 chapters</span>
+  </div>
+</div>
+
+<div class="page-wrap">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-tag">Nelson Textbook of Pediatrics · 22nd Edition · 2024</div>
+    <h1>Part <span>VII</span><br>Emergency Medicine, Critical Care &amp; Anesthesia</h1>
+    <p class="hero-sub">Resuscitation, shock, respiratory failure, toxicology, sedation, analgesia, and pediatric critical care — life-saving algorithms and clinical decision-making.</p>
+    <div class="hero-meta">
+      <span class="meta-pill"><span class="dot" style="background:var(--accent)"></span>Chapters 77–94</span>
+      <span class="meta-pill"><span class="dot" style="background:var(--accent2)"></span>18 Chapters</span>
+      <span class="meta-pill"><span class="dot" style="background:var(--danger)"></span>High-Stakes Clinical Content</span>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-strip">
+    <div class="stat-card">
+      <div class="stat-label">Chapters</div>
+      <div class="stat-value">18</div>
+      <div class="stat-desc">Ch. 77–94</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Core Topics</div>
+      <div class="stat-value">4</div>
+      <div class="stat-desc">EM · Critical Care · Toxicology · Anesthesia</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Critical Tags</div>
+      <div class="stat-value">★★★★★</div>
+      <div class="stat-desc">Highest-stakes section in Pediatrics</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Board Relevance</div>
+      <div class="stat-value">★★★★★</div>
+      <div class="stat-desc">PALS, toxicology, shock heavily tested</div>
+    </div>
+  </div>
+
+  <!-- HIGH YIELD OVERVIEW -->
+  <div class="hiyield">
+    <div class="hiyield-header">⚡ High-Yield Quick Reference — Part VII</div>
+    <ul>
+      <li>Pediatric arrest: <strong class="hld">asphyxia most common cause</strong> — focus on airway/ventilation first (vs adult = cardiac)</li>
+      <li>CPR ratio: <strong class="hl">30:2 (1 rescuer), 15:2 (2 rescuers, child/infant)</strong>; compression rate 100–120/min</li>
+      <li>Epinephrine dose in arrest: <strong class="hl">0.01 mg/kg IV/IO</strong> (1:10,000); repeat every 3–5 min</li>
+      <li>Shock: compensated (normal BP) → decompensated (↓BP) → irreversible; treat early!</li>
+      <li>Septic shock first-line: <strong class="hl">20 mL/kg NS bolus</strong> × 3 within 1st hour + broad-spectrum antibiotics</li>
+      <li>Respiratory failure: <strong class="hld">PaO₂ &lt;60 mmHg on room air</strong> or <strong class="hld">PaCO₂ &gt;50 mmHg</strong></li>
+      <li>RSI sequence: <strong class="hl">atropine (infants) → sedative → succinylcholine/rocuronium → intubate</strong></li>
+      <li>Status epilepticus: <strong class="hl">benzodiazepine first</strong> (lorazepam/diazepam) → fosphenytoin → phenobarbital → anesthesia</li>
+      <li>Acetaminophen toxicity: NAC (N-acetylcysteine) within 8–10h; use Rumack-Matthew nomogram</li>
+      <li>Opioid overdose: <strong class="hl">naloxone 0.01 mg/kg IV/IO/IM/IN</strong></li>
+      <li>TCA overdose: wide QRS → <strong class="hl">sodium bicarbonate</strong> to alkalinize; seizures common</li>
+      <li>Anaphylaxis: <strong class="hld">IM epinephrine 0.01 mg/kg (max 0.5 mg) anterolateral thigh — FIRST LINE</strong></li>
+    </ul>
+  </div>
+
+  <!-- PROGRESS BAR -->
+  <div class="progress-wrap">
+    <div class="progress-label">
+      <span>Study Progress</span>
+      <span id="progressText">0 / 18 opened</span>
+    </div>
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- SECTION A: EMERGENCY MEDICINE               -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div class="section-label">Section A — Emergency Medicine</div>
+  <div class="chapters-grid">
+
+    <!-- CH 77 -->
+    <div class="chapter-card" data-keywords="emergency department triage pediatric assessment triangle PAT appearance work of breathing circulation SICK not sick">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 77</span>
+        <span class="ch-title">Pediatric Emergency Medicine: Approach to the Acutely Ill Child</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-crit">Critical</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp"><strong class="hl">Pediatric Assessment Triangle (PAT)</strong>: rapid 30-second visual assessment — Appearance, Work of Breathing, Circulation to skin</li>
+          <li class="imp">Appearance (TICLS): <strong class="hl">Tone, Interactivity, Consolability, Look/Gaze, Speech/Cry</strong></li>
+          <li class="crit">A sick-appearing child = abnormal PAT → immediate intervention; do NOT wait for full exam</li>
+          <li class="imp">Primary survey: <strong class="hl">ABCDE</strong> — Airway, Breathing, Circulation, Disability (neuro), Exposure</li>
+          <li class="imp">Secondary survey: head-to-toe exam after stabilization; SAMPLE history (Symptoms, Allergies, Medications, Past hx, Last meal, Events)</li>
+          <li class="note">Weight estimation: <strong class="hl">Broselow tape</strong> most accurate; formula: weight (kg) = (age + 4) × 2 for 1–10 years</li>
+          <li>Key pediatric differences: larger head-to-body ratio, obligate nose breathers (infants), compliant chest wall, higher metabolic rate, larger surface area:mass ratio</li>
+        </ul>
+        <div class="mnemonic">PAT = "AWC" → Appearance, Work of Breathing, Circulation to skin — 30-second impression</div>
+      </div>
+    </div>
+
+    <!-- CH 78 -->
+    <div class="chapter-card" data-keywords="CPR cardiopulmonary resuscitation pediatric arrest asphyxia PALS AED defibrillation epinephrine chain of survival">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 78</span>
+        <span class="ch-title">Pediatric Cardiopulmonary Resuscitation (CPR)</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-crit">Critical</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="crit"><strong class="hld">Pediatric arrest is primarily RESPIRATORY (asphyxial)</strong> — unlike adult (cardiac); early ventilation = key</li>
+          <li class="imp">Compression rate: <strong class="hl">100–120/min</strong>; depth: ≥⅓ AP diameter (≥4 cm infant, ≥5 cm child)</li>
+          <li class="imp">Compression:ventilation ratio: <strong class="hl">30:2 (single rescuer)</strong>; <strong class="hl">15:2 (2 rescuers, child/infant)</strong></li>
+          <li class="imp">Infant technique: <strong class="hl">2-thumb encircling hands</strong> (2 rescuers) or 2-finger technique (1 rescuer); compress lower ½ of sternum</li>
+          <li class="crit">Epinephrine: <strong class="hld">0.01 mg/kg (1:10,000) IV/IO</strong> every 3–5 min; can give 0.1 mg/kg (1:1,000) via ETT if no IV/IO</li>
+          <li class="imp">Shockable rhythms: <strong class="hl">VF and pulseless VT</strong>; defibrillate at <strong class="hl">2 J/kg</strong> (initial), then 4 J/kg</li>
+          <li class="note">Non-shockable: PEA and asystole → CPR + epinephrine; find reversible causes (Hs &amp; Ts)</li>
+          <li class="note">IO (intraosseous) access: equally effective as IV for drugs/fluids in arrest — use if IV not obtained within 90 seconds</li>
+        </ul>
+        <div class="mnemonic">Reversible causes "Hs &amp; Ts": Hypoxia, Hypovolemia, Hypo/Hyperkalemia, Hypothermia, Hydrogen ion (acidosis) | Tension PTX, Tamponade, Toxins, Thrombosis (PE/coronary)</div>
+      </div>
+    </div>
+
+    <!-- CH 79 -->
+    <div class="chapter-card" data-keywords="shock septic hypovolemic distributive cardiogenic obstructive fluid resuscitation vasopressor dopamine epinephrine norepinephrine signs">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 79</span>
+        <span class="ch-title">Shock</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-crit">Critical</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp">Shock = inadequate oxygen delivery to meet tissue metabolic demands → cellular dysfunction</li>
+          <li class="imp">Types: <strong class="hl">Hypovolemic</strong> (most common in children — dehydration, hemorrhage), <strong class="hl">Distributive</strong> (septic, anaphylactic, neurogenic), <strong class="hl">Cardiogenic</strong>, <strong class="hl">Obstructive</strong> (tension PTX, cardiac tamponade, massive PE)</li>
+          <li class="crit"><strong class="hld">Compensated shock</strong>: normal BP, tachycardia, delayed cap refill, mottled skin, oliguria — <strong class="hld">TREAT EARLY before decompensation!</strong></li>
+          <li class="crit"><strong class="hld">Decompensated shock</strong>: ↓BP (late sign in children!) → irreversible if untreated</li>
+          <li class="imp">Fluid resuscitation: <strong class="hl">20 mL/kg isotonic crystalloid (NS or LR) bolus</strong>; repeat up to 60 mL/kg in 1st hour for septic shock; reassess after each bolus</li>
+          <li class="imp">Vasopressors: <strong class="hl">dopamine</strong> (first-line traditionally), <strong class="hl">epinephrine</strong> (cold/cardiogenic shock), <strong class="hl">norepinephrine</strong> (warm/distributive); <strong class="hl">vasopressin</strong> (refractory)</li>
+          <li class="note">Hemorrhagic shock: prefer blood products (1:1:1 PRBCs:FFP:Platelets) over crystalloid in massive hemorrhage</li>
+          <li>Obstructive shock: treat cause — needle decompression (tension PTX), pericardiocentesis (tamponade)</li>
+        </ul>
+        <div class="mnemonic">Shock signs: "TOPS" → Tachycardia, Oliguria, Poor cap refill, Skin mottled (BP drops LATE)</div>
+      </div>
+    </div>
+
+    <!-- CH 80 -->
+    <div class="chapter-card" data-keywords="respiratory distress failure airway obstruction stridor wheeze apnea hypoxia hypercapnia intubation BVM oxygen">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 80</span>
+        <span class="ch-title">Acute Respiratory Distress and Failure</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-crit">Critical</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp">Respiratory failure: <strong class="hld">PaO₂ &lt;60 mmHg</strong> on room air OR <strong class="hld">PaCO₂ &gt;50 mmHg</strong> (type I: hypoxemic; type II: hypercapnic)</li>
+          <li class="imp">Signs of distress: tachypnea, nasal flaring, retractions (subcostal, intercostal, suprasternal), grunting (auto-PEEP), head bobbing, cyanosis</li>
+          <li class="imp"><strong class="hl">Grunting</strong> = expiratory sound = child self-applying PEEP to maintain FRC — sign of severe distress</li>
+          <li class="crit">Upper airway obstruction: croup (inspiratory stridor, barky cough, seal bark), epiglottitis (tripod, drooling, toxic — do NOT examine throat), foreign body</li>
+          <li class="imp">Oxygen delivery: nasal cannula (max 44% FiO₂) → simple face mask → non-rebreather (90–95%) → CPAP/BiPAP → intubation</li>
+          <li class="note">BVM ventilation: most important skill in pediatric emergency; proper mask seal, 2-person technique preferred</li>
+          <li class="imp">ETT size: <strong class="hl">(age/4) + 4</strong> uncuffed; <strong class="hl">(age/4) + 3.5</strong> cuffed; depth: ETT size × 3</li>
+        </ul>
+        <div class="mnemonic">ETT size: "Four plus Four, divide age by Four" → (Age÷4) + 4 uncuffed, +3.5 cuffed</div>
+      </div>
+    </div>
+
+    <!-- CH 81 -->
+    <div class="chapter-card" data-keywords="rapid sequence intubation RSI preoxygenation cricoid pressure sedation succinylcholine rocuronium ketamine propofol atropine">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 81</span>
+        <span class="ch-title">Airway Management and Rapid Sequence Intubation (RSI)</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-crit">Critical</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp">RSI = simultaneous induction + paralysis to facilitate intubation; minimizes aspiration risk</li>
+          <li class="imp"><strong class="hl">RSI sequence</strong>: Preparation → Preoxygenation → Pretreatment → Paralysis + sedation → Positioning → Placement + confirmation → Post-intubation management ("7 Ps")</li>
+          <li class="imp"><strong class="hl">Atropine 0.02 mg/kg</strong> (min 0.1 mg): pretreatment for infants &lt;1 yr and children &lt;5 yrs to prevent bradycardia from succinylcholine/laryngoscopy</li>
+          <li class="imp">Sedation agents: <strong class="hl">ketamine</strong> (dissociative, maintains airway tone, bronchodilator — preferred for asthma, hypotension), <strong class="hl">propofol</strong> (rapid onset, ↓ICP), <strong class="hl">etomidate</strong> (hemodynamically neutral, ↓cortisol — avoid in sepsis), <strong class="hl">midazolam</strong></li>
+          <li class="imp">Paralytics: <strong class="hl">succinylcholine 1–2 mg/kg</strong> (depolarizing, fastest onset 45–60s); contraindicated in hyperkalemia, burns, crush injury, neuromuscular disease; <strong class="hl">rocuronium 1.2 mg/kg</strong> (non-depolarizing, alternative)</li>
+          <li class="note">Confirm ETT placement: <strong class="hl">ETCO₂ (waveform capnography)</strong> — gold standard; also chest rise, bilateral breath sounds, CXR</li>
+          <li class="crit">Difficult airway: LEMON — Look, Evaluate 3-3-2, Mallampati, Obstruction, Neck mobility</li>
+        </ul>
+        <div class="mnemonic">RSI "7 Ps": Preparation, Preoxygenation, Pretreatment, Paralysis+sedation, Positioning, Placement, Post-intubation care</div>
+      </div>
+    </div>
+
+    <!-- CH 82 -->
+    <div class="chapter-card" data-keywords="anaphylaxis epinephrine urticaria angioedema bronchospasm allergic reaction diphenhydramine methylprednisolone biphasic">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 82</span>
+        <span class="ch-title">Anaphylaxis</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-crit">Critical</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp">Anaphylaxis = severe, life-threatening, systemic allergic reaction involving ≥2 organ systems OR hypotension after exposure to known allergen</li>
+          <li class="crit"><strong class="hld">EPINEPHRINE IM (0.01 mg/kg, max 0.5 mg) anterolateral thigh = FIRST AND ONLY FIRST-LINE TREATMENT</strong></li>
+          <li class="crit">Antihistamines (diphenhydramine) and corticosteroids are ADJUNCTS only — <strong class="hld">NEVER give antihistamines instead of epinephrine</strong></li>
+          <li class="imp">Position: supine with legs elevated (unless vomiting or respiratory distress — then sit up); IV fluid bolus for hypotension</li>
+          <li class="imp"><strong class="hl">Biphasic reaction</strong>: recurrence 4–8h after initial reaction — observe ALL anaphylaxis patients ≥4–6 hours</li>
+          <li class="note">Discharge with EpiPen prescription × 2; education on avoidance and auto-injector use; referral to allergist</li>
+          <li>Common triggers: foods (peanut, tree nuts, shellfish, milk, egg), insect stings, latex, medications (penicillin, NSAIDs)</li>
+        </ul>
+        <div class="mnemonic">Anaphylaxis Rx: "EAC" → Epinephrine FIRST, Antihistamines (adjunct), Corticosteroids (adjunct) — epi is ALWAYS first!</div>
+      </div>
+    </div>
+
+    <!-- CH 83 -->
+    <div class="chapter-card" data-keywords="status epilepticus seizure benzodiazepine lorazepam diazepam fosphenytoin phenobarbital propofol refractory management">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 83</span>
+        <span class="ch-title">Status Epilepticus</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-crit">Critical</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp">Status epilepticus (SE) = seizure lasting ≥5 min OR ≥2 seizures without recovery between them</li>
+          <li class="crit">Step 1 (0–5 min): <strong class="hl">ABCs</strong>, position, oxygen, glucose check</li>
+          <li class="crit">Step 2 (5–20 min): <strong class="hld">IV/IM/IN benzodiazepine</strong> — <strong class="hl">lorazepam 0.1 mg/kg IV</strong> (max 4 mg); <strong class="hl">diazepam 0.5 mg/kg rectal</strong>; <strong class="hl">midazolam 0.2 mg/kg IM/IN</strong></li>
+          <li class="crit">Step 3 (20–40 min): <strong class="hld">fosphenytoin 20 PE/kg IV</strong> OR <strong class="hl">valproate 40 mg/kg IV</strong> OR <strong class="hl">levetiracetam 60 mg/kg IV</strong></li>
+          <li class="crit">Step 4 (40–60 min — refractory SE): <strong class="hld">anesthesia</strong> — <strong class="hl">phenobarbital 20 mg/kg IV</strong>, midazolam infusion, propofol infusion, pentobarbital coma</li>
+          <li class="imp">Always check and treat: <strong class="hl">hypoglycemia</strong> (dextrose 0.5–1 g/kg), hyponatremia, fever (antipyretics), infection (LP if indicated)</li>
+          <li class="note">Refractory SE (&gt;60 min) has high mortality; continuous EEG monitoring required in ICU</li>
+        </ul>
+        <div class="mnemonic">SE treatment ladder: "Benzos → Phenytoin/VPA/Lev → Barbiturates/Anesthesia" — escalate every 20 min</div>
+      </div>
+    </div>
+
+  </div><!-- end section A -->
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- SECTION B: TOXICOLOGY                       -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div class="section-label">Section B — Pediatric Toxicology</div>
+  <div class="chapters-grid">
+
+    <!-- CH 84 -->
+    <div class="chapter-card" data-keywords="poisoning overdose approach toxidrome decontamination activated charcoal antidote poison control lavage">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 84</span>
+        <span class="ch-title">Approach to Poisoning and Overdose</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-crit">Critical</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp">First: <strong class="hl">stabilize ABCs</strong>; call Poison Control (1-800-222-1222 US) for guidance</li>
+          <li class="imp"><strong class="hl">Toxidromes</strong> — recognize the clinical syndrome to identify toxin class:</li>
+          <li class="note"><strong class="hl">Cholinergic (SLUDGE/DUMBELS)</strong>: Salivation, Lacrimation, Urination, Defecation, GI distress, Emesis; bradycardia, miosis → organophosphates</li>
+          <li class="note"><strong class="hl">Anticholinergic</strong>: "Mad as a hatter, blind as a bat, red as a beet, hot as a hare, dry as a bone" → TCA, antihistamines, atropine, jimsonweed</li>
+          <li class="note"><strong class="hl">Sympathomimetic</strong>: ↑HR, ↑BP, ↑temp, dilated pupils, diaphoresis → cocaine, amphetamines</li>
+          <li class="note"><strong class="hl">Opioid</strong>: CNS depression, miosis, respiratory depression → heroin, morphine, methadone</li>
+          <li class="note"><strong class="hl">Sedative-hypnotic</strong>: CNS depression, normal pupils, normal vitals → benzodiazepines, barbiturates</li>
+          <li class="imp">Decontamination: <strong class="hl">activated charcoal 1 g/kg</strong> (within 1–2h, alert patient, no caustic/hydrocarbon ingestion, no ileus)</li>
+          <li class="crit">Gastric lavage: rarely used; only within 1 hour of life-threatening ingestion; do NOT induce vomiting</li>
+        </ul>
+        <div class="mnemonic">Anticholinergic: "Mad Hatter, Blind Bat, Red Beet, Hot Hare, Dry Bone" — antimuscarinic classic</div>
+      </div>
+    </div>
+
+    <!-- CH 85 -->
+    <div class="chapter-card" data-keywords="acetaminophen paracetamol overdose NAC N-acetylcysteine hepatotoxicity Rumack Matthew nomogram AST ALT liver failure">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 85</span>
+        <span class="ch-title">Acetaminophen Poisoning</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-crit">Critical</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp">Acetaminophen → NAPQI (toxic metabolite via CYP2E1) → depletes glutathione → hepatocellular necrosis (centrilobular)</li>
+          <li class="crit"><strong class="hl">Rumack-Matthew nomogram</strong>: plot acetaminophen level vs time (4–24h post-ingestion) to determine NAC need</li>
+          <li class="crit"><strong class="hld">NAC (N-acetylcysteine)</strong>: most effective within <strong class="hld">8–10 hours</strong> of ingestion; IV or oral; replenishes glutathione; give even if late (up to 24–36h)</li>
+          <li class="imp">Clinical stages: I (0–24h): nausea/vomiting, malaise; II (24–72h): RUQ pain, LFTs rise; III (72–96h): peak hepatotoxicity (fulminant hepatic failure); IV (4+ days): recovery or death</li>
+          <li class="note">Toxic dose: &gt;150 mg/kg (children) or &gt;7.5 g (adults); single ingestion; chronic use at therapeutic doses generally safe</li>
+          <li>King's College criteria for liver transplant listing in fulminant hepatic failure</li>
+        </ul>
+        <div class="mnemonic">Acetaminophen antidote: "NAC attacks NAPQI" — give within 8 hours for best effect</div>
+      </div>
+    </div>
+
+    <!-- CH 86 -->
+    <div class="chapter-card" data-keywords="salicylate aspirin toxicity respiratory alkalosis metabolic acidosis mixed tinnitus hyperpnea diaphoresis sodium bicarbonate hemodialysis">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 86</span>
+        <span class="ch-title">Salicylate Poisoning</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-crit">Critical</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp">Salicylates uncouple oxidative phosphorylation → metabolic acidosis; stimulate respiratory center → respiratory alkalosis</li>
+          <li class="crit">Classic finding: <strong class="hld">mixed respiratory alkalosis + metabolic acidosis</strong> (adults); children often present with only metabolic acidosis</li>
+          <li class="imp">Symptoms: tinnitus, hyperpnea, diaphoresis, nausea/vomiting, fever, altered mental status, pulmonary edema, seizures</li>
+          <li class="crit">Treatment: <strong class="hl">sodium bicarbonate IV</strong> (urine alkalinization → ion trapping → ↑renal elimination; target urine pH 7.5–8); <strong class="hld">hemodialysis</strong> for severe toxicity (level &gt;100 mg/dL, seizures, AKI, pulmonary edema)</li>
+          <li class="note">Do NOT give acetazolamide (acidifies blood, worsens CNS penetration)</li>
+          <li>Reye syndrome: aspirin + viral illness (varicella/flu) in children → hepatic encephalopathy; avoid aspirin &lt;18 yrs for viral illness</li>
+        </ul>
+        <div class="mnemonic">Salicylate ABG: "Resp Alk then Met Acid" — bicarb to alkalinize urine and trap the drug!</div>
+      </div>
+    </div>
+
+    <!-- CH 87 -->
+    <div class="chapter-card" data-keywords="tricyclic antidepressant TCA overdose QRS wide sodium bicarbonate seizure hypotension arrhythmia anticholinergic">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 87</span>
+        <span class="ch-title">Tricyclic Antidepressant (TCA) Poisoning</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-crit">Critical</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp">TCAs block: Na⁺ channels (↑QRS), K⁺ channels (↑QT), α₁ receptors (hypotension), muscarinic receptors (anticholinergic), GABA-A (seizures)</li>
+          <li class="crit"><strong class="hld">Widened QRS (&gt;100 ms)</strong> = most important predictor of seizures and arrhythmia</li>
+          <li class="crit">Treatment: <strong class="hld">sodium bicarbonate 1–2 mEq/kg IV bolus</strong> → alkalinizes plasma → Na⁺ channel reversal; target arterial pH 7.45–7.55</li>
+          <li class="imp">Hypotension: IV fluids → norepinephrine (if refractory); <strong class="hld">avoid dopamine</strong> (depleted catecholamines)</li>
+          <li class="crit">Seizures: <strong class="hl">benzodiazepines first</strong>; <strong class="hld">avoid phenytoin</strong> (also blocks Na⁺ channels, worsens cardiac toxicity)</li>
+          <li class="note">Rapidly deteriorating: can be asymptomatic → coma/arrest within 1 hour; observe minimum 6 hours</li>
+        </ul>
+        <div class="mnemonic">TCA toxicity: "Wide QRS → Bicarb!" — sodium bicarb reverses Na-channel blockade</div>
+      </div>
+    </div>
+
+    <!-- CH 88 -->
+    <div class="chapter-card" data-keywords="opioid overdose naloxone respiratory depression miosis sedation heroin morphine fentanyl methadone codeine">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 88</span>
+        <span class="ch-title">Opioid Poisoning</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-crit">Critical</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="crit"><strong class="hld">Opioid triad</strong>: CNS depression (sedation, coma), <strong class="hld">miosis (pinpoint pupils)</strong>, <strong class="hld">respiratory depression</strong></li>
+          <li class="crit">Antidote: <strong class="hld">naloxone (Narcan) 0.01 mg/kg IV/IO/IM/IN</strong>; can repeat; higher doses may be needed for fentanyl/methadone</li>
+          <li class="imp">Naloxone half-life shorter than most opioids → <strong class="hl">re-sedation risk</strong>; may require continuous infusion or repeated doses</li>
+          <li class="note">Methadone: very long half-life (24–36h) → prolonged monitoring required; QT prolongation</li>
+          <li class="imp">Codeine in children: avoid — ultra-rapid CYP2D6 metabolizers at risk of fatal respiratory depression; FDA contraindicated &lt;12 yrs</li>
+          <li>Non-cardiogenic pulmonary edema can occur with opioid overdose</li>
+        </ul>
+        <div class="mnemonic">Opioid triad: "3 Ms" → Miosis, Mental depression, muscle (respiratory) depression</div>
+      </div>
+    </div>
+
+    <!-- CH 89 -->
+    <div class="chapter-card" data-keywords="iron poisoning toxicity desferrioxamine deferoxamine GI hemorrhage metabolic acidosis stages pill">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 89</span>
+        <span class="ch-title">Iron Poisoning</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="crit">Iron overdose: toxic dose &gt;<strong class="hl">20 mg/kg elemental iron</strong>; severe &gt;60 mg/kg</li>
+          <li class="imp">5 Stages: I (0–6h) GI symptoms (vomiting, diarrhea, hematemesis); II (6–24h) apparent recovery; III (12–24h) shock, metabolic acidosis; IV (2–5 days) hepatic failure; V (2–6 wk) GI strictures</li>
+          <li class="crit">Antidote: <strong class="hld">deferoxamine (desferrioxamine)</strong> — chelates free iron; urine turns "vin rosé" (pink/orange) color indicating iron chelation</li>
+          <li class="imp">Indications for deferoxamine: serum iron &gt;500 mcg/dL, shock, metabolic acidosis, severe GI symptoms</li>
+          <li class="note">X-ray abdomen: iron tablets are radiopaque — helps confirm ingestion and number of tablets</li>
+        </ul>
+        <div class="mnemonic">Iron antidote: "Deferoxamine turns urine Vin Rosé (pink)" — classic board pearl</div>
+      </div>
+    </div>
+
+    <!-- CH 90 -->
+    <div class="chapter-card" data-keywords="carbon monoxide poisoning CO headache cherry red hydroxocobalamin hyperbaric oxygen carboxyhemoglobin pulse ox">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 90</span>
+        <span class="ch-title">Carbon Monoxide Poisoning</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-crit">Critical</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp">CO: odorless, colorless gas; binds Hgb with 240× affinity of O₂ → carboxyhemoglobin (COHgb) → tissue hypoxia</li>
+          <li class="crit">Symptoms: headache (most common), nausea, confusion, syncope, seizures, coma — multiple family members with same symptoms = CO poisoning until proven otherwise</li>
+          <li class="crit"><strong class="hld">Pulse oximetry falsely normal</strong> — cannot distinguish COHgb from OxyHgb; must measure <strong class="hld">co-oximetry (ABG)</strong></li>
+          <li class="imp">Treatment: <strong class="hl">100% O₂ via non-rebreather mask</strong> (reduces COHgb half-life from 4–5h to 60–90 min)</li>
+          <li class="imp">Hyperbaric oxygen (HBO): reduces half-life to 20 min; indicated for: COHgb &gt;25%, syncope, neurological symptoms, pregnancy, cardiac involvement</li>
+          <li class="note">"Cherry red" skin: classic teaching but rarely seen clinically; late/post-mortem finding</li>
+        </ul>
+        <div class="mnemonic">CO poisoning: "Pulse ox lies — use co-ox!" — SpO₂ falsely normal; headache in multiple family members = CO alarm</div>
+      </div>
+    </div>
+
+  </div><!-- end section B -->
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- SECTION C: CRITICAL CARE                    -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div class="section-label">Section C — Pediatric Critical Care (PICU)</div>
+  <div class="chapters-grid">
+
+    <!-- CH 91 -->
+    <div class="chapter-card" data-keywords="ARDS acute respiratory distress syndrome PARDS mechanical ventilation lung protective low tidal volume PEEP prone surfactant Berlin criteria">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 91</span>
+        <span class="ch-title">Acute Respiratory Distress Syndrome (ARDS/PARDS)</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-crit">Critical</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp">ARDS = acute hypoxemic respiratory failure with bilateral infiltrates NOT explained by cardiac failure, following a precipitating event (sepsis, pneumonia, aspiration, trauma)</li>
+          <li class="imp">PARDS criteria (PALICC): acute onset, <strong class="hl">PaO₂/FiO₂ (P/F ratio) &lt;300</strong>, bilateral infiltrates on CXR/CT, not fully explained by cardiac failure</li>
+          <li class="crit">P/F ratio severity: mild 200–300; moderate 100–200; severe &lt;100</li>
+          <li class="crit"><strong class="hl">Lung-protective ventilation</strong>: <strong class="hld">low tidal volume 6 mL/kg</strong> ideal body weight, <strong class="hld">PEEP ≥5 cmH₂O</strong>, plateau pressure &lt;28–30 cmH₂O, permissive hypercapnia</li>
+          <li class="imp">Prone positioning: improves V/Q mismatch, reduces mortality in moderate-severe ARDS (PROSEVA trial)</li>
+          <li class="note">Neuromuscular blockade (cisatracurium): improves oxygenation in moderate-severe ARDS; reduces ventilator-induced lung injury</li>
+        </ul>
+        <div class="mnemonic">ARDS ventilation: "Low and Slow" → low Vt (6 mL/kg), high PEEP, permissive hypercapnia</div>
+      </div>
+    </div>
+
+    <!-- CH 92 -->
+    <div class="chapter-card" data-keywords="sepsis septic shock SIRS SOFA qSOFA antibiotics blood culture fluid resuscitation norepinephrine vasopressin bundle Surviving Sepsis">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 92</span>
+        <span class="ch-title">Sepsis and Septic Shock</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-crit">Critical</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp">Sepsis = life-threatening organ dysfunction caused by dysregulated host response to infection</li>
+          <li class="imp">Pediatric SIRS criteria: 2 of 4 (temp &gt;38.5°C or &lt;36°C, HR/RR age-abnormal, WBC age-abnormal); at least 1 must be temp or WBC</li>
+          <li class="crit"><strong class="hl">Surviving Sepsis Bundle (1-hour)</strong>: blood cultures → <strong class="hld">broad-spectrum antibiotics within 1 hour</strong>, IV fluid bolus (20 mL/kg), lactate level, vasopressors if hypotension persists</li>
+          <li class="imp">Most common organisms: neonates (GBS, E. coli, Listeria), infants (S. pneumo, N. meningitidis, H. flu), immunocompromised (Pseudomonas, fungi)</li>
+          <li class="crit">Empirical antibiotics: <strong class="hl">vancomycin + cefepime/piperacillin-tazobactam</strong> (broad coverage); add antifungals if immunocompromised or prolonged hospitalization</li>
+          <li class="imp">Vasopressors: <strong class="hl">norepinephrine</strong> first-line for adults/older children; <strong class="hl">epinephrine</strong> for cold shock (vasoconstricted, low CO); dopamine now less preferred</li>
+          <li class="note">Corticosteroids (hydrocortisone): consider if vasopressor-refractory septic shock (relative adrenal insufficiency)</li>
+        </ul>
+        <div class="mnemonic">Sepsis 1-hour bundle: "Blood, Antibiotics, Fluids, Lactate, Vasopressors" = BAFLV</div>
+      </div>
+    </div>
+
+    <!-- CH 93 -->
+    <div class="chapter-card" data-keywords="mechanical ventilation modes SIMV AC pressure support PEEP FiO2 weaning extubation CPAP spontaneous breathing trial parameters">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 93</span>
+        <span class="ch-title">Mechanical Ventilation</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-crit">Critical</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp">Modes: <strong class="hl">AC (Assist-Control)</strong>: delivers full breath every time; <strong class="hl">SIMV</strong>: set rate + patient spontaneous breaths; <strong class="hl">Pressure Support</strong>: augments patient's spontaneous breaths; <strong class="hl">CPAP</strong>: continuous positive pressure, no mandatory breaths</li>
+          <li class="imp">Initial settings: Vt <strong class="hl">6–8 mL/kg</strong>, RR age-appropriate, PEEP 5 cmH₂O, FiO₂ titrate to SpO₂ 94–98%</li>
+          <li class="imp">Oxygenation controlled by: <strong class="hl">FiO₂ and PEEP</strong></li>
+          <li class="imp">Ventilation (CO₂) controlled by: <strong class="hl">tidal volume and respiratory rate</strong></li>
+          <li class="crit">Complications: <strong class="hl">Ventilator-Induced Lung Injury (VILI)</strong> — volutrauma (excess Vt), barotrauma (excess pressure), atelectrauma, biotrauma</li>
+          <li class="note">Extubation readiness: FiO₂ ≤0.40, PEEP ≤5, hemodynamically stable, awake/cooperative → <strong class="hl">Spontaneous Breathing Trial (SBT)</strong></li>
+          <li>VAP (ventilator-associated pneumonia) prevention: head-of-bed elevation 30–45°, oral care, minimize sedation, daily extubation assessment</li>
+        </ul>
+        <div class="mnemonic">Ventilator controls: "FiO₂ + PEEP = Oxygenation; Vt + Rate = Ventilation (CO₂)"</div>
+      </div>
+    </div>
+
+  </div><!-- end section C -->
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- SECTION D: ANESTHESIA & PROCEDURAL SEDATION -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div class="section-label">Section D — Anesthesia, Sedation &amp; Pain Management</div>
+  <div class="chapters-grid">
+
+    <!-- CH 94 -->
+    <div class="chapter-card" data-keywords="procedural sedation analgesia ketamine propofol midazolam fentanyl dexmedetomidine monitoring levels JCAHO NPO nil per os">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 94</span>
+        <span class="ch-title">Anesthesia, Sedation, and Pain Management</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-crit">Critical</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp">Levels of sedation: Minimal (anxiolysis) → Moderate (conscious) → Deep → General anesthesia</li>
+          <li class="imp">Pre-procedure: NPO guidelines — clear liquids 2h, breast milk 4h, formula/solids <strong class="hl">6h</strong> before elective procedures ("2-4-6 rule")</li>
+          <li class="imp"><strong class="hl">Ketamine</strong>: dissociative anesthetic; maintains airway reflexes and respiratory drive; bronchodilator; analgesic; ideal for painful procedures; causes emergence delirium (minimize with midazolam); contraindicated in ↑ICP (controversial), schizophrenia</li>
+          <li class="imp"><strong class="hl">Propofol</strong>: rapid onset/offset; antiemetic; ↓ICP; causes hypotension and apnea; no analgesia; propofol infusion syndrome (rare, with high-dose prolonged infusion)</li>
+          <li class="imp"><strong class="hl">Dexmedetomidine</strong>: α₂ agonist; sedation without respiratory depression; useful for MRI, procedural sedation, ICU sedation; can cause bradycardia/hypotension</li>
+          <li class="imp"><strong class="hl">Fentanyl</strong>: 100× potency of morphine; rapid onset; chest wall rigidity (high dose, rapid infusion); use with caution</li>
+          <li class="crit">Monitoring during sedation: continuous SpO₂, ETCO₂ (capnography — detects apnea before SpO₂ drops), ECG, BP, level of consciousness</li>
+          <li class="note">Reversal agents: <strong class="hl">flumazenil</strong> (benzodiazepine reversal — risk of seizures in benzo-dependent), <strong class="hl">naloxone</strong> (opioid reversal), <strong class="hl">sugammadex</strong> (rocuronium/vecuronium reversal)</li>
+          <li class="imp">Pain assessment tools: FLACC scale (infants/non-verbal), Faces Pain Scale-Revised (children 4–12 yrs), NRS/VAS (older children)</li>
+          <li class="note">Multimodal analgesia: acetaminophen + NSAIDs + opioids (as needed) → minimizes opioid use; adjuncts: regional blocks, gabapentin, dexmedetomidine</li>
+        </ul>
+        <div class="mnemonic">NPO "2-4-6 rule": Clear liquids 2h, Breast milk 4h, Formula/Food 6h before procedure</div>
+      </div>
+    </div>
+
+  </div><!-- end section D -->
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <span>Nelson Textbook of Pediatrics · 22nd Ed. · 2024</span>
+    <span>Part VII: Chapters 77–94 · Emergency Medicine, Critical Care &amp; Anesthesia</span>
+  </div>
+
+</div><!-- end page-wrap -->
+
+<script>
+  let openedChapters = new Set();
+  const TOTAL_CHAPTERS = 18;
+
+  function toggleCard(header) {
+    const card = header.parentElement;
+    const wasOpen = card.classList.contains('open');
+    card.classList.toggle('open');
+    const chNum = card.querySelector('.ch-num').textContent;
+    if (!wasOpen) openedChapters.add(chNum);
+    updateProgress();
+  }
+
+  function updateProgress() {
+    const opened = openedChapters.size;
+    const pct = Math.min((opened / TOTAL_CHAPTERS) * 100, 100);
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressText').textContent = `${opened} / ${TOTAL_CHAPTERS} opened`;
+  }
+
+  function filterChapters() {
+    const q = document.getElementById('searchInput').value.toLowerCase().trim();
+    const cards = document.querySelectorAll('.chapter-card');
+    let visible = 0;
+
+    cards.forEach(card => {
+      const title    = card.querySelector('.ch-title').textContent.toLowerCase();
+      const body     = card.querySelector('.chapter-body') ? card.querySelector('.chapter-body').textContent.toLowerCase() : '';
+      const keywords = (card.dataset.keywords || '').toLowerCase();
+
+      if (!q || title.includes(q) || body.includes(q) || keywords.includes(q)) {
+        card.classList.remove('hidden');
+        visible++;
+      } else {
+        card.classList.add('hidden');
+      }
+    });
+
+    document.getElementById('chapterCount').textContent = q
+      ? `${visible} result${visible !== 1 ? 's' : ''}`
+      : `${TOTAL_CHAPTERS} chapters`;
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.ctrlKey && e.key === 'e') {
+      e.preventDefault();
+      document.querySelectorAll('.chapter-card:not(.open)').forEach(c => {
+        c.classList.add('open');
+        openedChapters.add(c.querySelector('.ch-num').textContent);
+      });
+      updateProgress();
+    }
+  });
+</script>
+
+</body>
+</html>

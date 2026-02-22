@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nelson Pediatrics — Part I: The Field of Pediatrics</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --surface2: #1c2333;
+    --border: #30363d;
+    --accent: #e8a44a;
+    --accent2: #5caaee;
+    --accent3: #63d98a;
+    --danger: #f07a7a;
+    --text: #e6edf3;
+    --text-muted: #8b949e;
+    --text-dim: #484f58;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.75;
+    min-height: 100vh;
+  }
+
+  /* Subtle grain overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+  }
+
+  .page-wrap {
+    position: relative;
+    z-index: 1;
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 0 24px 80px;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    padding: 72px 0 48px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 48px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::after {
+    content: 'I';
+    position: absolute;
+    right: -10px;
+    top: 10px;
+    font-family: 'Playfair Display', serif;
+    font-size: 240px;
+    font-weight: 900;
+    color: var(--border);
+    line-height: 1;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .hero-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(232,164,74,0.1);
+    border: 1px solid rgba(232,164,74,0.3);
+    color: var(--accent);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+  }
+
+  .hero-tag::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.8); }
+  }
+
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(32px, 5vw, 52px);
+    font-weight: 900;
+    line-height: 1.1;
+    margin-bottom: 12px;
+    color: var(--text);
+  }
+
+  .hero h1 span { color: var(--accent); }
+
+  .hero-sub {
+    font-size: 15px;
+    color: var(--text-muted);
+    max-width: 520px;
+    margin-bottom: 28px;
+  }
+
+  .hero-meta {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  .meta-pill {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--text-muted);
+    font-family: 'DM Mono', monospace;
+  }
+
+  .meta-pill .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+  }
+
+  /* ── SEARCH / JUMP ── */
+  .search-bar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(13,17,23,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 0;
+    margin-bottom: 36px;
+  }
+
+  .search-inner {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .search-input {
+    flex: 1;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 14px 8px 36px;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%238b949e' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: 10px center;
+  }
+
+  .search-input:focus { border-color: var(--accent); }
+  .search-input::placeholder { color: var(--text-dim); }
+
+  .chapter-count {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
+
+  /* ── KEY STATS STRIP ── */
+  .stats-strip {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    margin-bottom: 48px;
+  }
+
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 18px;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+
+  .stat-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+
+  .stat-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+  }
+
+  .stat-value {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  .stat-desc { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+
+  /* ── HIGH YIELD BOX ── */
+  .hiyield {
+    background: linear-gradient(135deg, rgba(232,164,74,0.08), rgba(232,164,74,0.03));
+    border: 1px solid rgba(232,164,74,0.25);
+    border-left: 3px solid var(--accent);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin-bottom: 48px;
+  }
+
+  .hiyield-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--accent);
+    margin-bottom: 14px;
+  }
+
+  .hiyield ul {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 8px;
+  }
+
+  .hiyield ul li {
+    font-size: 13px;
+    color: var(--text);
+    padding-left: 16px;
+    position: relative;
+    line-height: 1.5;
+  }
+
+  .hiyield ul li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-size: 11px;
+  }
+
+  strong.hl { color: var(--accent); font-weight: 600; }
+  strong.hl2 { color: var(--accent2); font-weight: 600; }
+  strong.hl3 { color: var(--accent3); font-weight: 600; }
+  strong.hld { color: var(--danger); font-weight: 600; }
+
+  /* ── CHAPTER CARDS ── */
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .chapters-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 48px;
+  }
+
+  .chapter-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  .chapter-card:hover {
+    border-color: rgba(92,170,238,0.4);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  }
+
+  .chapter-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 20px;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .ch-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text-muted);
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 3px 8px;
+    white-space: nowrap;
+    min-width: 42px;
+    text-align: center;
+  }
+
+  .ch-title {
+    flex: 1;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text);
+  }
+
+  .ch-tags {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 2px 7px;
+    border-radius: 4px;
+    border: 1px solid;
+  }
+
+  .tag-hiy { color: var(--accent); border-color: rgba(232,164,74,0.3); background: rgba(232,164,74,0.08); }
+  .tag-eth { color: var(--accent2); border-color: rgba(92,170,238,0.3); background: rgba(92,170,238,0.08); }
+  .tag-soc { color: var(--accent3); border-color: rgba(99,217,138,0.3); background: rgba(99,217,138,0.08); }
+  .tag-crit { color: var(--danger); border-color: rgba(240,122,122,0.3); background: rgba(240,122,122,0.08); }
+
+  .ch-toggle {
+    color: var(--text-muted);
+    font-size: 18px;
+    transition: transform 0.3s;
+    line-height: 1;
+  }
+
+  .chapter-card.open .ch-toggle { transform: rotate(180deg); }
+
+  .chapter-body {
+    display: none;
+    padding: 0 20px 20px 20px;
+    border-top: 1px solid var(--border);
+    animation: slideIn 0.2s ease;
+  }
+
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateY(-6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .chapter-card.open .chapter-body { display: block; }
+
+  .chapter-body p {
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.8;
+    margin-top: 14px;
+    margin-bottom: 10px;
+  }
+
+  .key-points {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 10px;
+  }
+
+  .key-points li {
+    font-size: 13.5px;
+    color: var(--text);
+    padding: 8px 12px;
+    background: var(--surface2);
+    border-radius: 6px;
+    border-left: 2px solid var(--border);
+    line-height: 1.6;
+  }
+
+  .key-points li.imp { border-left-color: var(--accent); }
+  .key-points li.crit { border-left-color: var(--danger); }
+  .key-points li.note { border-left-color: var(--accent2); }
+
+  .mnemonic {
+    margin-top: 12px;
+    background: rgba(99,217,138,0.07);
+    border: 1px dashed rgba(99,217,138,0.25);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 13px;
+    color: var(--accent3);
+  }
+
+  .mnemonic::before { content: '💡 '; }
+
+  /* ── FOOTER ── */
+  .footer {
+    margin-top: 60px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: gap;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+  }
+
+  /* hidden chapters */
+  .chapter-card.hidden { display: none; }
+
+  /* progress bar */
+  .progress-wrap {
+    margin-bottom: 32px;
+  }
+
+  .progress-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .progress-bar {
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    border-radius: 2px;
+    width: 0%;
+    transition: width 0.4s ease;
+  }
+
+  @media (max-width: 600px) {
+    .hero::after { font-size: 140px; }
+    .stats-strip { grid-template-columns: repeat(2, 1fr); }
+    .hiyield ul { grid-template-columns: 1fr; }
+    .ch-tags { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="search-bar">
+  <div class="search-inner">
+    <input class="search-input" type="text" id="searchInput" placeholder="Search chapters, topics, keywords…" oninput="filterChapters()">
+    <span class="chapter-count" id="chapterCount">18 chapters</span>
+  </div>
+</div>
+
+<div class="page-wrap">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-tag">Nelson Textbook of Pediatrics · 22nd Edition · 2024</div>
+    <h1>Part <span>I</span><br>The Field of Pediatrics</h1>
+    <p class="hero-sub">Exam-oriented study notes covering Chapters 1–18. Tap any chapter to expand key points.</p>
+    <div class="hero-meta">
+      <div class="meta-pill"><span class="dot" style="background:var(--accent)"></span> 18 Chapters</div>
+      <div class="meta-pill"><span class="dot" style="background:var(--accent2)"></span> High-Yield Focus</div>
+      <div class="meta-pill"><span class="dot" style="background:var(--accent3)"></span> Exam Ready</div>
+    </div>
+  </div>
+
+  <!-- PROGRESS -->
+  <div class="progress-wrap">
+    <div class="progress-label">
+      <span>Reading Progress</span>
+      <span id="progressText">0 / 18 opened</span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-strip">
+    <div class="stat-card">
+      <div class="stat-label">Infant Mortality Rate</div>
+      <div class="stat-value">IMR</div>
+      <div class="stat-desc">Deaths &lt;1 yr per 1,000 live births</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Leading cause of death &gt;1 yr</div>
+      <div class="stat-value">Injuries</div>
+      <div class="stat-desc">Unintentional — #1 in US children</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Most common abuse type</div>
+      <div class="stat-value">Neglect</div>
+      <div class="stat-desc">Neglect &gt; Physical &gt; Emotional &gt; Sexual</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Ethics Core Principle</div>
+      <div class="stat-value">4 Pillars</div>
+      <div class="stat-desc">Autonomy · Beneficence · Non-maleficence · Justice</div>
+    </div>
+  </div>
+
+  <!-- HIGH YIELD -->
+  <div class="hiyield">
+    <div class="hiyield-header">⚡ High-Yield Exam Points — Part I</div>
+    <ul>
+      <li><strong class="hl">IMR</strong> = deaths &lt;1 yr per 1,000 live births</li>
+      <li><strong class="hl">NMR</strong> = deaths &lt;28 days per 1,000 live births</li>
+      <li><strong class="hld">Injuries = #1 cause of death</strong> in children &gt;1 year</li>
+      <li><strong class="hl">Neglect</strong> = most common form of child maltreatment</li>
+      <li><strong class="hld">AHT triad</strong>: subdural hematoma + retinal hemorrhage + encephalopathy</li>
+      <li>Posterior rib Fx + metaphyseal Fx → <strong class="hld">classic abuse fractures</strong></li>
+      <li><strong class="hl2">Palliative ≠ Hospice</strong>: palliative starts at diagnosis</li>
+      <li><strong class="hl2">Assent</strong> (child) + <strong class="hl2">Consent</strong> (parent/guardian)</li>
+      <li><strong class="hl3">ACEs</strong> → cumulative adversity → lifelong health impact</li>
+      <li><strong class="hl">Mandated reporter</strong>: physicians MUST report suspected abuse</li>
+      <li>CAM: <strong class="hl">St. John's Wort</strong> → drug interactions</li>
+      <li>Rear-facing car seat <strong class="hl">until age 2</strong></li>
+      <li>Global killer triad: <strong class="hl3">pneumonia + diarrhea + malaria</strong></li>
+      <li><strong class="hl2">Motivational Interviewing</strong> = collaborative behavior change</li>
+    </ul>
+  </div>
+
+  <!-- CHAPTERS -->
+  <div class="section-label">Chapters 1 – 18</div>
+  <div class="chapters-grid" id="chaptersGrid">
+
+    <!-- CH 1 -->
+    <div class="chapter-card" data-keywords="overview pediatrics vital statistics mortality IMR NMR child health">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 1</span>
+        <span class="ch-title">Overview of Pediatrics</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp">Pediatrics = health & disease from birth to adolescence (0–18 yrs)</li>
+          <li class="imp"><strong class="hl">IMR</strong> = infant deaths &lt;1 yr per 1,000 live births | <strong class="hl">NMR</strong> = &lt;28 days per 1,000 live births</li>
+          <li class="crit">Neonatal deaths → congenital anomalies, prematurity, birth asphyxia</li>
+          <li class="crit">Older children → injuries &amp; accidents = #1 killer</li>
+          <li>Social determinants (poverty, race, immigration) heavily influence outcomes</li>
+          <li>Under-5 mortality rate is a key global indicator of child health</li>
+        </ul>
+        <div class="mnemonic">Remember: "PICA" for neonatal death causes → Prematurity, Infections, Congenital Anomalies, Asphyxia</div>
+      </div>
+    </div>
+
+    <!-- CH 2 -->
+    <div class="chapter-card" data-keywords="disparities race poverty inequality minority socioeconomic">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 2</span>
+        <span class="ch-title">Child Health Disparities</span>
+        <div class="ch-tags"><span class="tag tag-soc">Social</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp">Disparities linked to: race/ethnicity, socioeconomic status, geography</li>
+          <li>Minority &amp; low-income children → higher rates of asthma, obesity, developmental delays</li>
+          <li class="note"><strong class="hl2">Racism is recognized as a public health crisis</strong></li>
+          <li>Social determinants of health (SDOH) must be screened at every visit</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- CH 3 -->
+    <div class="chapter-card" data-keywords="global child health pneumonia diarrhea malaria WHO UNICEF SDG ORS vaccine">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 3</span>
+        <span class="ch-title">Global Child Health</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-soc">Global</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp">Top global killers: <strong class="hl3">Pneumonia, Diarrhea, Malaria</strong> + neonatal causes + malnutrition</li>
+          <li class="imp">WHO/UNICEF interventions: vaccines, ORS, breastfeeding, Vitamin A, zinc</li>
+          <li>SDGs (Sustainable Development Goals) target under-5 mortality reduction</li>
+          <li>Malnutrition: <strong class="hl">MUAC</strong> (mid-upper arm circumference) used to screen acutely</li>
+        </ul>
+        <div class="mnemonic">Global killers: "Please Don't Miss Malnutrition" → Pneumonia, Diarrhea, Malaria, Malnutrition</div>
+      </div>
+    </div>
+
+    <!-- CH 4 -->
+    <div class="chapter-card" data-keywords="quality value healthcare IOM evidence-based guidelines">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 4</span>
+        <span class="ch-title">Quality and Value in Healthcare for Children</span>
+        <div class="ch-tags"><span class="tag tag-eth">Systems</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp">IOM 6 Aims: <strong class="hl">Safe, Effective, Timely, Efficient, Equitable, Patient-centered</strong></li>
+          <li><strong class="hl2">Value = Quality ÷ Cost</strong> — avoiding unnecessary tests improves value</li>
+          <li>Evidence-based practice &amp; clinical guidelines reduce variation</li>
+          <li class="note">Choosing Wisely campaign: avoid unnecessary tests/procedures in children</li>
+        </ul>
+        <div class="mnemonic">IOM aims: "STEEEP" → Safe, Timely, Effective, Efficient, Equitable, Patient-centered</div>
+      </div>
+    </div>
+
+    <!-- CH 5 -->
+    <div class="chapter-card" data-keywords="safety medical errors CPOE checklists handoff medication">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 5</span>
+        <span class="ch-title">Safety in Healthcare for Children</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp">Medical errors = leading cause of preventable harm</li>
+          <li class="imp">Types: diagnostic, medication (most common in peds), procedural errors</li>
+          <li class="note">Safety tools: checklists, barcoding, <strong class="hl2">CPOE</strong> (computerized physician order entry), handoff protocols</li>
+          <li>"First do no harm" — <em>Primum non nocere</em></li>
+          <li>Weight-based dosing errors are especially dangerous in children</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- CH 6 -->
+    <div class="chapter-card" data-keywords="ethics autonomy beneficence non-maleficence justice assent consent parens patriae">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 6</span>
+        <span class="ch-title">Ethics in Pediatric Care</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-eth">Ethics</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp">4 Principles: <strong class="hl">Autonomy, Beneficence, Non-maleficence, Justice</strong></li>
+          <li class="imp"><strong class="hl2">Assent</strong> = child's agreement | <strong class="hl2">Consent</strong> = parent/guardian signature</li>
+          <li class="imp">Children lack full autonomy → parents as surrogate decision-makers (<em>parens patriae</em>)</li>
+          <li class="crit">Parental authority has limits: courts can override if child's best interest is at risk</li>
+          <li>Mature minor doctrine: adolescent may consent for certain care (STIs, contraception, substance use) without parental consent</li>
+          <li class="note">Medical futility: when continued treatment offers no benefit</li>
+        </ul>
+        <div class="mnemonic">4 Principles: "ABCJ" → Autonomy, Beneficence, non-maleficence (Care), Justice</div>
+      </div>
+    </div>
+
+    <!-- CH 7 -->
+    <div class="chapter-card" data-keywords="CAM complementary alternative medicine herbal acupuncture homeopathy St John Wort">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 7</span>
+        <span class="ch-title">Complementary Therapies &amp; Integrative Medicine</span>
+        <div class="ch-tags"><span class="tag tag-soc">CAM</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp">CAM widely used in children — physicians must ask non-judgmentally</li>
+          <li>Examples: herbal remedies, acupuncture, homeopathy, chiropractic, prayer</li>
+          <li class="crit"><strong class="hld">St. John's Wort</strong> → induces CYP450 → reduces efficacy of many drugs (antiepileptics, antiretrovirals)</li>
+          <li>Document all CAM use in the medical record</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- CH 8 -->
+    <div class="chapter-card" data-keywords="palliative care hospice pain morphine end of life symptoms quality of life">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 8</span>
+        <span class="ch-title">Pediatric Palliative Care</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-eth">Ethics</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp"><strong class="hl">Palliative care ≠ End-of-life care</strong> — begins at diagnosis of serious illness</li>
+          <li class="imp"><strong class="hl2">Hospice</strong> = comfort-only care when curative tx is no longer pursued</li>
+          <li>Goals: symptom control, quality of life, family support &amp; bereavement</li>
+          <li class="crit"><strong class="hl">Morphine</strong> = gold standard for severe pain; opioids are appropriate in pediatric palliative care</li>
+          <li>Pain scales: FLACC (non-verbal), FACES, NRS (numeric) — match to developmental age</li>
+        </ul>
+        <div class="mnemonic">Palliative = Parallel to treatment. Hospice = when curative Hope stops.</div>
+      </div>
+    </div>
+
+    <!-- CH 9 -->
+    <div class="chapter-card" data-keywords="adoption international domestic TB HIV hepatitis parasites immunization lead">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 9</span>
+        <span class="ch-title">Domestic and International Adoption</span>
+        <div class="ch-tags"><span class="tag tag-soc">Screening</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp">All adopted children need comprehensive medical evaluation regardless of origin</li>
+          <li class="imp">Screen for: <strong class="hl">TB, HIV, Hepatitis B &amp; C, intestinal parasites, lead, developmental delays, nutritional deficiencies</strong></li>
+          <li class="crit">International adoptees: immunization records unreliable → re-immunize OR verify serologically</li>
+          <li>Higher risk for attachment disorders, FASD (Fetal Alcohol Spectrum Disorder)</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- CH 10 -->
+    <div class="chapter-card" data-keywords="foster kinship care trauma abuse developmental delay mental health">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 10</span>
+        <span class="ch-title">Foster and Kinship Care</span>
+        <div class="ch-tags"><span class="tag tag-soc">Social</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp">Foster children: high rates of physical, developmental, and mental health problems</li>
+          <li class="imp"><strong class="hl2">Kinship care</strong> (placement with relatives) is preferred over non-relative foster care</li>
+          <li>Screen for trauma, abuse, ACEs, and developmental delays at every visit</li>
+          <li>Trauma-informed care approach is essential</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- CH 11 -->
+    <div class="chapter-card" data-keywords="foreign born child immigrant refugee TB IGR IGRA hepatitis lead anemia vaccine">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 11</span>
+        <span class="ch-title">Medical Evaluation of the Foreign-born Child</span>
+        <div class="ch-tags"><span class="tag tag-soc">Screening</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp">Screen for: <strong class="hl">TB (TST or IGRA), intestinal parasites, anemia, Hep B, HIV</strong></li>
+          <li class="imp">Lead screening important for internationally adopted &amp; immigrant children</li>
+          <li>Verify or repeat immunizations</li>
+          <li>Nutritional deficiencies: iron, vitamin D, iodine common</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- CH 12 -->
+    <div class="chapter-card" data-keywords="culture folk remedies cupping coining interpreter language beliefs">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 12</span>
+        <span class="ch-title">Cultural Issues in Pediatric Care</span>
+        <div class="ch-tags"><span class="tag tag-eth">Ethics</span><span class="tag tag-soc">Cultural</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp">Use <strong class="hl">professional interpreters</strong> — NOT family members (especially not children)</li>
+          <li class="crit"><strong class="hld">Cupping &amp; coining</strong> can mimic signs of child abuse — differentiate carefully before reporting</li>
+          <li>Cultural humility: acknowledge your own biases and limitations</li>
+          <li>Health literacy affects adherence; use plain language and teach-back method</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- CH 13 -->
+    <div class="chapter-card" data-keywords="screening anticipatory guidance well child Bright Futures immunization vision hearing lead lipid BP developmental">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 13</span>
+        <span class="ch-title">Maximizing Children's Health: Screening, Anticipatory Guidance &amp; Counseling</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp"><strong class="hl">Bright Futures</strong> (AAP) = framework for well-child preventive care</li>
+          <li class="imp">Newborn screens: metabolic disorders (PKU, hypothyroid, galactosemia…), hearing, critical CHD (pulse ox), bilirubin</li>
+          <li class="imp">Developmental surveillance at <strong class="hl">every</strong> visit; formal screening at 9, 18, 24/30 months (ASQ, M-CHAT for autism)</li>
+          <li>Lead screening: at 12 &amp; 24 months in high-risk children</li>
+          <li>Lipid screening: once at 9–11 yrs, once at 17–21 yrs</li>
+          <li class="note">Anticipatory guidance = age-appropriate counseling: safety, nutrition, sleep, screen time, development</li>
+        </ul>
+        <div class="mnemonic">Newborn screening: "CATS Hear" → Congenital hypothyroidism, Amino acidopathies (PKU), Thalassemia, Sickle cell, Hearing</div>
+      </div>
+    </div>
+
+    <!-- CH 14 -->
+    <div class="chapter-card" data-keywords="injury control trauma car seat MVA drowning falls burns poisoning prevention passive active">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 14</span>
+        <span class="ch-title">Injury Control</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-crit">Critical</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="crit"><strong class="hld">Injuries = #1 cause of death in children &gt;1 year in the US</strong></li>
+          <li class="imp">Leading mechanisms: MVAs, drowning, falls, burns, poisoning</li>
+          <li class="imp"><strong class="hl">Passive prevention</strong> (auto seatbelts, pool fences) &gt; active prevention (behavioral change)</li>
+          <li class="imp">Car seats: <strong class="hl">rear-facing until 2 yrs</strong> → forward-facing until max height/weight → booster seat → seatbelt</li>
+          <li>Haddon Matrix: Pre-event, Event, Post-event × Host, Agent, Environment</li>
+          <li>Helmets reduce bicycle head injury by 85%</li>
+        </ul>
+        <div class="mnemonic">Car seat stages: "Real Foxes Boast Speed" → Rear-facing, Forward-facing, Booster, Seatbelt</div>
+      </div>
+    </div>
+
+    <!-- CH 15 -->
+    <div class="chapter-card" data-keywords="violence PTSD ACE adverse childhood experiences domestic community media aggression">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 15</span>
+        <span class="ch-title">Impact of Violence Exposure on Children</span>
+        <div class="ch-tags"><span class="tag tag-soc">Social</span><span class="tag tag-hiy">High Yield</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp"><strong class="hl">ACEs</strong> (Adverse Childhood Experiences) → dose-response relationship with poor lifelong health outcomes</li>
+          <li class="imp">Violence exposure → PTSD, anxiety, depression, aggression, academic failure</li>
+          <li class="note">ACE score ≥4 → significantly elevated risk for heart disease, cancer, substance abuse, suicide</li>
+          <li>Screen for violence exposure routinely using validated tools</li>
+          <li>Types: community violence, domestic violence (IPV), bullying, media violence</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- CH 16 -->
+    <div class="chapter-card" data-keywords="trafficking sex labor exploitation red flags STI abuse mandatory reporting">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 16</span>
+        <span class="ch-title">Child Trafficking for Sex and Labor</span>
+        <div class="ch-tags"><span class="tag tag-crit">Critical</span><span class="tag tag-eth">Legal</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp">Trafficking = recruitment/transport/harboring of child for exploitation (sexual or labor)</li>
+          <li class="imp"><strong class="hld">Red flags</strong>: runaway youth, multiple STIs, signs of abuse, accompanied by controlling adult, fearful/evasive</li>
+          <li class="crit">Physicians are <strong class="hld">mandated reporters</strong> — trafficking must be reported</li>
+          <li>Trauma-informed, non-judgmental approach to interview victim alone</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- CH 17 -->
+    <div class="chapter-card" data-keywords="abuse neglect fracture shaken baby AHT subdural retinal hemorrhage munchausen mandatory report CPS">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 17</span>
+        <span class="ch-title">Abused and Neglected Children</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-crit">Critical</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp">Order of frequency: <strong class="hl">Neglect &gt; Physical &gt; Emotional &gt; Sexual abuse</strong></li>
+          <li class="crit">Classic abuse fractures: <strong class="hld">posterior rib fractures</strong>, <strong class="hld">metaphyseal (corner/bucket-handle) fractures</strong>, spiral fractures in non-ambulatory infants</li>
+          <li class="crit"><strong class="hld">Abusive Head Trauma (Shaken Baby)</strong>: subdural hematoma + retinal hemorrhages + encephalopathy — often WITHOUT external signs</li>
+          <li class="imp">Munchausen by Proxy = <strong class="hl">Factitious Disorder Imposed on Another</strong>: caregiver fabricates/induces illness</li>
+          <li class="crit">Physicians are <strong class="hld">mandated reporters</strong> — must report SUSPECTED abuse to Child Protective Services (CPS)</li>
+          <li>"Consistency" check: does the history match the injury pattern &amp; developmental stage?</li>
+        </ul>
+        <div class="mnemonic">AHT triad: "SRE" → Subdural, Retinal hemorrhage, Encephalopathy</div>
+      </div>
+    </div>
+
+    <!-- CH 18 -->
+    <div class="chapter-card" data-keywords="motivational interviewing behavior change stages transtheoretical FRAMES precontemplation contemplation">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 18</span>
+        <span class="ch-title">Strategies for Health Behavior Change</span>
+        <div class="ch-tags"><span class="tag tag-eth">Counseling</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp"><strong class="hl">Motivational Interviewing (MI)</strong>: collaborative, patient-centered, elicits intrinsic motivation</li>
+          <li class="imp">Stages of Change (Transtheoretical Model): <strong class="hl2">Precontemplation → Contemplation → Preparation → Action → Maintenance</strong></li>
+          <li class="note"><strong class="hl">FRAMES</strong>: Feedback, Responsibility, Advice, Menu of options, Empathy, Self-efficacy</li>
+          <li>Match intervention to stage: don't give action-level advice to precontemplation stage patients</li>
+        </ul>
+        <div class="mnemonic">Stages of change: "Please Come Plan A Movie" → Precontemplation, Contemplation, Planning, Action, Maintenance</div>
+      </div>
+    </div>
+
+  </div><!-- end chapters-grid -->
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <span>Nelson Textbook of Pediatrics · 22nd Ed. · 2024</span>
+    <span>Part I: Chapters 1–18</span>
+  </div>
+
+</div><!-- end page-wrap -->
+
+<script>
+  // Toggle chapter cards
+  let openedChapters = new Set();
+
+  function toggleCard(header) {
+    const card = header.parentElement;
+    const wasOpen = card.classList.contains('open');
+    card.classList.toggle('open');
+
+    const chNum = card.querySelector('.ch-num').textContent;
+    if (!wasOpen) {
+      openedChapters.add(chNum);
+    }
+    updateProgress();
+  }
+
+  function updateProgress() {
+    const total = document.querySelectorAll('.chapter-card:not(.hidden)').length;
+    const opened = openedChapters.size;
+    const pct = Math.min((opened / 18) * 100, 100);
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressText').textContent = `${opened} / 18 opened`;
+  }
+
+  // Search / filter
+  function filterChapters() {
+    const q = document.getElementById('searchInput').value.toLowerCase().trim();
+    const cards = document.querySelectorAll('.chapter-card');
+    let visible = 0;
+
+    cards.forEach(card => {
+      const title = card.querySelector('.ch-title').textContent.toLowerCase();
+      const body = card.querySelector('.chapter-body') ? card.querySelector('.chapter-body').textContent.toLowerCase() : '';
+      const keywords = (card.dataset.keywords || '').toLowerCase();
+
+      if (!q || title.includes(q) || body.includes(q) || keywords.includes(q)) {
+        card.classList.remove('hidden');
+        visible++;
+      } else {
+        card.classList.add('hidden');
+      }
+    });
+
+    document.getElementById('chapterCount').textContent = q ? `${visible} result${visible !== 1 ? 's' : ''}` : '18 chapters';
+  }
+
+  // Expand all on keyboard shortcut (Ctrl+A)
+  document.addEventListener('keydown', e => {
+    if (e.ctrlKey && e.key === 'e') {
+      e.preventDefault();
+      document.querySelectorAll('.chapter-card:not(.open)').forEach(c => {
+        c.classList.add('open');
+        openedChapters.add(c.querySelector('.ch-num').textContent);
+      });
+      updateProgress();
+    }
+  });
+</script>
+
+</body>
+</html>

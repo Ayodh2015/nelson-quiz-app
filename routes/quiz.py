@@ -2,6 +2,8 @@ from flask import Blueprint, render_template, session, redirect, url_for, reques
 from config import get_db, init_db_pool
 import uuid
 import random
+import re
+from markupsafe import Markup, escape
 
 quiz = Blueprint("quiz", __name__)
 
@@ -34,6 +36,87 @@ def _clear_quiz_state():
     session.pop("quiz_session_id", None)
     session.pop("quiz_question_ids", None)
     session.pop("quiz_current", None)
+
+
+def _format_explanation_text(text):
+    if not text:
+        return Markup("")
+
+    raw = str(text).replace("\r\n", "\n").strip()
+    if not raw:
+        return Markup("")
+
+    # If explanation is a single long paragraph, split into smaller readable chunks.
+    if "\n" not in raw:
+        sentences = re.split(r"(?<=[.!?])\s+(?=[A-Z])", raw)
+        if len(sentences) >= 3:
+            parts = [" ".join(sentences[i:i + 2]).strip() for i in range(0, len(sentences), 2)]
+        else:
+            parts = [raw]
+    else:
+        parts = [line.strip() for line in raw.split("\n") if line.strip()]
+
+    html_blocks = []
+    list_items = []
+
+    for part in parts:
+        match = re.match(r"^(?:[-*•]\s+|\d+[.)]\s+)(.+)$", part)
+        if match:
+            list_items.append(f"<li>{escape(match.group(1))}</li>")
+            continue
+
+        if list_items:
+            html_blocks.append("<ul class=\"explanation-list\">" + "".join(list_items) + "</ul>")
+            list_items = []
+
+        html_blocks.append(f"<p>{escape(part)}</p>")
+
+    if list_items:
+        html_blocks.append("<ul class=\"explanation-list\">" + "".join(list_items) + "</ul>")
+
+    return Markup("".join(html_blocks))
+
+
+def _build_results_payload(cur, quiz_session_id, user_id):
+    cur.execute("SELECT * FROM sessions WHERE id = %s AND user_id = %s", (quiz_session_id, user_id))
+    session_data = cur.fetchone()
+    if not session_data:
+        return None, None
+
+    cur.execute("""
+        SELECT a.*, q.question_text, q.question_type, q.explanation, q.section
+        FROM attempts a
+        JOIN questions q ON a.question_id = q.id
+        WHERE a.session_id = %s
+        ORDER BY a.id
+    """, (quiz_session_id,))
+    attempts = cur.fetchall()
+
+    attempts_list = []
+    for attempt in attempts:
+        att = dict(attempt)
+        att["explanation_formatted"] = _format_explanation_text(att.get("explanation"))
+
+        if att["question_type"] == "BOF":
+            cur.execute("""
+                SELECT * FROM options
+                WHERE question_id = %s
+                ORDER BY option_label
+            """, (att["question_id"],))
+            att["bof_options"] = cur.fetchall()
+            att["tf_statements"] = []
+        else:
+            cur.execute("""
+                SELECT * FROM tf_statements
+                WHERE question_id = %s
+                ORDER BY statement_number
+            """, (att["question_id"],))
+            att["tf_statements"] = cur.fetchall()
+            att["bof_options"] = []
+
+        attempts_list.append(att)
+
+    return session_data, attempts_list
 
 
 @quiz.route("/start", methods=["GET", "POST"])
@@ -273,14 +356,34 @@ def submit_answer():
                 cur.execute("SELECT * FROM tf_statements WHERE question_id = %s ORDER BY statement_number", (question_id,))
                 tf_stmts = cur.fetchall()
                 tf_answers = []
+                answered_count = 0
                 correct_count = 0
+                wrong_count = 0
                 for stmt in tf_stmts:
-                    user_ans = data.get(f"tf_{stmt['statement_number']}") == "true"
+                    raw_ans = data.get(f"tf_{stmt['statement_number']}")
+                    if raw_ans == "true":
+                        user_ans = True
+                    elif raw_ans == "false":
+                        user_ans = False
+                    else:
+                        user_ans = None
+
                     tf_answers.append(user_ans)
+                    if user_ans is None:
+                        continue
+
+                    answered_count += 1
                     if user_ans == stmt["is_true"]:
                         correct_count += 1
-                is_correct = correct_count == len(tf_stmts)
-                marks = round(correct_count / len(tf_stmts), 1) if tf_stmts else 0
+                    else:
+                        wrong_count += 1
+
+                # True/False scoring rule:
+                # +0.2 for each answered-correct statement, -0.2 for each answered-wrong statement,
+                # unanswered statements contribute 0.
+                raw_marks = (correct_count * 0.2) - (wrong_count * 0.2)
+                marks = round(max(0, raw_marks), 1)
+                is_correct = bool(tf_stmts) and answered_count == len(tf_stmts) and wrong_count == 0
 
             cur.execute("""
                 INSERT INTO attempts (session_id, user_id, question_id, question_type, bof_answer, tf_answers, is_correct, marks_obtained)
@@ -351,7 +454,7 @@ def finish():
 
             # Get attempts with their sections to update progress per section
             cur.execute("""
-                SELECT a.is_correct, q.section
+                SELECT a.is_correct, a.marks_obtained, q.section
                 FROM attempts a
                 JOIN questions q ON a.question_id = q.id
                 WHERE a.session_id = %s
@@ -360,17 +463,18 @@ def finish():
 
             # Group attempts by section and update progress for each section
             from collections import defaultdict
-            section_stats = defaultdict(lambda: {"total": 0, "correct": 0})
+            section_stats = defaultdict(lambda: {"total": 0, "correct": 0, "marks": 0.0})
             
             for attempt in attempts_by_section:
                 section_name = attempt["section"]
                 section_stats[section_name]["total"] += 1
+                section_stats[section_name]["marks"] += float(attempt["marks_obtained"] or 0)
                 if attempt["is_correct"]:
                     section_stats[section_name]["correct"] += 1
 
             # Update section_progress for each section
             for section_name, stats in section_stats.items():
-                section_percentage = round((stats["correct"] / stats["total"]) * 100, 2) if stats["total"] > 0 else 0
+                section_percentage = round((stats["marks"] / stats["total"]) * 100, 2) if stats["total"] > 0 else 0
                 
                 cur.execute("""
                     SELECT * FROM section_progress WHERE user_id = %s AND section = %s
@@ -417,8 +521,7 @@ def results():
         try:
             cur = conn.cursor()
 
-            cur.execute("SELECT * FROM sessions WHERE id = %s AND user_id = %s", (quiz_session_id, user_id))
-            session_data = cur.fetchone()
+            session_data, attempts_list = _build_results_payload(cur, quiz_session_id, user_id)
             if not session_data:
                 cur.close()
                 _clear_quiz_state()
@@ -427,44 +530,35 @@ def results():
                 cur.close()
                 return redirect(url_for("quiz.finish"))
 
-            cur.execute("""
-                SELECT a.*, q.question_text, q.question_type, q.explanation, q.section
-                FROM attempts a
-                JOIN questions q ON a.question_id = q.id
-                WHERE a.session_id = %s
-                ORDER BY a.id
-            """, (quiz_session_id,))
-            attempts = cur.fetchall()
-
-            # Convert to mutable list and enrich with options/statements
-            attempts_list = []
-            for attempt in attempts:
-                att = dict(attempt)
-
-                if att["question_type"] == "BOF":
-                    cur.execute("""
-                        SELECT * FROM options
-                        WHERE question_id = %s
-                        ORDER BY option_label
-                    """, (att["question_id"],))
-                    att["bof_options"] = cur.fetchall()
-                    att["tf_statements"] = []
-
-                else:
-                    cur.execute("""
-                        SELECT * FROM tf_statements
-                        WHERE question_id = %s
-                        ORDER BY statement_number
-                    """, (att["question_id"],))
-                    att["tf_statements"] = cur.fetchall()
-                    att["bof_options"] = []
-
-                attempts_list.append(att)
-
             cur.close()
         finally:
             pool = init_db_pool()
             pool.putconn(conn)
+
+        return render_template("results.html",
+                               session_data=session_data,
+                               attempts=attempts_list)
+    except Exception:
+        return redirect(url_for("dashboard.home"))
+
+
+@quiz.route("/results/<session_id>")
+@login_required_custom
+def results_by_session(session_id):
+    user_id = session["user_id"]
+
+    try:
+        conn = get_db()
+        try:
+            cur = conn.cursor()
+            session_data, attempts_list = _build_results_payload(cur, session_id, user_id)
+            cur.close()
+        finally:
+            pool = init_db_pool()
+            pool.putconn(conn)
+
+        if not session_data or not session_data["completed"]:
+            return redirect(url_for("dashboard.home"))
 
         return render_template("results.html",
                                session_data=session_data,
@@ -490,15 +584,84 @@ def bookmark(question_id):
                 cur.execute("DELETE FROM bookmarks WHERE user_id = %s AND question_id = %s", (user_id, question_id))
                 conn.commit()
                 cur.close()
-                return jsonify({"status": "removed"})
+                return jsonify({"status": "removed", "question_id": question_id})
             else:
+                cur.execute("SELECT id FROM questions WHERE id = %s", (question_id,))
+                if not cur.fetchone():
+                    cur.close()
+                    return jsonify({"status": "error", "message": "Question not found"}), 404
                 cur.execute("INSERT INTO bookmarks (user_id, question_id) VALUES (%s, %s)", (user_id, question_id))
                 conn.commit()
                 cur.close()
-                return jsonify({"status": "added"})
+                return jsonify({"status": "added", "question_id": question_id})
         finally:
             pool = init_db_pool()
             pool.putconn(conn)
     except Exception as e:
         # Log error in production: logger.error(f"Bookmark error: {e}")
         return jsonify({"status": "error", "message": "An error occurred"}), 500
+
+
+@quiz.route("/bookmarks")
+@login_required_custom
+def bookmarks():
+    user_id = session["user_id"]
+
+    try:
+        conn = get_db()
+        try:
+            cur = conn.cursor()
+            cur.execute("""
+                SELECT b.id AS bookmark_id, b.question_id, q.question_text, q.question_type, q.section, q.explanation
+                FROM bookmarks b
+                JOIN questions q ON q.id = b.question_id
+                WHERE b.user_id = %s
+                ORDER BY b.id DESC
+            """, (user_id,))
+            bookmarks_data = cur.fetchall()
+
+            bookmarks_list = []
+            for row in bookmarks_data:
+                item = dict(row)
+                question_id = item["question_id"]
+                item["explanation_formatted"] = _format_explanation_text(item.get("explanation"))
+
+                cur.execute("""
+                    SELECT a.bof_answer, a.tf_answers, a.is_correct, a.marks_obtained
+                    FROM attempts a
+                    JOIN sessions s ON s.id = a.session_id
+                    WHERE s.user_id = %s AND a.question_id = %s
+                    ORDER BY a.id DESC
+                    LIMIT 1
+                """, (user_id, question_id))
+                last_attempt = cur.fetchone()
+                item["last_attempt"] = dict(last_attempt) if last_attempt else None
+
+                if item["question_type"] == "BOF":
+                    cur.execute("""
+                        SELECT option_label, option_text, is_correct
+                        FROM options
+                        WHERE question_id = %s
+                        ORDER BY option_label
+                    """, (question_id,))
+                    item["bof_options"] = cur.fetchall()
+                    item["tf_statements"] = []
+                else:
+                    cur.execute("""
+                        SELECT statement_number, statement_text, is_true
+                        FROM tf_statements
+                        WHERE question_id = %s
+                        ORDER BY statement_number
+                    """, (question_id,))
+                    item["tf_statements"] = cur.fetchall()
+                    item["bof_options"] = []
+
+                bookmarks_list.append(item)
+            cur.close()
+        finally:
+            pool = init_db_pool()
+            pool.putconn(conn)
+
+        return render_template("bookmarks.html", bookmarks=bookmarks_list)
+    except Exception:
+        return redirect(url_for("dashboard.home"))

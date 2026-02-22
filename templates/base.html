@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Nelson Pediatrics Quiz{% endblock %}</title>
+    <title>{% block title %}Postgraduate Pead MSQ Exam Help Tool{% endblock %}</title>
+    <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='favicon-go.svg') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon-go.svg') }}">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -320,10 +322,11 @@
 
 {% if session.get('user_id') %}
 <nav>
-    <a href="/dashboard" class="nav-brand">Nelson <span>Peds</span> Quiz</a>
+    <a href="/dashboard" class="nav-brand">Postgraduate <span>Pead MSQ</span> Tool</a>
     <ul class="nav-links">
         <li><a href="/dashboard">Dashboard</a></li>
         <li><a href="/start">Start Quiz</a></li>
+        <li><a href="/study">Study</a></li>
         <li><a href="/bookmarks">Bookmarks</a></li>
     </ul>
     <div class="nav-user">

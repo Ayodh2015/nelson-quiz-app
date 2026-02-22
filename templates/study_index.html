@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block title %}Study Hub — Postgraduate Pead MSQ Exam Help Tool{% endblock %}
+
+{% block extra_css %}
+<style>
+.study-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1rem;
+}
+.study-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    justify-content: space-between;
+}
+.study-open-form {
+    margin: 0;
+}
+.study-title {
+    font-size: 1rem;
+    line-height: 1.5;
+    color: var(--text);
+}
+.study-meta {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+@media (max-width: 768px) {
+    .study-grid {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container" style="padding-top: 2rem;">
+    <div style="margin-bottom: 1.4rem;" class="fade-up">
+        <h1 style="font-size: 1.8rem; margin-bottom: 0.25rem;">Study Hub</h1>
+        <p style="color: var(--text-muted);">Choose a part to open the study page.</p>
+    </div>
+
+    {% if pages %}
+    <div class="study-grid fade-up-delay">
+        {% for page in pages %}
+        <div class="card study-card">
+            <div>
+                <div class="study-title">{{ page.label }}</div>
+            </div>
+            <form class="study-open-form" method="post" action="{{ url_for('dashboard.study') }}">
+                <input type="hidden" name="slug" value="{{ page.slug }}">
+                <button class="btn btn-outline" type="submit">Open</button>
+            </form>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="card fade-up-delay" style="text-align: center; padding: 2.5rem;">
+        <h2 style="font-size: 1.2rem; margin-bottom: 0.4rem;">No study files found</h2>
+        <p style="color: var(--text-muted);">Add HTML files to <code>templates/v22</code> to list them here.</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

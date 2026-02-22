@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nelson Pediatrics — Part VIII: Human Genetics</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --surface2: #1c2333;
+    --border: #30363d;
+    --accent: #e8a44a;
+    --accent2: #5caaee;
+    --accent3: #63d98a;
+    --danger: #f07a7a;
+    --text: #e6edf3;
+    --text-muted: #8b949e;
+    --text-dim: #484f58;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.75;
+    min-height: 100vh;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+  }
+
+  .page-wrap {
+    position: relative;
+    z-index: 1;
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 0 24px 80px;
+  }
+
+  .hero {
+    padding: 72px 0 48px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 48px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::after {
+    content: 'VIII';
+    position: absolute;
+    right: -10px;
+    top: 10px;
+    font-family: 'Playfair Display', serif;
+    font-size: 150px;
+    font-weight: 900;
+    color: var(--border);
+    line-height: 1;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .hero-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(232,164,74,0.1);
+    border: 1px solid rgba(232,164,74,0.3);
+    color: var(--accent);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+  }
+
+  .hero-tag::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.8); }
+  }
+
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 4.5vw, 48px);
+    font-weight: 900;
+    line-height: 1.1;
+    margin-bottom: 12px;
+    color: var(--text);
+  }
+
+  .hero h1 span { color: var(--accent); }
+
+  .hero-sub {
+    font-size: 15px;
+    color: var(--text-muted);
+    max-width: 560px;
+    margin-bottom: 28px;
+  }
+
+  .hero-meta {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  .meta-pill {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--text-muted);
+    font-family: 'DM Mono', monospace;
+  }
+
+  .meta-pill .dot { width: 8px; height: 8px; border-radius: 50%; }
+
+  .search-bar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(13,17,23,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 0;
+    margin-bottom: 36px;
+  }
+
+  .search-inner {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .search-input {
+    flex: 1;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 14px 8px 36px;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%238b949e' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: 10px center;
+  }
+
+  .search-input:focus { border-color: var(--accent); }
+  .search-input::placeholder { color: var(--text-dim); }
+
+  .chapter-count {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
+
+  .stats-strip {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    margin-bottom: 48px;
+  }
+
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 18px;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+
+  .stat-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+
+  .stat-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+  }
+
+  .stat-value {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  .stat-desc { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+
+  .hiyield {
+    background: linear-gradient(135deg, rgba(232,164,74,0.08), rgba(232,164,74,0.03));
+    border: 1px solid rgba(232,164,74,0.25);
+    border-left: 3px solid var(--accent);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin-bottom: 48px;
+  }
+
+  .hiyield-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--accent);
+    margin-bottom: 14px;
+  }
+
+  .hiyield ul {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 8px;
+  }
+
+  .hiyield ul li {
+    font-size: 13px;
+    color: var(--text);
+    padding-left: 16px;
+    position: relative;
+    line-height: 1.5;
+  }
+
+  .hiyield ul li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-size: 11px;
+  }
+
+  strong.hl  { color: var(--accent);  font-weight: 600; }
+  strong.hl2 { color: var(--accent2); font-weight: 600; }
+  strong.hl3 { color: var(--accent3); font-weight: 600; }
+  strong.hld { color: var(--danger);  font-weight: 600; }
+
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .chapters-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 48px;
+  }
+
+  .chapter-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  .chapter-card:hover {
+    border-color: rgba(92,170,238,0.4);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  }
+
+  .chapter-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 20px;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .ch-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text-muted);
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 3px 8px;
+    white-space: nowrap;
+    min-width: 42px;
+    text-align: center;
+  }
+
+  .ch-title {
+    flex: 1;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text);
+  }
+
+  .ch-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+
+  .tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 2px 7px;
+    border-radius: 4px;
+    border: 1px solid;
+  }
+
+  .tag-hiy  { color: var(--accent);  border-color: rgba(232,164,74,0.3);  background: rgba(232,164,74,0.08); }
+  .tag-eth  { color: var(--accent2); border-color: rgba(92,170,238,0.3);  background: rgba(92,170,238,0.08); }
+  .tag-soc  { color: var(--accent3); border-color: rgba(99,217,138,0.3);  background: rgba(99,217,138,0.08); }
+  .tag-crit { color: var(--danger);  border-color: rgba(240,122,122,0.3); background: rgba(240,122,122,0.08); }
+
+  .ch-toggle {
+    color: var(--text-muted);
+    font-size: 18px;
+    transition: transform 0.3s;
+    line-height: 1;
+  }
+
+  .chapter-card.open .ch-toggle { transform: rotate(180deg); }
+
+  .chapter-body {
+    display: none;
+    padding: 0 20px 20px 20px;
+    border-top: 1px solid var(--border);
+    animation: slideIn 0.2s ease;
+  }
+
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateY(-6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .chapter-card.open .chapter-body { display: block; }
+
+  .chapter-body p {
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.8;
+    margin-top: 14px;
+    margin-bottom: 10px;
+  }
+
+  .key-points {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 10px;
+  }
+
+  .key-points li {
+    font-size: 13.5px;
+    color: var(--text);
+    padding: 8px 12px;
+    background: var(--surface2);
+    border-radius: 6px;
+    border-left: 2px solid var(--border);
+    line-height: 1.6;
+  }
+
+  .key-points li.imp  { border-left-color: var(--accent); }
+  .key-points li.crit { border-left-color: var(--danger); }
+  .key-points li.note { border-left-color: var(--accent2); }
+
+  .mnemonic {
+    margin-top: 12px;
+    background: rgba(99,217,138,0.07);
+    border: 1px dashed rgba(99,217,138,0.25);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 13px;
+    color: var(--accent3);
+  }
+
+  .mnemonic::before { content: '💡 '; }
+
+  .progress-wrap { margin-bottom: 32px; }
+
+  .progress-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .progress-bar {
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    border-radius: 2px;
+    width: 0%;
+    transition: width 0.4s ease;
+  }
+
+  .footer {
+    margin-top: 60px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+  }
+
+  .chapter-card.hidden { display: none; }
+
+  @media (max-width: 600px) {
+    .hero::after { font-size: 90px; }
+    .stats-strip { grid-template-columns: repeat(2, 1fr); }
+    .hiyield ul { grid-template-columns: 1fr; }
+    .ch-tags { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="search-bar">
+  <div class="search-inner">
+    <input class="search-input" type="text" id="searchInput" placeholder="Search chapters, topics, keywords…" oninput="filterChapters()">
+    <span class="chapter-count" id="chapterCount">9 chapters</span>
+  </div>
+</div>
+
+<div class="page-wrap">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-tag">Nelson Textbook of Pediatrics · 22nd Edition · 2024</div>
+    <h1>Part <span>VIII</span><br>Human Genetics</h1>
+    <p class="hero-sub">Mendelian inheritance, chromosomal disorders, genomic imprinting, molecular diagnostics, dysmorphology, and the genetic basis of common pediatric diseases.</p>
+    <div class="hero-meta">
+      <span class="meta-pill"><span class="dot" style="background:var(--accent)"></span>Chapters 95–103</span>
+      <span class="meta-pill"><span class="dot" style="background:var(--accent2)"></span>9 Chapters</span>
+      <span class="meta-pill"><span class="dot" style="background:var(--accent3)"></span>High-Yield for USMLE &amp; Boards</span>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-strip">
+    <div class="stat-card">
+      <div class="stat-label">Chapters</div>
+      <div class="stat-value">9</div>
+      <div class="stat-desc">Ch. 95–103</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Inheritance Patterns</div>
+      <div class="stat-value">5</div>
+      <div class="stat-desc">AD, AR, XL, Mito, Imprinting</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Key Syndromes</div>
+      <div class="stat-value">15+</div>
+      <div class="stat-desc">Trisomies, deletions, imprinting</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Board Relevance</div>
+      <div class="stat-value">★★★★★</div>
+      <div class="stat-desc">Chromosomal syndromes heavily tested</div>
+    </div>
+  </div>
+
+  <!-- HIGH YIELD OVERVIEW -->
+  <div class="hiyield">
+    <div class="hiyield-header">⚡ High-Yield Quick Reference — Part VIII</div>
+    <ul>
+      <li>Down syndrome (Trisomy 21): <strong class="hl">most common chromosomal disorder</strong>; flat facies, epicanthal folds, single palmar crease, Brushfield spots, AV canal defect</li>
+      <li>Edwards (T18): clenched fists, rocker-bottom feet, VSD — <strong class="hld">poor prognosis</strong>; Patau (T13): midline defects, holoprosencephaly, polydactyly</li>
+      <li>Turner (45,X): short stature, webbed neck, shield chest, primary amenorrhea, coarctation of aorta</li>
+      <li>Klinefelter (47,XXY): tall, small testes, gynecomastia, infertility, learning difficulties</li>
+      <li>Prader-Willi = paternal 15q11 deletion (or maternal UPD); Angelman = maternal 15q11 deletion (or paternal UPD)</li>
+      <li>Autosomal dominant: <strong class="hl">50% risk each child</strong>, vertical transmission, often structural proteins</li>
+      <li>Autosomal recessive: <strong class="hl">25% risk</strong>, consanguinity risk factor, often enzyme deficiencies</li>
+      <li>X-linked recessive: males affected, females carriers; no male-to-male transmission</li>
+      <li>Mitochondrial inheritance: <strong class="hl">maternal only</strong>; affects high-energy organs (brain, muscle, heart)</li>
+      <li>FISH, chromosomal microarray (CMA), WES/WGS: increasing role in diagnosis of genetic disorders</li>
+      <li>DiGeorge (22q11.2 del): cardiac defects, hypoparathyroidism, T-cell deficiency, cleft palate, facial dysmorphism</li>
+      <li>Fragile X: most common inherited intellectual disability; trinucleotide CGG repeat expansion in FMR1</li>
+    </ul>
+  </div>
+
+  <!-- PROGRESS BAR -->
+  <div class="progress-wrap">
+    <div class="progress-label">
+      <span>Study Progress</span>
+      <span id="progressText">0 / 9 opened</span>
+    </div>
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- SECTION A: FOUNDATIONS OF GENETICS          -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div class="section-label">Section A — Foundations of Human Genetics</div>
+  <div class="chapters-grid">
+
+    <!-- CH 95 -->
+    <div class="chapter-card" data-keywords="Mendelian inheritance autosomal dominant recessive X-linked penetrance expressivity Hardy-Weinberg pedigree mutation allele genotype phenotype">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 95</span>
+        <span class="ch-title">Patterns of Genetic Transmission</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp"><strong class="hl">Autosomal Dominant (AD)</strong>: 50% risk per child; vertical transmission (every generation); male = female risk; often structural proteins (collagen, receptors); examples: Marfan, NF1, achondroplasia, Huntington</li>
+          <li class="imp"><strong class="hl">Autosomal Recessive (AR)</strong>: 25% risk if both parents carriers; horizontal transmission (siblings affected); consanguinity ↑ risk; often enzyme deficiencies (IEM); examples: CF, PKU, SMA, sickle cell</li>
+          <li class="imp"><strong class="hl">X-linked Recessive (XLR)</strong>: males affected, females carriers (usually); <strong class="hl">NO male-to-male transmission</strong>; daughters of affected males are obligate carriers; examples: Duchenne MD, hemophilia A/B, G6PD, fragile X</li>
+          <li class="imp"><strong class="hl">X-linked Dominant (XLD)</strong>: both sexes affected; males often more severely; examples: Rett syndrome, incontinentia pigmenti (lethal in males), hypophosphatemic rickets</li>
+          <li class="note"><strong class="hl">Penetrance</strong>: proportion of individuals with genotype who show phenotype (incomplete penetrance = not all carriers affected)</li>
+          <li class="note"><strong class="hl">Expressivity</strong>: degree of phenotypic expression among individuals with same genotype (variable expressivity = severity differs)</li>
+          <li class="imp"><strong class="hl">Codominance</strong>: both alleles expressed (e.g., ABO blood group, sickle cell trait); <strong class="hl">incomplete dominance</strong>: intermediate phenotype</li>
+          <li class="note">Hardy-Weinberg equilibrium: allele frequencies stable in large, random-mating, non-selected population; p² + 2pq + q² = 1</li>
+        </ul>
+        <div class="mnemonic">XLR: "Daughters Carry, Sons Suffer — No Father-to-Son transmission"</div>
+      </div>
+    </div>
+
+    <!-- CH 96 -->
+    <div class="chapter-card" data-keywords="molecular genetics DNA mutation SNP point deletion insertion frameshift splice variant CNV GWAS gene expression transcription translation epigenetics">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 96</span>
+        <span class="ch-title">Molecular Genetics</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-eth">Genomics</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp">Types of mutations: <strong class="hl">missense</strong> (wrong AA), <strong class="hl">nonsense</strong> (premature stop codon → truncated protein), <strong class="hl">frameshift</strong> (insertion/deletion alters reading frame), <strong class="hl">splice site</strong> (abnormal mRNA processing)</li>
+          <li class="imp"><strong class="hl">Copy Number Variants (CNVs)</strong>: duplications or deletions of chromosomal segments (&gt;1 kb); detected by chromosomal microarray (CMA)</li>
+          <li class="imp"><strong class="hl">Trinucleotide repeat expansions</strong>: anticipation (worsening severity in successive generations); examples: Fragile X (CGG), Huntington (CAG), myotonic dystrophy (CTG), Friedreich ataxia (GAA)</li>
+          <li class="note"><strong class="hl">Loss-of-function</strong> mutations: typically recessive (one functional copy sufficient); <strong class="hl">gain-of-function</strong>: typically dominant (new abnormal activity)</li>
+          <li class="note"><strong class="hl">Haploinsufficiency</strong>: one functional copy of gene insufficient for normal phenotype → dominant disease (e.g., NF1, BRCA1)</li>
+          <li class="imp">Epigenetics: heritable changes in gene expression WITHOUT DNA sequence change; DNA methylation, histone modification; basis of imprinting disorders</li>
+          <li class="note">GWAS (Genome-Wide Association Studies): identify common variants (SNPs) associated with complex/multifactorial traits</li>
+        </ul>
+        <div class="mnemonic">Trinucleotide repeats = "Anticipation" → gets worse each generation (Huntington CAG, Fragile X CGG, DM CTG)</div>
+      </div>
+    </div>
+
+    <!-- CH 97 -->
+    <div class="chapter-card" data-keywords="genetic testing karyotype FISH microarray CMA whole exome sequencing WES WGS newborn screening prenatal CVS amniocentesis NIPT genetic counseling">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 97</span>
+        <span class="ch-title">Genetic Diagnosis: Techniques and Counseling</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-eth">Counseling</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp"><strong class="hl">Karyotype</strong>: detects chromosomal number &amp; gross structural changes (trisomies, translocations, inversions); resolution ~5–10 Mb</li>
+          <li class="imp"><strong class="hl">FISH</strong> (Fluorescence In Situ Hybridization): detects specific known deletions/duplications (e.g., 22q11.2 del, PW/AS); targeted, not genome-wide</li>
+          <li class="imp"><strong class="hl">Chromosomal Microarray (CMA)</strong>: detects CNVs genome-wide; <strong class="hl">first-line test for unexplained ID/ASD/multiple anomalies</strong>; does NOT detect balanced translocations or point mutations</li>
+          <li class="imp"><strong class="hl">Whole Exome Sequencing (WES)</strong>: sequences all protein-coding regions (~1.5% of genome); detects single-nucleotide variants and small indels; increasingly first-line for complex undiagnosed cases</li>
+          <li class="imp"><strong class="hl">Whole Genome Sequencing (WGS)</strong>: sequences entire genome; detects intronic variants, structural variants; becoming more accessible</li>
+          <li class="note">Prenatal diagnosis: <strong class="hl">CVS (10–13 wk)</strong> — earlier but ↑ risk; <strong class="hl">amniocentesis (15–20 wk)</strong> — gold standard; <strong class="hl">NIPT</strong> — screens cfDNA for trisomies 21/18/13, sex chromosomes (screening, not diagnostic)</li>
+          <li class="note">Genetic counseling: non-directive, non-judgmental; explain recurrence risk, natural history, options; support decision-making</li>
+          <li class="imp">Variants of uncertain significance (VUS): cannot be classified as pathogenic or benign; requires careful interpretation</li>
+        </ul>
+        <div class="mnemonic">Genetic test hierarchy: "Karyotype → FISH → CMA → WES → WGS" (increasing resolution, increasing complexity)</div>
+      </div>
+    </div>
+
+  </div><!-- end section A -->
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- SECTION B: CHROMOSOMAL DISORDERS            -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div class="section-label">Section B — Chromosomal Disorders</div>
+  <div class="chapters-grid">
+
+    <!-- CH 98 -->
+    <div class="chapter-card" data-keywords="Down syndrome trisomy 21 nondisjunction Robertsonian translocation mosaic flat facies epicanthal single palmar crease AV canal Brushfield Alzheimer hypothyroidism screening">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 98</span>
+        <span class="ch-title">Autosomal Chromosomal Disorders (Down, Edwards, Patau Syndromes)</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-crit">Critical</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp"><strong class="hl">Down Syndrome (Trisomy 21)</strong>: most common chromosomal disorder; incidence 1/700 live births; ↑ maternal age risk</li>
+          <li class="imp">Mechanism: 95% <strong class="hl">nondisjunction</strong> (usually maternal meiosis I); 4% Robertsonian translocation (often t(14;21) — can be familial!); 1% mosaic</li>
+          <li class="crit">Features: flat facies, upslanting palpebral fissures, <strong class="hl">epicanthal folds</strong>, <strong class="hl">Brushfield spots</strong>, macroglossia, low-set ears, <strong class="hl">single palmar crease</strong>, 5th finger clinodactyly, sandal gap (big toe), hypotonia, intellectual disability</li>
+          <li class="crit">Cardiac: <strong class="hld">AV canal (AVSD) most common</strong> (~40% have CHD); also VSD, ASD, PDA</li>
+          <li class="imp">Associated conditions: hypothyroidism (screen annually), <strong class="hl">atlantoaxial instability</strong>, leukemia (↑ risk ALL &amp; AML), Alzheimer disease (by age 40), celiac disease, hearing loss, obstructive sleep apnea</li>
+          <li class="note">Prenatal screening: first trimester combined (nuchal translucency + PAPP-A + β-hCG); second trimester quad screen (↓AFP, ↑βhCG, ↓estriol, ↑inhibin A)</li>
+          <li class="crit"><strong class="hld">Trisomy 18 (Edwards)</strong>: 1/6,000; clenched fists (overlapping fingers), rocker-bottom feet, prominent occiput, VSD, severe ID; <strong class="hld">90% die within first year</strong></li>
+          <li class="crit"><strong class="hld">Trisomy 13 (Patau)</strong>: 1/10,000; <strong class="hld">holoprosencephaly</strong>, microcephaly, cleft lip/palate, polydactyly, cutis aplasia, microphthalmia; <strong class="hld">very poor prognosis</strong></li>
+        </ul>
+        <div class="mnemonic">Trisomy 18 (Edwards) = "EFGH" → Eighteen, Fists clenched, Growth retarded, Heart defects (VSD) — worse prognosis than T21</div>
+      </div>
+    </div>
+
+    <!-- CH 99 -->
+    <div class="chapter-card" data-keywords="sex chromosome disorders Turner syndrome 45X Klinefelter 47XXY triple X 47XYY webbed neck coarctation amenorrhea infertility gynecomastia">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 99</span>
+        <span class="ch-title">Sex Chromosome Disorders (Turner, Klinefelter, Others)</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-crit">Critical</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="crit"><strong class="hld">Turner Syndrome (45,X)</strong>: 1/2,500 live female births; most common cause of <strong class="hld">primary amenorrhea</strong></li>
+          <li class="imp">Turner features: <strong class="hl">short stature</strong> (treat with GH), <strong class="hl">webbed neck</strong> (pterygium colli), shield chest, widely-spaced nipples, cubitus valgus, low posterior hairline, lymphedema at birth, streak gonads → infertility</li>
+          <li class="crit">Cardiac: <strong class="hld">bicuspid aortic valve</strong> (most common) and <strong class="hld">coarctation of aorta</strong>; aortic dissection risk → annual echo</li>
+          <li class="imp">Renal anomalies: horseshoe kidney (most common renal anomaly in Turner)</li>
+          <li class="note">Mosaic Turner (45,X/46,XX): milder phenotype; some fertility possible</li>
+          <li class="crit"><strong class="hld">Klinefelter Syndrome (47,XXY)</strong>: most common sex chromosome disorder in males; 1/500–1,000 males; often undiagnosed</li>
+          <li class="imp">Klinefelter features: tall stature (long legs), <strong class="hl">small firm testes</strong>, <strong class="hl">gynecomastia</strong>, infertility (azoospermia), ↓testosterone, ↑FSH/LH, learning difficulties (language), risk of breast cancer</li>
+          <li class="note"><strong class="hl">47,XYY</strong>: tall males; behavioral/learning difficulties; generally mild; NOT associated with aggressive behavior (historical myth)</li>
+          <li class="note"><strong class="hl">47,XXX (Triple X)</strong>: tall females; mild learning difficulties; usually fertile; often undiagnosed</li>
+        </ul>
+        <div class="mnemonic">Turner: "WSSCA" → Webbed neck, Short stature, Shield chest, Coarctation, Amenorrhea (primary)</div>
+      </div>
+    </div>
+
+  </div><!-- end section B -->
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- SECTION C: GENOMIC IMPRINTING & MICRODELETION SYNDROMES -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div class="section-label">Section C — Genomic Imprinting &amp; Microdeletion Syndromes</div>
+  <div class="chapters-grid">
+
+    <!-- CH 100 -->
+    <div class="chapter-card" data-keywords="genomic imprinting Prader-Willi Angelman uniparental disomy UPD methylation 15q11 obesity hypotonia happy puppet seizures">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 100</span>
+        <span class="ch-title">Genomic Imprinting Disorders (Prader-Willi &amp; Angelman Syndromes)</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-crit">Critical</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp"><strong class="hl">Genomic imprinting</strong>: certain genes expressed from only ONE parental allele (parent-of-origin specific); the other allele is silenced by methylation</li>
+          <li class="crit"><strong class="hld">Prader-Willi Syndrome (PWS)</strong>: loss of <strong class="hld">paternal</strong> 15q11-q13 expression</li>
+          <li class="imp">PWS causes: paternal deletion 15q11 (70%), <strong class="hl">maternal UPD 15</strong> (25%), imprinting center defect (5%)</li>
+          <li class="imp">PWS features: neonatal hypotonia ("floppy baby"), poor feeding → then <strong class="hl">hyperphagia &amp; obesity</strong> in childhood, short stature, hypogonadism, almond-shaped eyes, small hands/feet, intellectual disability, behavioral problems (temper tantrums, OCD)</li>
+          <li class="crit"><strong class="hld">Angelman Syndrome (AS)</strong>: loss of <strong class="hld">maternal</strong> 15q11-q13 expression (UBE3A gene)</li>
+          <li class="imp">AS causes: maternal deletion 15q11 (70%), <strong class="hl">paternal UPD 15</strong> (5%), UBE3A mutation, imprinting defect</li>
+          <li class="crit">AS features: <strong class="hld">"Happy puppet"</strong> — inappropriate happy affect (frequent laughing/smiling), severe intellectual disability, <strong class="hld">absent/minimal speech</strong>, ataxic gait, <strong class="hld">seizures</strong> (EEG: high-amplitude delta waves), microcephaly, fair hair/skin</li>
+          <li class="note">Key: same chromosome (15q11) → opposite phenotypes depending on <strong class="hl">which parent's copy is missing</strong></li>
+          <li class="note">Diagnosis: DNA methylation analysis (detects PWS &amp; AS); FISH/CMA for deletion; UPD testing</li>
+        </ul>
+        <div class="mnemonic">PWS vs AS on Chr 15: "PWS = Paternal deletion → Pudgy/Polyphagic; AS = Angelman = mAterNal deletion → Happy puppet, No speech, Ataxia, Seizures"</div>
+      </div>
+    </div>
+
+    <!-- CH 101 -->
+    <div class="chapter-card" data-keywords="microdeletion syndrome DiGeorge 22q11 velocardiofacial CATCH22 Williams syndrome 7q11 elfin face hypercalcemia Wolf-Hirschhorn 4p deletion cri du chat 5p">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 101</span>
+        <span class="ch-title">Microdeletion &amp; Microduplication Syndromes</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-crit">Critical</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="crit"><strong class="hld">DiGeorge Syndrome / 22q11.2 Deletion (velocardiofacial)</strong>: most common microdeletion (1/4,000)</li>
+          <li class="imp">22q11.2 features — <strong class="hl">CATCH-22</strong>: <strong class="hl">C</strong>ardiac defects (conotruncal — ToF, interrupted aortic arch, truncus arteriosus, VSD), <strong class="hl">A</strong>bnormal facies, <strong class="hl">T</strong>hymic aplasia (T-cell deficiency → recurrent infections), <strong class="hl">C</strong>left palate, <strong class="hl">H</strong>ypocalcemia (hypoparathyroidism), 22q11</li>
+          <li class="imp">22q11 also: learning difficulties, psychiatric disorders (schizophrenia risk 25–30%), renal anomalies, velopharyngeal insufficiency (nasal speech)</li>
+          <li class="crit"><strong class="hld">Williams Syndrome (7q11.23 deletion)</strong>: "elfin" facies (periorbital fullness, upturned nose, wide mouth), <strong class="hld">hypercalcemia</strong>, supravalvular aortic stenosis, <strong class="hl">cocktail party personality</strong> (overly friendly, loquacious), intellectual disability with preserved verbal/social skills, sensitive to noise</li>
+          <li class="imp"><strong class="hl">Wolf-Hirschhorn (4p deletion)</strong>: "Greek warrior helmet" facies, severe growth retardation, intellectual disability, seizures, midline defects</li>
+          <li class="imp"><strong class="hl">Cri-du-Chat (5p deletion)</strong>: cat-like cry in infancy (laryngeal abnormality), microcephaly, widely-spaced eyes, low birth weight, intellectual disability</li>
+          <li class="note">Most microdeletion syndromes detected by CMA (not visible on karyotype); FISH for specific known deletions</li>
+        </ul>
+        <div class="mnemonic">DiGeorge CATCH-22: Cardiac, Abnormal facies, Thymic aplasia, Cleft palate, Hypocalcemia, Chr 22</div>
+      </div>
+    </div>
+
+  </div><!-- end section C -->
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- SECTION D: SPECIFIC GENETIC DISORDERS       -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div class="section-label">Section D — Specific Genetic Disorders &amp; Dysmorphology</div>
+  <div class="chapters-grid">
+
+    <!-- CH 102 -->
+    <div class="chapter-card" data-keywords="fragile X FMR1 CGG repeat intellectual disability autism macroorchidism large ears premutation FXTAS FXPOI inheritance trinucleotide">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 102</span>
+        <span class="ch-title">Fragile X Syndrome and Other Trinucleotide Repeat Disorders</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-crit">Critical</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="crit"><strong class="hld">Fragile X</strong>: <strong class="hld">most common inherited cause of intellectual disability</strong>; X-linked; <strong class="hl">CGG repeat expansion</strong> in FMR1 gene on Xq27.3</li>
+          <li class="imp">Normal: &lt;45 CGG repeats; Premutation: 55–200 (carriers, risk of expansion); Full mutation: &gt;200 (methylation silences FMR1 → ↓FMRP protein)</li>
+          <li class="imp">Clinical features (males): moderate-severe ID, <strong class="hl">macroorchidism</strong> (large testes — post-pubertal), long face, large ears, prominent jaw, hyperextensible joints, autism features, hyperactivity</li>
+          <li class="note">Females with full mutation: usually milder (second X provides some FMRP); ~50% have cognitive/behavioral issues</li>
+          <li class="imp">Premutation carriers: females → <strong class="hl">FXPOI</strong> (premature ovarian insufficiency); males → <strong class="hl">FXTAS</strong> (fragile X-associated tremor/ataxia syndrome in older males)</li>
+          <li class="note">Anticipation: premutation expands to full mutation when passed through FEMALE carriers (NOT males)</li>
+          <li class="imp">Diagnosis: <strong class="hl">PCR + Southern blot</strong> to determine exact CGG repeat number</li>
+          <li class="note">Other trinucleotide repeat disorders: <strong class="hl">Huntington (CAG, chr4, AD)</strong> — anticipation via paternal; <strong class="hl">Myotonic dystrophy (CTG, chr19, AD)</strong> — congenital form via maternal</li>
+        </ul>
+        <div class="mnemonic">Fragile X: "MALE = Macroorchidism, Autism, Large ears, Elongated face" + CGG repeat on X</div>
+      </div>
+    </div>
+
+    <!-- CH 103 -->
+    <div class="chapter-card" data-keywords="dysmorphology birth defects malformation deformation disruption syndrome sequence association congenital anomaly teratogen approach evaluation">
+      <div class="chapter-header" onclick="toggleCard(this)">
+        <span class="ch-num">Ch. 103</span>
+        <span class="ch-title">Dysmorphology: Approach to the Child with Birth Defects</span>
+        <div class="ch-tags"><span class="tag tag-hiy">High Yield</span><span class="tag tag-eth">Clinical</span></div>
+        <span class="ch-toggle">⌄</span>
+      </div>
+      <div class="chapter-body">
+        <ul class="key-points">
+          <li class="imp"><strong class="hl">Malformation</strong>: intrinsic abnormal development of a structure (e.g., ASD from faulty septation — genetic)</li>
+          <li class="imp"><strong class="hl">Deformation</strong>: abnormal mechanical forces on normal tissue (e.g., clubfoot from oligohydramnios — external cause)</li>
+          <li class="imp"><strong class="hl">Disruption</strong>: destruction of normally formed tissue (e.g., amniotic band syndrome)</li>
+          <li class="imp"><strong class="hl">Syndrome</strong>: multiple anomalies with a single unifying etiology (e.g., Down syndrome)</li>
+          <li class="imp"><strong class="hl">Sequence</strong>: cascade of anomalies from a single primary defect (e.g., Potter sequence: oligohydramnios → pulmonary hypoplasia + limb deformities + facial compression)</li>
+          <li class="imp"><strong class="hl">Association</strong>: non-random occurrence of anomalies without known unifying cause (e.g., <strong class="hl">VACTERL</strong>: Vertebral, Anal atresia, Cardiac, TracheoEsophageal fistula, Renal, Limb)</li>
+          <li class="crit">Major teratogens to know: <strong class="hld">thalidomide</strong> (limb reduction), <strong class="hld">valproate</strong> (NTDs, facial anomalies), <strong class="hld">warfarin</strong> (nasal hypoplasia), <strong class="hld">isotretinoin</strong> (ear, heart, CNS — absolutely contraindicated in pregnancy), <strong class="hld">alcohol (FAS)</strong>: smooth philtrum, thin vermilion border, small palpebral fissures, growth retardation, CNS dysfunction</li>
+          <li class="imp">Dysmorphology evaluation: 3-generation family pedigree, maternal exposures &amp; illnesses, growth parameters, detailed physical exam, genetic testing (CMA/WES first-line for multiple anomalies + ID)</li>
+          <li class="note"><strong class="hl">Fetal Alcohol Spectrum Disorder (FASD)</strong>: leading preventable cause of intellectual disability; no safe level of alcohol in pregnancy</li>
+        </ul>
+        <div class="mnemonic">VACTERL: "Vertebral, Anal, Cardiac, TE fistula, Esophageal, Renal, Limb" — always think of it when you see one anomaly!</div>
+      </div>
+    </div>
+
+  </div><!-- end section D -->
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <span>Nelson Textbook of Pediatrics · 22nd Ed. · 2024</span>
+    <span>Part VIII: Chapters 95–103 · Human Genetics</span>
+  </div>
+
+</div><!-- end page-wrap -->
+
+<script>
+  let openedChapters = new Set();
+  const TOTAL_CHAPTERS = 9;
+
+  function toggleCard(header) {
+    const card = header.parentElement;
+    const wasOpen = card.classList.contains('open');
+    card.classList.toggle('open');
+    const chNum = card.querySelector('.ch-num').textContent;
+    if (!wasOpen) openedChapters.add(chNum);
+    updateProgress();
+  }
+
+  function updateProgress() {
+    const opened = openedChapters.size;
+    const pct = Math.min((opened / TOTAL_CHAPTERS) * 100, 100);
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressText').textContent = `${opened} / ${TOTAL_CHAPTERS} opened`;
+  }
+
+  function filterChapters() {
+    const q = document.getElementById('searchInput').value.toLowerCase().trim();
+    const cards = document.querySelectorAll('.chapter-card');
+    let visible = 0;
+
+    cards.forEach(card => {
+      const title    = card.querySelector('.ch-title').textContent.toLowerCase();
+      const body     = card.querySelector('.chapter-body') ? card.querySelector('.chapter-body').textContent.toLowerCase() : '';
+      const keywords = (card.dataset.keywords || '').toLowerCase();
+
+      if (!q || title.includes(q) || body.includes(q) || keywords.includes(q)) {
+        card.classList.remove('hidden');
+        visible++;
+      } else {
+        card.classList.add('hidden');
+      }
+    });
+
+    document.getElementById('chapterCount').textContent = q
+      ? `${visible} result${visible !== 1 ? 's' : ''}`
+      : `${TOTAL_CHAPTERS} chapters`;
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.ctrlKey && e.key === 'e') {
+      e.preventDefault();
+      document.querySelectorAll('.chapter-card:not(.open)').forEach(c => {
+        c.classList.add('open');
+        openedChapters.add(c.querySelector('.ch-num').textContent);
+      });
+      updateProgress();
+    }
+  });
+</script>
+
+</body>
+</html>
